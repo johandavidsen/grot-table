@@ -8,24 +8,11 @@
             </div>
             <div class="col-6">
                 <div v-if="showColumnPicker" style="padding-top: 10px;padding-bottom: 10px;float:right;">
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-outline-primary dropdown-toggle" data-toggle="dropdown"
-                                aria-haspopup="true">
-                            Columns <span class="caret"></span>
-                        </button>
-                        <div class="dropdown-menu dropdown-menu-right">
-                            <button v-for="(column, i) in displayCols"
-                                    :key="i"
-                                    class="dropdown-item"
-                                    @click.stop.prevent="toggleColumn(column)"
-                            >
-                                <i v-if="column.visible" class="fa fa-check"></i> {{column.title}}
-                            </button>
-                        </div>
-                    </div>
+                    <column-picker :options="displayCols" v-on:selected="toggleColumn"></column-picker>
                 </div>
             </div>
         </div>
+
         <div class="row">
             <div class="col-sm-12">
                 <div :class="{'vue-table-loading': this.loading , 'vue-table-loading-hidden': !this.loading}">
@@ -82,6 +69,7 @@
                     </tbody>
                 </table>
             </div>
+
             <div v-if="paginated" class="col-sm-12">
                 <div class="btn-toolbar" role="toolbar" aria-label="pagination bar">
                     <div class="btn-group mr-2" role="group" aria-label="first page">
@@ -102,6 +90,7 @@
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
 </template>
@@ -199,10 +188,12 @@
   import lodashfindindex from 'lodash.findindex';
   import ValueFieldSection from "./ValueFieldSection.vue";
   import SearchInput from './SearchInput'
+  import ColumnPicker from "./ColumnPicker"
 
   export default {
     name: "VueBootstrapTable",
     components: {
+      ColumnPicker,
       'value-field-section': ValueFieldSection,
       SearchInput
     },
