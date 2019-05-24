@@ -20,52 +20,42 @@
                 </div>
                 <table class="table table-bordered table-hover table-condensed table-striped vue-table">
                     <thead>
-                    <tr>
-                        <th v-if="selectable" style="width:40px;">
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" :id="'checkAll'+instanceId"
-                                       aria-label="Select All" v-model="allSelected">
-                                <label class="custom-control-label" :for="'checkAll'+instanceId"></label>
-                            </div>
-                            <!--<div class="form-check">
-                                <input class="form-check-input position-static" type="checkbox" aria-label="Select All" v-model="allSelected">
-                            </div>-->
-                        </th>
-                        <th v-for="(column, i) in displayColsVisible" @click="sortBy($event, column.name, column.sortable)"
-                            track-by="column"
-                            class="icon"
-                            :key="i"
-                            :class="getClasses(column)">
-                            {{ column.title }}
-                        </th>
-                    </tr>
+                        <table-header :columns="displayColsVisible" v-on:selected="sortBy"></table-header>
+                            <!--<th v-for="(column, i) in displayColsVisible" @click="sortBy($event, column.name, column.sortable)"
+                                track-by="column"
+                                class="icon"
+                                :key="i"
+                                :class="getClasses(column)">
+                               {{ column.title }}
+                           </th>-->
                     </thead>
+
                     <tbody>
-                    <tr v-for="(entry, index) in filteredValuesSorted " track-by="entry" :key="index"
-                        @click="rowClickHandler($event, entry)">
-                        <td v-if="selectable">
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" :id="'check'+instanceId+index"
-                                       v-model="entry.selected">
-                                <label class="custom-control-label" :for="'check'+instanceId+index"></label>
-                            </div>
-                            <!--<div class="form-check">
-                                <input class="form-check-input position-static" type="checkbox" aria-label="Select All" v-model="entry.selected">
-                            </div>-->
-                        </td>
-                        <td v-for="(column, index) in displayColsVisible" track-by="column"
-                            :key="index"
-                            v-show="column.visible" :class="column.cellstyle">
-                            <slot :name="column.name" :column="column" :value="entry">
-                                <span v-if="column.renderfunction!==false"
-                                      v-html="column.renderfunction( column.name, entry )"></span>
-                                <span v-else-if="!column.editable">{{ entry[column.name] }}</span>
-                                <value-field-section v-else
-                                                     :entry="entry"
-                                                     :columnname="column.name"></value-field-section>
-                            </slot>
-                        </td>
-                    </tr>
+                        <tr v-for="(entry, index) in filteredValuesSorted " track-by="entry" :key="index"
+                            @click="rowClickHandler($event, entry)">
+                            <td v-if="selectable">
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" :id="'check'+instanceId+index"
+                                           v-model="entry.selected">
+                                    <label class="custom-control-label" :for="'check'+instanceId+index"></label>
+                                </div>
+                                <!--<div class="form-check">
+                                    <input class="form-check-input position-static" type="checkbox" aria-label="Select All" v-model="entry.selected">
+                                </div>-->
+                            </td>
+                            <td v-for="(column, index) in displayColsVisible" track-by="column"
+                                :key="index"
+                                v-show="column.visible" :class="column.cellstyle">
+                                <slot :name="column.name" :column="column" :value="entry">
+                                    <span v-if="column.renderfunction!==false"
+                                          v-html="column.renderfunction( column.name, entry )"></span>
+                                    <span v-else-if="!column.editable">{{ entry[column.name] }}</span>
+                                    <value-field-section v-else
+                                                         :entry="entry"
+                                                         :columnname="column.name"></value-field-section>
+                                </slot>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -185,14 +175,16 @@
   import qs from 'qs';
   import lodashorderby from 'lodash.orderby';
   import lodashincludes from 'lodash.includes';
-  import lodashfindindex from 'lodash.findindex';
+  import lodashfindindex from 'lodash.findindex'
   import ValueFieldSection from "./ValueFieldSection.vue";
   import SearchInput from './SearchInput'
   import ColumnPicker from "./ColumnPicker"
+  import TableHeader from "./TableHeader"
 
   export default {
     name: "VueBootstrapTable",
     components: {
+      TableHeader,
       ColumnPicker,
       'value-field-section': ValueFieldSection,
       SearchInput
@@ -659,6 +651,7 @@
             });
         }
       },
+
       buildColumnObject: function (column) {
         var obj = {};
         obj.title = column.title;
@@ -697,6 +690,7 @@
 
         return obj;
       },
+
       setSortOrders: function () {
         this.sortKey = [];
         var sortOrders = {};
@@ -706,9 +700,12 @@
         this.sortOrders = sortOrders;
 
       },
-      sortBy: function (event, key, enabled) {
-        if (!enabled)
-          return;
+
+      sortBy: function ({ event, column: { name, sortable } }) {
+        let key = name
+
+        if (!sortable) return
+
         if (this.sortable) {
           var self = this;
 
@@ -737,31 +734,11 @@
           this.sortChanged = this.sortChanged * -1;
         }
       },
-      getClasses: function (column) {
-        var classes = [column.columnstyle];
-        var key = column.name;
-        if (this.sortable && column.sortable) {
-          classes.push("arrow");
-          /*if (this.sortKey === key) {
-              classes.push("active");
-          }*/
-          if (lodashfindindex(this.sortKey, function (o) {
-            return o === key;
-          }) !== -1) {
-            classes.push("active");
-          }
 
-          if (this.sortOrders[key] === "ASC") {
-            classes.push("asc");
-          } else if (this.sortOrders[key] === "DESC") {
-            classes.push("dsc");
-          }
-        }
-        return classes;
-      },
       toggleColumn: function (column) {
         column.visible = !column.visible;
       },
+
       // closeDropdown: function () {
       //     this.columnMenuOpen = false;
       // },
