@@ -21,7 +21,7 @@
                             Columns <span class="caret"></span>
                         </button>
                         <div class="dropdown-menu dropdown-menu-right">
-                            <button v-for="column in displayCols"
+                            <button v-for="(column, index) in displayCols" :key="index"
                                class="dropdown-item"
                                @click.stop.prevent="toggleColumn(column)"
                             >
@@ -49,7 +49,7 @@
                                 <input class="form-check-input position-static" type="checkbox" aria-label="Select All" v-model="allSelected">
                             </div>-->
                         </th>
-                        <th v-for="column in displayColsVisible" @click="sortBy($event, column.name, column.sortable)"
+                        <th v-for="(column, index) in displayColsVisible" @click="sortBy($event, column.name, column.sortable)" :key="index"
                             track-by="column"
                             class="icon"
                             :class="getClasses(column)">
@@ -58,7 +58,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr v-for="(entry, index) in filteredValuesSorted " track-by="entry" @click="rowClickHandler($event, entry)">
+                    <tr v-for="(entry, index) in filteredValuesSorted " track-by="entry" @click="rowClickHandler($event, entry)" :key="index">
                         <td v-if="selectable">
                             <div class="custom-control custom-checkbox">
                                 <input type="checkbox" class="custom-control-input" :id="'check'+instanceId+index" v-model="entry.selected">
@@ -68,7 +68,8 @@
                                 <input class="form-check-input position-static" type="checkbox" aria-label="Select All" v-model="entry.selected">
                             </div>-->
                         </td>
-                        <td v-for="column in displayColsVisible" track-by="column"
+                        <td v-for="(column, index) in displayColsVisible" track-by="column"
+                            :key="index"
                             v-show="column.visible" :class="column.cellstyle">
                             <slot :name="column.name" :column="column" :value="entry">
                                 <span v-if="column.renderfunction!==false" v-html="column.renderfunction( column.name, entry )"></span>
@@ -89,6 +90,7 @@
                     </div>
                     <div class="btn-group mr-2" role="group" aria-label="pages">
                         <button v-for="index in validPageNumbers"
+                                :key="index"
                                 type="button" class="btn btn-outline-primary"
                                 :class="{ active: page===index }"
                                 @click="page=index">
@@ -214,8 +216,8 @@
     }*/
 </style>
 <script>
-
-    /* used for fixing IE problems*/
+  /* eslint-disable */
+  /* used for fixing IE problems*/
     import { polyfill } from 'es6-promise'; polyfill();
     import axios from 'axios';
     import qs from 'qs';
@@ -768,6 +770,8 @@
                 }
             },
             getClasses: function (column) {
+              /* eslint-disable */
+              console.log(column.columnstyle)
                 var classes = [column.columnstyle];
                 var key = column.name;
                 if (this.sortable && column.sortable) {
