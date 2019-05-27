@@ -30,7 +30,8 @@
                                    :entry="entry"
                                    :columns="displayColsVisible"
                                    track-by="entry"
-                                   :key="index">
+                                   :key="index"
+                                   @click="rowClickHandler($event, entry)">
                             <check-box v-if="selectable" :checked="entry.selected" v-on:selected="(value) => toggleCheckbox(index, value)"></check-box>
                         </table-row>
                     </tbody>
