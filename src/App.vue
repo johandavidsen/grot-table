@@ -28,23 +28,6 @@
             >
 
             </vue-bootstrap-table>
-            <!--<vue-bootstrap-table
-                    :columns="columns2"
-                    :values="values2"
-                    :show-filter="showFilter"
-                    :show-column-picker="showPicker"
-                    :paginated="paginated"
-                    :filter-case-sensitive=false
-                    :selectable="showSelect"
-                    :row-click-handler=handleRowFunction2
-            >
-                <template v-slot:name="slotProps">
-                    <b>NAME:</b> {{slotProps.value.name}}
-                </template>
-                <template v-slot:description="slotProps">
-                    <b>DESC:</b> {{slotProps.value.description}}
-                </template>
-            </vue-bootstrap-table>-->
         </div>
         <h2>Events Received</h2>
         <div>

@@ -31,7 +31,7 @@
                                    :columns="displayColsVisible"
                                    track-by="entry"
                                    :key="index"
-                                   @click.native="rowClickHandler($event, entry)">
+                                   v-on:selected="selectRow">
                             <check-box v-if="selectable" :checked="entry.selected" v-on:selected="(value) => toggleCheckbox(index, value)"></check-box>
                         </table-row>
                     </tbody>
@@ -499,6 +499,10 @@
     },
 
     methods: {
+
+      selectRow ({ event, entry}) {
+        this.rowClickHandler(event, entry)
+      },
 
       updateCurrentPage (index) {
         this.page = index

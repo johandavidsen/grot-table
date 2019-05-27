@@ -1,5 +1,5 @@
 <template>
-    <tr>
+    <tr @click="click">
         <slot></slot>
         <td :key="index"
             v-for="(column, index) in columns" track-by="column"
@@ -36,6 +36,20 @@
       entry: {
         type: Object,
         required: false
+      },
+
+      rowClicked: {
+        type: Function,
+        required: false,
+        default: function () {
+
+        }
+      }
+    },
+
+    methods: {
+      click ($e) {
+        this.$emit('selected', { event: $e, entry: this.entry })
       }
     }
   }
