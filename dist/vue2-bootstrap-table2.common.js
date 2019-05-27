@@ -171,34 +171,6 @@ module.exports = function (Base, NAME, Constructor, next, DEFAULT, IS_SET, FORCE
 
 /***/ }),
 
-/***/ "044b":
-/***/ (function(module, exports) {
-
-/*!
- * Determine if an object is a Buffer
- *
- * @author   Feross Aboukhadijeh <https://feross.org>
- * @license  MIT
- */
-
-// The _isBuffer check is for Safari 5-7 support, because it's missing
-// Object.prototype.constructor. Remove this eventually
-module.exports = function (obj) {
-  return obj != null && (isBuffer(obj) || isSlowBuffer(obj) || !!obj._isBuffer)
-}
-
-function isBuffer (obj) {
-  return !!obj.constructor && typeof obj.constructor.isBuffer === 'function' && obj.constructor.isBuffer(obj)
-}
-
-// For Node v0.10 support. Remove this eventually.
-function isSlowBuffer (obj) {
-  return typeof obj.readFloatLE === 'function' && typeof obj.slice === 'function' && isBuffer(obj.slice(0, 0))
-}
-
-
-/***/ }),
-
 /***/ "07a7":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -2601,93 +2573,6 @@ module.exports = findIndex;
 
 /***/ }),
 
-/***/ "0a06":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var defaults = __webpack_require__("2444");
-var utils = __webpack_require__("c532");
-var InterceptorManager = __webpack_require__("f6b4");
-var dispatchRequest = __webpack_require__("5270");
-
-/**
- * Create a new instance of Axios
- *
- * @param {Object} instanceConfig The default config for the instance
- */
-function Axios(instanceConfig) {
-  this.defaults = instanceConfig;
-  this.interceptors = {
-    request: new InterceptorManager(),
-    response: new InterceptorManager()
-  };
-}
-
-/**
- * Dispatch a request
- *
- * @param {Object} config The config specific for this request (merged with this.defaults)
- */
-Axios.prototype.request = function request(config) {
-  /*eslint no-param-reassign:0*/
-  // Allow for axios('example/url'[, config]) a la fetch API
-  if (typeof config === 'string') {
-    config = utils.merge({
-      url: arguments[0]
-    }, arguments[1]);
-  }
-
-  config = utils.merge(defaults, {method: 'get'}, this.defaults, config);
-  config.method = config.method.toLowerCase();
-
-  // Hook up interceptors middleware
-  var chain = [dispatchRequest, undefined];
-  var promise = Promise.resolve(config);
-
-  this.interceptors.request.forEach(function unshiftRequestInterceptors(interceptor) {
-    chain.unshift(interceptor.fulfilled, interceptor.rejected);
-  });
-
-  this.interceptors.response.forEach(function pushResponseInterceptors(interceptor) {
-    chain.push(interceptor.fulfilled, interceptor.rejected);
-  });
-
-  while (chain.length) {
-    promise = promise.then(chain.shift(), chain.shift());
-  }
-
-  return promise;
-};
-
-// Provide aliases for supported request methods
-utils.forEach(['delete', 'get', 'head', 'options'], function forEachMethodNoData(method) {
-  /*eslint func-names:0*/
-  Axios.prototype[method] = function(url, config) {
-    return this.request(utils.merge(config || {}, {
-      method: method,
-      url: url
-    }));
-  };
-});
-
-utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
-  /*eslint func-names:0*/
-  Axios.prototype[method] = function(url, data, config) {
-    return this.request(utils.merge(config || {}, {
-      method: method,
-      url: url,
-      data: data
-    }));
-  };
-});
-
-module.exports = Axios;
-
-
-/***/ }),
-
 /***/ "0d58":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -2697,41 +2582,6 @@ var enumBugKeys = __webpack_require__("e11e");
 
 module.exports = Object.keys || function keys(O) {
   return $keys(O, enumBugKeys);
-};
-
-
-/***/ }),
-
-/***/ "0df6":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-/**
- * Syntactic sugar for invoking a function and expanding an array for arguments.
- *
- * Common use case would be to use `Function.prototype.apply`.
- *
- *  ```js
- *  function f(x, y, z) {}
- *  var args = [1, 2, 3];
- *  f.apply(null, args);
- *  ```
- *
- * With `spread` this example can be re-written.
- *
- *  ```js
- *  spread(function(x, y, z) {})([1, 2, 3]);
- *  ```
- *
- * @param {Function} callback
- * @returns {Function}
- */
-module.exports = function spread(callback) {
-  return function wrap(arr) {
-    return callback.apply(null, arr);
-  };
 };
 
 
@@ -3940,36 +3790,6 @@ module.exports = __webpack_require__("9e1e") ? Object.defineProperties : functio
 
 /***/ }),
 
-/***/ "1a46":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var _node_modules_vue_style_loader_index_js_ref_6_oneOf_1_0_node_modules_css_loader_index_js_ref_6_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_2_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_VueBootstrapTable_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("6e1a");
-/* harmony import */ var _node_modules_vue_style_loader_index_js_ref_6_oneOf_1_0_node_modules_css_loader_index_js_ref_6_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_2_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_VueBootstrapTable_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_vue_style_loader_index_js_ref_6_oneOf_1_0_node_modules_css_loader_index_js_ref_6_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_2_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_VueBootstrapTable_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__);
-/* unused harmony reexport * */
- /* unused harmony default export */ var _unused_webpack_default_export = (_node_modules_vue_style_loader_index_js_ref_6_oneOf_1_0_node_modules_css_loader_index_js_ref_6_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_2_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_VueBootstrapTable_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0___default.a); 
-
-/***/ }),
-
-/***/ "1d2b":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-module.exports = function bind(fn, thisArg) {
-  return function wrap() {
-    var args = new Array(arguments.length);
-    for (var i = 0; i < args.length; i++) {
-      args[i] = arguments[i];
-    }
-    return fn.apply(thisArg, args);
-  };
-};
-
-
-/***/ }),
-
 /***/ "230e":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -4067,108 +3887,18 @@ function toComment(sourceMap) {
 
 /***/ }),
 
-/***/ "2444":
+/***/ "29c6":
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-/* WEBPACK VAR INJECTION */(function(process) {
+exports = module.exports = __webpack_require__("2350")(false);
+// imports
 
-var utils = __webpack_require__("c532");
-var normalizeHeaderName = __webpack_require__("c8af");
 
-var DEFAULT_CONTENT_TYPE = {
-  'Content-Type': 'application/x-www-form-urlencoded'
-};
+// module
+exports.push([module.i, "@charset \"UTF-8\";.vue-table-loading .spinner{border:16px solid #f3f3f3;border-top:16px solid #3498db;border-radius:50%;width:120px;height:120px;-webkit-animation:spin 2s linear infinite;animation:spin 2s linear infinite;position:absolute;left:50%;top:50%;margin:-60px 0 0 -60px}@-webkit-keyframes spin{0%{-webkit-transform:rotate(0deg);transform:rotate(0deg)}to{-webkit-transform:rotate(1turn);transform:rotate(1turn)}}@keyframes spin{0%{-webkit-transform:rotate(0deg);transform:rotate(0deg)}to{-webkit-transform:rotate(1turn);transform:rotate(1turn)}}.vue-table-loading{position:absolute;z-index:99;background-color:#ddd;opacity:.5;width:100%;height:100%}.vue-table-loading-hidden{display:none}table.vue-table thead>tr>th{cursor:pointer;padding-right:30px!important}.vue-table .icon:before{display:inline-block;font-style:normal;font-variant:normal;text-rendering:auto;-webkit-font-smoothing:antialiased}.vue-table .arrow{opacity:1;position:relative}.vue-table .arrow:before{position:absolute;bottom:8px;right:8px;display:block;font-family:Font Awesome\\ 5 Free;font-weight:900;content:\"\\F0DC\"}.vue-table .arrow.asc:before{content:\"\\F0DE\"}.vue-table .arrow.dsc:before{content:\"\\F0DD\"}.vue-table .editableField{cursor:pointer}", ""]);
 
-function setContentTypeIfUnset(headers, value) {
-  if (!utils.isUndefined(headers) && utils.isUndefined(headers['Content-Type'])) {
-    headers['Content-Type'] = value;
-  }
-}
+// exports
 
-function getDefaultAdapter() {
-  var adapter;
-  if (typeof XMLHttpRequest !== 'undefined') {
-    // For browsers use XHR adapter
-    adapter = __webpack_require__("b50d");
-  } else if (typeof process !== 'undefined') {
-    // For node use HTTP adapter
-    adapter = __webpack_require__("b50d");
-  }
-  return adapter;
-}
-
-var defaults = {
-  adapter: getDefaultAdapter(),
-
-  transformRequest: [function transformRequest(data, headers) {
-    normalizeHeaderName(headers, 'Content-Type');
-    if (utils.isFormData(data) ||
-      utils.isArrayBuffer(data) ||
-      utils.isBuffer(data) ||
-      utils.isStream(data) ||
-      utils.isFile(data) ||
-      utils.isBlob(data)
-    ) {
-      return data;
-    }
-    if (utils.isArrayBufferView(data)) {
-      return data.buffer;
-    }
-    if (utils.isURLSearchParams(data)) {
-      setContentTypeIfUnset(headers, 'application/x-www-form-urlencoded;charset=utf-8');
-      return data.toString();
-    }
-    if (utils.isObject(data)) {
-      setContentTypeIfUnset(headers, 'application/json;charset=utf-8');
-      return JSON.stringify(data);
-    }
-    return data;
-  }],
-
-  transformResponse: [function transformResponse(data) {
-    /*eslint no-param-reassign:0*/
-    if (typeof data === 'string') {
-      try {
-        data = JSON.parse(data);
-      } catch (e) { /* Ignore */ }
-    }
-    return data;
-  }],
-
-  /**
-   * A timeout in milliseconds to abort a request. If set to 0 (default) a
-   * timeout is not created.
-   */
-  timeout: 0,
-
-  xsrfCookieName: 'XSRF-TOKEN',
-  xsrfHeaderName: 'X-XSRF-TOKEN',
-
-  maxContentLength: -1,
-
-  validateStatus: function validateStatus(status) {
-    return status >= 200 && status < 300;
-  }
-};
-
-defaults.headers = {
-  common: {
-    'Accept': 'application/json, text/plain, */*'
-  }
-};
-
-utils.forEach(['delete', 'get', 'head'], function forEachMethodNoData(method) {
-  defaults.headers[method] = {};
-});
-
-utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
-  defaults.headers[method] = utils.merge(DEFAULT_CONTENT_TYPE);
-});
-
-module.exports = defaults;
-
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("f28c")))
 
 /***/ }),
 
@@ -4284,32 +4014,6 @@ module.exports = false;
 
 /***/ }),
 
-/***/ "2d83":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var enhanceError = __webpack_require__("387f");
-
-/**
- * Create an Error with the specified message, config, error code, request and response.
- *
- * @param {string} message The error message.
- * @param {Object} config The config.
- * @param {string} [code] The error code (for example, 'ECONNABORTED').
- * @param {Object} [request] The request.
- * @param {Object} [response] The response.
- * @returns {Error} The created error.
- */
-module.exports = function createError(message, config, code, request, response) {
-  var error = new Error(message);
-  return enhanceError(error, config, code, request, response);
-};
-
-
-/***/ }),
-
 /***/ "2d95":
 /***/ (function(module, exports) {
 
@@ -4317,93 +4021,6 @@ var toString = {}.toString;
 
 module.exports = function (it) {
   return toString.call(it).slice(8, -1);
-};
-
-
-/***/ }),
-
-/***/ "2e67":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-module.exports = function isCancel(value) {
-  return !!(value && value.__CANCEL__);
-};
-
-
-/***/ }),
-
-/***/ "30b5":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var utils = __webpack_require__("c532");
-
-function encode(val) {
-  return encodeURIComponent(val).
-    replace(/%40/gi, '@').
-    replace(/%3A/gi, ':').
-    replace(/%24/g, '$').
-    replace(/%2C/gi, ',').
-    replace(/%20/g, '+').
-    replace(/%5B/gi, '[').
-    replace(/%5D/gi, ']');
-}
-
-/**
- * Build a URL by appending params to the end
- *
- * @param {string} url The base of the url (e.g., http://www.google.com)
- * @param {object} [params] The params to be appended
- * @returns {string} The formatted url
- */
-module.exports = function buildURL(url, params, paramsSerializer) {
-  /*eslint no-param-reassign:0*/
-  if (!params) {
-    return url;
-  }
-
-  var serializedParams;
-  if (paramsSerializer) {
-    serializedParams = paramsSerializer(params);
-  } else if (utils.isURLSearchParams(params)) {
-    serializedParams = params.toString();
-  } else {
-    var parts = [];
-
-    utils.forEach(params, function serialize(val, key) {
-      if (val === null || typeof val === 'undefined') {
-        return;
-      }
-
-      if (utils.isArray(val)) {
-        key = key + '[]';
-      } else {
-        val = [val];
-      }
-
-      utils.forEach(val, function parseValue(v) {
-        if (utils.isDate(v)) {
-          v = v.toISOString();
-        } else if (utils.isObject(v)) {
-          v = JSON.stringify(v);
-        }
-        parts.push(encode(key) + '=' + encode(v));
-      });
-    });
-
-    serializedParams = parts.join('&');
-  }
-
-  if (serializedParams) {
-    url += (url.indexOf('?') === -1 ? '?' : '&') + serializedParams;
-  }
-
-  return url;
 };
 
 
@@ -4419,35 +4036,6 @@ module.exports = __webpack_require__("9e1e") ? function (object, key, value) {
 } : function (object, key, value) {
   object[key] = value;
   return object;
-};
-
-
-/***/ }),
-
-/***/ "387f":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-/**
- * Update an Error with the specified config, error code, and response.
- *
- * @param {Error} error The error to update.
- * @param {Object} config The config.
- * @param {string} [code] The error code (for example, 'ECONNABORTED').
- * @param {Object} [request] The request.
- * @param {Object} [response] The response.
- * @returns {Error} The error.
- */
-module.exports = function enhanceError(error, config, code, request, response) {
-  error.config = config;
-  if (code) {
-    error.code = code;
-  }
-  error.request = request;
-  error.response = response;
-  return error;
 };
 
 
@@ -4473,359 +4061,6 @@ module.exports = Object.getPrototypeOf || function (O) {
 
 /***/ }),
 
-/***/ "3934":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var utils = __webpack_require__("c532");
-
-module.exports = (
-  utils.isStandardBrowserEnv() ?
-
-  // Standard browser envs have full support of the APIs needed to test
-  // whether the request URL is of the same origin as current location.
-  (function standardBrowserEnv() {
-    var msie = /(msie|trident)/i.test(navigator.userAgent);
-    var urlParsingNode = document.createElement('a');
-    var originURL;
-
-    /**
-    * Parse a URL to discover it's components
-    *
-    * @param {String} url The URL to be parsed
-    * @returns {Object}
-    */
-    function resolveURL(url) {
-      var href = url;
-
-      if (msie) {
-        // IE needs attribute set twice to normalize properties
-        urlParsingNode.setAttribute('href', href);
-        href = urlParsingNode.href;
-      }
-
-      urlParsingNode.setAttribute('href', href);
-
-      // urlParsingNode provides the UrlUtils interface - http://url.spec.whatwg.org/#urlutils
-      return {
-        href: urlParsingNode.href,
-        protocol: urlParsingNode.protocol ? urlParsingNode.protocol.replace(/:$/, '') : '',
-        host: urlParsingNode.host,
-        search: urlParsingNode.search ? urlParsingNode.search.replace(/^\?/, '') : '',
-        hash: urlParsingNode.hash ? urlParsingNode.hash.replace(/^#/, '') : '',
-        hostname: urlParsingNode.hostname,
-        port: urlParsingNode.port,
-        pathname: (urlParsingNode.pathname.charAt(0) === '/') ?
-                  urlParsingNode.pathname :
-                  '/' + urlParsingNode.pathname
-      };
-    }
-
-    originURL = resolveURL(window.location.href);
-
-    /**
-    * Determine if a URL shares the same origin as the current location
-    *
-    * @param {String} requestURL The URL to test
-    * @returns {boolean} True if URL shares the same origin, otherwise false
-    */
-    return function isURLSameOrigin(requestURL) {
-      var parsed = (utils.isString(requestURL)) ? resolveURL(requestURL) : requestURL;
-      return (parsed.protocol === originURL.protocol &&
-            parsed.host === originURL.host);
-    };
-  })() :
-
-  // Non standard browser envs (web workers, react-native) lack needed support.
-  (function nonStandardBrowserEnv() {
-    return function isURLSameOrigin() {
-      return true;
-    };
-  })()
-);
-
-
-/***/ }),
-
-/***/ "4127":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var utils = __webpack_require__("d233");
-var formats = __webpack_require__("b313");
-var has = Object.prototype.hasOwnProperty;
-
-var arrayPrefixGenerators = {
-    brackets: function brackets(prefix) { // eslint-disable-line func-name-matching
-        return prefix + '[]';
-    },
-    comma: 'comma',
-    indices: function indices(prefix, key) { // eslint-disable-line func-name-matching
-        return prefix + '[' + key + ']';
-    },
-    repeat: function repeat(prefix) { // eslint-disable-line func-name-matching
-        return prefix;
-    }
-};
-
-var isArray = Array.isArray;
-var push = Array.prototype.push;
-var pushToArray = function (arr, valueOrArray) {
-    push.apply(arr, isArray(valueOrArray) ? valueOrArray : [valueOrArray]);
-};
-
-var toISO = Date.prototype.toISOString;
-
-var defaults = {
-    addQueryPrefix: false,
-    allowDots: false,
-    charset: 'utf-8',
-    charsetSentinel: false,
-    delimiter: '&',
-    encode: true,
-    encoder: utils.encode,
-    encodeValuesOnly: false,
-    formatter: formats.formatters[formats['default']],
-    // deprecated
-    indices: false,
-    serializeDate: function serializeDate(date) { // eslint-disable-line func-name-matching
-        return toISO.call(date);
-    },
-    skipNulls: false,
-    strictNullHandling: false
-};
-
-var stringify = function stringify( // eslint-disable-line func-name-matching
-    object,
-    prefix,
-    generateArrayPrefix,
-    strictNullHandling,
-    skipNulls,
-    encoder,
-    filter,
-    sort,
-    allowDots,
-    serializeDate,
-    formatter,
-    encodeValuesOnly,
-    charset
-) {
-    var obj = object;
-    if (typeof filter === 'function') {
-        obj = filter(prefix, obj);
-    } else if (obj instanceof Date) {
-        obj = serializeDate(obj);
-    } else if (generateArrayPrefix === 'comma' && isArray(obj)) {
-        obj = obj.join(',');
-    }
-
-    if (obj === null) {
-        if (strictNullHandling) {
-            return encoder && !encodeValuesOnly ? encoder(prefix, defaults.encoder, charset) : prefix;
-        }
-
-        obj = '';
-    }
-
-    if (typeof obj === 'string' || typeof obj === 'number' || typeof obj === 'boolean' || utils.isBuffer(obj)) {
-        if (encoder) {
-            var keyValue = encodeValuesOnly ? prefix : encoder(prefix, defaults.encoder, charset);
-            return [formatter(keyValue) + '=' + formatter(encoder(obj, defaults.encoder, charset))];
-        }
-        return [formatter(prefix) + '=' + formatter(String(obj))];
-    }
-
-    var values = [];
-
-    if (typeof obj === 'undefined') {
-        return values;
-    }
-
-    var objKeys;
-    if (isArray(filter)) {
-        objKeys = filter;
-    } else {
-        var keys = Object.keys(obj);
-        objKeys = sort ? keys.sort(sort) : keys;
-    }
-
-    for (var i = 0; i < objKeys.length; ++i) {
-        var key = objKeys[i];
-
-        if (skipNulls && obj[key] === null) {
-            continue;
-        }
-
-        if (isArray(obj)) {
-            pushToArray(values, stringify(
-                obj[key],
-                typeof generateArrayPrefix === 'function' ? generateArrayPrefix(prefix, key) : prefix,
-                generateArrayPrefix,
-                strictNullHandling,
-                skipNulls,
-                encoder,
-                filter,
-                sort,
-                allowDots,
-                serializeDate,
-                formatter,
-                encodeValuesOnly,
-                charset
-            ));
-        } else {
-            pushToArray(values, stringify(
-                obj[key],
-                prefix + (allowDots ? '.' + key : '[' + key + ']'),
-                generateArrayPrefix,
-                strictNullHandling,
-                skipNulls,
-                encoder,
-                filter,
-                sort,
-                allowDots,
-                serializeDate,
-                formatter,
-                encodeValuesOnly,
-                charset
-            ));
-        }
-    }
-
-    return values;
-};
-
-var normalizeStringifyOptions = function normalizeStringifyOptions(opts) {
-    if (!opts) {
-        return defaults;
-    }
-
-    if (opts.encoder !== null && opts.encoder !== undefined && typeof opts.encoder !== 'function') {
-        throw new TypeError('Encoder has to be a function.');
-    }
-
-    var charset = opts.charset || defaults.charset;
-    if (typeof opts.charset !== 'undefined' && opts.charset !== 'utf-8' && opts.charset !== 'iso-8859-1') {
-        throw new TypeError('The charset option must be either utf-8, iso-8859-1, or undefined');
-    }
-
-    var format = formats['default'];
-    if (typeof opts.format !== 'undefined') {
-        if (!has.call(formats.formatters, opts.format)) {
-            throw new TypeError('Unknown format option provided.');
-        }
-        format = opts.format;
-    }
-    var formatter = formats.formatters[format];
-
-    var filter = defaults.filter;
-    if (typeof opts.filter === 'function' || isArray(opts.filter)) {
-        filter = opts.filter;
-    }
-
-    return {
-        addQueryPrefix: typeof opts.addQueryPrefix === 'boolean' ? opts.addQueryPrefix : defaults.addQueryPrefix,
-        allowDots: typeof opts.allowDots === 'undefined' ? defaults.allowDots : !!opts.allowDots,
-        charset: charset,
-        charsetSentinel: typeof opts.charsetSentinel === 'boolean' ? opts.charsetSentinel : defaults.charsetSentinel,
-        delimiter: typeof opts.delimiter === 'undefined' ? defaults.delimiter : opts.delimiter,
-        encode: typeof opts.encode === 'boolean' ? opts.encode : defaults.encode,
-        encoder: typeof opts.encoder === 'function' ? opts.encoder : defaults.encoder,
-        encodeValuesOnly: typeof opts.encodeValuesOnly === 'boolean' ? opts.encodeValuesOnly : defaults.encodeValuesOnly,
-        filter: filter,
-        formatter: formatter,
-        serializeDate: typeof opts.serializeDate === 'function' ? opts.serializeDate : defaults.serializeDate,
-        skipNulls: typeof opts.skipNulls === 'boolean' ? opts.skipNulls : defaults.skipNulls,
-        sort: typeof opts.sort === 'function' ? opts.sort : null,
-        strictNullHandling: typeof opts.strictNullHandling === 'boolean' ? opts.strictNullHandling : defaults.strictNullHandling
-    };
-};
-
-module.exports = function (object, opts) {
-    var obj = object;
-    var options = normalizeStringifyOptions(opts);
-
-    var objKeys;
-    var filter;
-
-    if (typeof options.filter === 'function') {
-        filter = options.filter;
-        obj = filter('', obj);
-    } else if (isArray(options.filter)) {
-        filter = options.filter;
-        objKeys = filter;
-    }
-
-    var keys = [];
-
-    if (typeof obj !== 'object' || obj === null) {
-        return '';
-    }
-
-    var arrayFormat;
-    if (opts && opts.arrayFormat in arrayPrefixGenerators) {
-        arrayFormat = opts.arrayFormat;
-    } else if (opts && 'indices' in opts) {
-        arrayFormat = opts.indices ? 'indices' : 'repeat';
-    } else {
-        arrayFormat = 'indices';
-    }
-
-    var generateArrayPrefix = arrayPrefixGenerators[arrayFormat];
-
-    if (!objKeys) {
-        objKeys = Object.keys(obj);
-    }
-
-    if (options.sort) {
-        objKeys.sort(options.sort);
-    }
-
-    for (var i = 0; i < objKeys.length; ++i) {
-        var key = objKeys[i];
-
-        if (options.skipNulls && obj[key] === null) {
-            continue;
-        }
-        pushToArray(keys, stringify(
-            obj[key],
-            key,
-            generateArrayPrefix,
-            options.strictNullHandling,
-            options.skipNulls,
-            options.encode ? options.encoder : null,
-            options.filter,
-            options.sort,
-            options.allowDots,
-            options.serializeDate,
-            options.formatter,
-            options.encodeValuesOnly,
-            options.charset
-        ));
-    }
-
-    var joined = keys.join(options.delimiter);
-    var prefix = options.addQueryPrefix === true ? '?' : '';
-
-    if (options.charsetSentinel) {
-        if (options.charset === 'iso-8859-1') {
-            // encodeURIComponent('&#10003;'), the "numeric entity" representation of a checkmark
-            prefix += 'utf8=%26%2310003%3B&';
-        } else {
-            // encodeURIComponent('✓')
-            prefix += 'utf8=%E2%9C%93&';
-        }
-    }
-
-    return joined.length > 0 ? prefix + joined : '';
-};
-
-
-/***/ }),
-
 /***/ "41a0":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -4842,25 +4077,6 @@ __webpack_require__("32e9")(IteratorPrototype, __webpack_require__("2b4c")('iter
 module.exports = function (Constructor, NAME, next) {
   Constructor.prototype = create(IteratorPrototype, { next: descriptor(1, next) });
   setToStringTag(Constructor, NAME + ' Iterator');
-};
-
-
-/***/ }),
-
-/***/ "4328":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var stringify = __webpack_require__("4127");
-var parse = __webpack_require__("9e6a");
-var formats = __webpack_require__("b313");
-
-module.exports = {
-    formats: formats,
-    parse: parse,
-    stringify: stringify
 };
 
 
@@ -4889,40 +4105,6 @@ module.exports = function (bitmap, value) {
     writable: !(bitmap & 4),
     value: value
   };
-};
-
-
-/***/ }),
-
-/***/ "467f":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var createError = __webpack_require__("2d83");
-
-/**
- * Resolve or reject a Promise based on response status.
- *
- * @param {Function} resolve A function that resolves the promise.
- * @param {Function} reject A function that rejects the promise.
- * @param {object} response The response.
- */
-module.exports = function settle(resolve, reject, response) {
-  var validateStatus = response.config.validateStatus;
-  // Note: status is not exposed by XDomainRequest
-  if (!response.status || !validateStatus || validateStatus(response.status)) {
-    resolve(response);
-  } else {
-    reject(createError(
-      'Request failed with status code ' + response.status,
-      response.config,
-      null,
-      response.request,
-      response
-    ));
-  }
 };
 
 
@@ -7697,97 +6879,18 @@ module.exports = function (it) {
 
 /***/ }),
 
-/***/ "5270":
+/***/ "4fa7":
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
+// style-loader: Adds some css to the DOM by adding a <style> tag
 
-
-var utils = __webpack_require__("c532");
-var transformData = __webpack_require__("c401");
-var isCancel = __webpack_require__("2e67");
-var defaults = __webpack_require__("2444");
-var isAbsoluteURL = __webpack_require__("d925");
-var combineURLs = __webpack_require__("e683");
-
-/**
- * Throws a `Cancel` if cancellation has been requested.
- */
-function throwIfCancellationRequested(config) {
-  if (config.cancelToken) {
-    config.cancelToken.throwIfRequested();
-  }
-}
-
-/**
- * Dispatch a request to the server using the configured adapter.
- *
- * @param {object} config The config that is to be used for the request
- * @returns {Promise} The Promise to be fulfilled
- */
-module.exports = function dispatchRequest(config) {
-  throwIfCancellationRequested(config);
-
-  // Support baseURL config
-  if (config.baseURL && !isAbsoluteURL(config.url)) {
-    config.url = combineURLs(config.baseURL, config.url);
-  }
-
-  // Ensure headers exist
-  config.headers = config.headers || {};
-
-  // Transform request data
-  config.data = transformData(
-    config.data,
-    config.headers,
-    config.transformRequest
-  );
-
-  // Flatten headers
-  config.headers = utils.merge(
-    config.headers.common || {},
-    config.headers[config.method] || {},
-    config.headers || {}
-  );
-
-  utils.forEach(
-    ['delete', 'get', 'head', 'post', 'put', 'patch', 'common'],
-    function cleanHeaderConfig(method) {
-      delete config.headers[method];
-    }
-  );
-
-  var adapter = config.adapter || defaults.adapter;
-
-  return adapter(config).then(function onAdapterResolution(response) {
-    throwIfCancellationRequested(config);
-
-    // Transform response data
-    response.data = transformData(
-      response.data,
-      response.headers,
-      config.transformResponse
-    );
-
-    return response;
-  }, function onAdapterRejection(reason) {
-    if (!isCancel(reason)) {
-      throwIfCancellationRequested(config);
-
-      // Transform response data
-      if (reason && reason.response) {
-        reason.response.data = transformData(
-          reason.response.data,
-          reason.response.headers,
-          config.transformResponse
-        );
-      }
-    }
-
-    return Promise.reject(reason);
-  });
-};
-
+// load the styles
+var content = __webpack_require__("29c6");
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var add = __webpack_require__("499e").default
+var update = add("d689a472", content, true, {"sourceMap":false,"shadowMode":false});
 
 /***/ }),
 
@@ -7796,6 +6899,17 @@ module.exports = function dispatchRequest(config) {
 
 exports.f = {}.propertyIsEnumerable;
 
+
+/***/ }),
+
+/***/ "5532":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var _node_modules_vue_style_loader_index_js_ref_8_oneOf_1_0_node_modules_css_loader_index_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_3_node_modules_sass_loader_lib_loader_js_ref_8_oneOf_1_4_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_VueBootstrapTable_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("4fa7");
+/* harmony import */ var _node_modules_vue_style_loader_index_js_ref_8_oneOf_1_0_node_modules_css_loader_index_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_3_node_modules_sass_loader_lib_loader_js_ref_8_oneOf_1_4_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_VueBootstrapTable_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_vue_style_loader_index_js_ref_8_oneOf_1_0_node_modules_css_loader_index_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_3_node_modules_sass_loader_lib_loader_js_ref_8_oneOf_1_4_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_VueBootstrapTable_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0__);
+/* unused harmony reexport * */
+ /* unused harmony default export */ var _unused_webpack_default_export = (_node_modules_vue_style_loader_index_js_ref_8_oneOf_1_0_node_modules_css_loader_index_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_3_node_modules_sass_loader_lib_loader_js_ref_8_oneOf_1_4_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_VueBootstrapTable_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0___default.a); 
 
 /***/ }),
 
@@ -7814,21 +6928,6 @@ var store = global[SHARED] || (global[SHARED] = {});
   mode: __webpack_require__("2d00") ? 'pure' : 'global',
   copyright: '© 2019 Denis Pushkarev (zloirock.ru)'
 });
-
-
-/***/ }),
-
-/***/ "587a":
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__("2350")(false);
-// imports
-
-
-// module
-exports.push([module.i, ".vue-table-loading .spinner{border:16px solid #f3f3f3;border-top:16px solid #3498db;border-radius:50%;width:120px;height:120px;-webkit-animation:spin 2s linear infinite;animation:spin 2s linear infinite;position:absolute;left:50%;top:50%;margin:-60px 0 0 -60px}@-webkit-keyframes spin{0%{-webkit-transform:rotate(0deg);transform:rotate(0deg)}to{-webkit-transform:rotate(1turn);transform:rotate(1turn)}}@keyframes spin{0%{-webkit-transform:rotate(0deg);transform:rotate(0deg)}to{-webkit-transform:rotate(1turn);transform:rotate(1turn)}}.vue-table-loading{position:absolute;z-index:99;background-color:#ddd;opacity:.5;width:100%;height:100%}.vue-table-loading-hidden{display:none}table.vue-table thead>tr>th{cursor:pointer;padding-right:30px!important}.vue-table .icon:before{display:inline-block;font-style:normal;font-variant:normal;text-rendering:auto;-webkit-font-smoothing:antialiased}.vue-table .arrow{opacity:1;position:relative}.vue-table .arrow:before{position:absolute;bottom:8px;right:8px;display:block;font-family:Font Awesome\\ 5 Free;font-weight:900;content:\"\\F0DC\"}.vue-table .arrow.asc:before{content:\"\\F0DE\"}.vue-table .arrow.dsc:before{content:\"\\F0DD\"}.vue-table .editableField{cursor:pointer}", ""]);
-
-// exports
 
 
 /***/ }),
@@ -7996,21 +7095,6 @@ module.exports = function (it, S) {
 
 /***/ }),
 
-/***/ "6e1a":
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__("587a");
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var add = __webpack_require__("499e").default
-var update = add("a4ef2996", content, true, {"sourceMap":false,"shadowMode":false});
-
-/***/ }),
-
 /***/ "7726":
 /***/ (function(module, exports) {
 
@@ -8048,94 +7132,6 @@ module.exports = function (exec) {
     return true;
   }
 };
-
-
-/***/ }),
-
-/***/ "7a77":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-/**
- * A `Cancel` is an object that is thrown when an operation is canceled.
- *
- * @class
- * @param {string=} message The message.
- */
-function Cancel(message) {
-  this.message = message;
-}
-
-Cancel.prototype.toString = function toString() {
-  return 'Cancel' + (this.message ? ': ' + this.message : '');
-};
-
-Cancel.prototype.__CANCEL__ = true;
-
-module.exports = Cancel;
-
-
-/***/ }),
-
-/***/ "7aac":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var utils = __webpack_require__("c532");
-
-module.exports = (
-  utils.isStandardBrowserEnv() ?
-
-  // Standard browser envs support document.cookie
-  (function standardBrowserEnv() {
-    return {
-      write: function write(name, value, expires, path, domain, secure) {
-        var cookie = [];
-        cookie.push(name + '=' + encodeURIComponent(value));
-
-        if (utils.isNumber(expires)) {
-          cookie.push('expires=' + new Date(expires).toGMTString());
-        }
-
-        if (utils.isString(path)) {
-          cookie.push('path=' + path);
-        }
-
-        if (utils.isString(domain)) {
-          cookie.push('domain=' + domain);
-        }
-
-        if (secure === true) {
-          cookie.push('secure');
-        }
-
-        document.cookie = cookie.join('; ');
-      },
-
-      read: function read(name) {
-        var match = document.cookie.match(new RegExp('(^|;\\s*)(' + name + ')=([^;]*)'));
-        return (match ? decodeURIComponent(match[3]) : null);
-      },
-
-      remove: function remove(name) {
-        this.write(name, '', Date.now() - 86400000);
-      }
-    };
-  })() :
-
-  // Non standard browser env (web workers, react-native) lack needed support.
-  (function nonStandardBrowserEnv() {
-    return {
-      write: function write() {},
-      read: function read() { return null; },
-      remove: function remove() {}
-    };
-  })()
-);
 
 
 /***/ }),
@@ -8245,71 +7241,6 @@ module.exports = {
     }({}, false) : undefined),
   check: check
 };
-
-
-/***/ }),
-
-/***/ "8df4":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var Cancel = __webpack_require__("7a77");
-
-/**
- * A `CancelToken` is an object that can be used to request cancellation of an operation.
- *
- * @class
- * @param {Function} executor The executor function.
- */
-function CancelToken(executor) {
-  if (typeof executor !== 'function') {
-    throw new TypeError('executor must be a function.');
-  }
-
-  var resolvePromise;
-  this.promise = new Promise(function promiseExecutor(resolve) {
-    resolvePromise = resolve;
-  });
-
-  var token = this;
-  executor(function cancel(message) {
-    if (token.reason) {
-      // Cancellation has already been requested
-      return;
-    }
-
-    token.reason = new Cancel(message);
-    resolvePromise(token.reason);
-  });
-}
-
-/**
- * Throws a `Cancel` if cancellation has been requested.
- */
-CancelToken.prototype.throwIfRequested = function throwIfRequested() {
-  if (this.reason) {
-    throw this.reason;
-  }
-};
-
-/**
- * Returns an object that contains a new `CancelToken` and a function that, when called,
- * cancels the `CancelToken`.
- */
-CancelToken.source = function source() {
-  var cancel;
-  var token = new CancelToken(function executor(c) {
-    cancel = c;
-  });
-  return {
-    token: token,
-    cancel: cancel
-  };
-};
-
-module.exports = CancelToken;
 
 
 /***/ }),
@@ -9145,300 +8076,6 @@ module.exports = !__webpack_require__("79e5")(function () {
 
 /***/ }),
 
-/***/ "9e6a":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var utils = __webpack_require__("d233");
-
-var has = Object.prototype.hasOwnProperty;
-
-var defaults = {
-    allowDots: false,
-    allowPrototypes: false,
-    arrayLimit: 20,
-    charset: 'utf-8',
-    charsetSentinel: false,
-    comma: false,
-    decoder: utils.decode,
-    delimiter: '&',
-    depth: 5,
-    ignoreQueryPrefix: false,
-    interpretNumericEntities: false,
-    parameterLimit: 1000,
-    parseArrays: true,
-    plainObjects: false,
-    strictNullHandling: false
-};
-
-var interpretNumericEntities = function (str) {
-    return str.replace(/&#(\d+);/g, function ($0, numberStr) {
-        return String.fromCharCode(parseInt(numberStr, 10));
-    });
-};
-
-// This is what browsers will submit when the ✓ character occurs in an
-// application/x-www-form-urlencoded body and the encoding of the page containing
-// the form is iso-8859-1, or when the submitted form has an accept-charset
-// attribute of iso-8859-1. Presumably also with other charsets that do not contain
-// the ✓ character, such as us-ascii.
-var isoSentinel = 'utf8=%26%2310003%3B'; // encodeURIComponent('&#10003;')
-
-// These are the percent-encoded utf-8 octets representing a checkmark, indicating that the request actually is utf-8 encoded.
-var charsetSentinel = 'utf8=%E2%9C%93'; // encodeURIComponent('✓')
-
-var parseValues = function parseQueryStringValues(str, options) {
-    var obj = {};
-    var cleanStr = options.ignoreQueryPrefix ? str.replace(/^\?/, '') : str;
-    var limit = options.parameterLimit === Infinity ? undefined : options.parameterLimit;
-    var parts = cleanStr.split(options.delimiter, limit);
-    var skipIndex = -1; // Keep track of where the utf8 sentinel was found
-    var i;
-
-    var charset = options.charset;
-    if (options.charsetSentinel) {
-        for (i = 0; i < parts.length; ++i) {
-            if (parts[i].indexOf('utf8=') === 0) {
-                if (parts[i] === charsetSentinel) {
-                    charset = 'utf-8';
-                } else if (parts[i] === isoSentinel) {
-                    charset = 'iso-8859-1';
-                }
-                skipIndex = i;
-                i = parts.length; // The eslint settings do not allow break;
-            }
-        }
-    }
-
-    for (i = 0; i < parts.length; ++i) {
-        if (i === skipIndex) {
-            continue;
-        }
-        var part = parts[i];
-
-        var bracketEqualsPos = part.indexOf(']=');
-        var pos = bracketEqualsPos === -1 ? part.indexOf('=') : bracketEqualsPos + 1;
-
-        var key, val;
-        if (pos === -1) {
-            key = options.decoder(part, defaults.decoder, charset);
-            val = options.strictNullHandling ? null : '';
-        } else {
-            key = options.decoder(part.slice(0, pos), defaults.decoder, charset);
-            val = options.decoder(part.slice(pos + 1), defaults.decoder, charset);
-        }
-
-        if (val && options.interpretNumericEntities && charset === 'iso-8859-1') {
-            val = interpretNumericEntities(val);
-        }
-
-        if (val && options.comma && val.indexOf(',') > -1) {
-            val = val.split(',');
-        }
-
-        if (has.call(obj, key)) {
-            obj[key] = utils.combine(obj[key], val);
-        } else {
-            obj[key] = val;
-        }
-    }
-
-    return obj;
-};
-
-var parseObject = function (chain, val, options) {
-    var leaf = val;
-
-    for (var i = chain.length - 1; i >= 0; --i) {
-        var obj;
-        var root = chain[i];
-
-        if (root === '[]' && options.parseArrays) {
-            obj = [].concat(leaf);
-        } else {
-            obj = options.plainObjects ? Object.create(null) : {};
-            var cleanRoot = root.charAt(0) === '[' && root.charAt(root.length - 1) === ']' ? root.slice(1, -1) : root;
-            var index = parseInt(cleanRoot, 10);
-            if (!options.parseArrays && cleanRoot === '') {
-                obj = { 0: leaf };
-            } else if (
-                !isNaN(index)
-                && root !== cleanRoot
-                && String(index) === cleanRoot
-                && index >= 0
-                && (options.parseArrays && index <= options.arrayLimit)
-            ) {
-                obj = [];
-                obj[index] = leaf;
-            } else {
-                obj[cleanRoot] = leaf;
-            }
-        }
-
-        leaf = obj;
-    }
-
-    return leaf;
-};
-
-var parseKeys = function parseQueryStringKeys(givenKey, val, options) {
-    if (!givenKey) {
-        return;
-    }
-
-    // Transform dot notation to bracket notation
-    var key = options.allowDots ? givenKey.replace(/\.([^.[]+)/g, '[$1]') : givenKey;
-
-    // The regex chunks
-
-    var brackets = /(\[[^[\]]*])/;
-    var child = /(\[[^[\]]*])/g;
-
-    // Get the parent
-
-    var segment = brackets.exec(key);
-    var parent = segment ? key.slice(0, segment.index) : key;
-
-    // Stash the parent if it exists
-
-    var keys = [];
-    if (parent) {
-        // If we aren't using plain objects, optionally prefix keys that would overwrite object prototype properties
-        if (!options.plainObjects && has.call(Object.prototype, parent)) {
-            if (!options.allowPrototypes) {
-                return;
-            }
-        }
-
-        keys.push(parent);
-    }
-
-    // Loop through children appending to the array until we hit depth
-
-    var i = 0;
-    while ((segment = child.exec(key)) !== null && i < options.depth) {
-        i += 1;
-        if (!options.plainObjects && has.call(Object.prototype, segment[1].slice(1, -1))) {
-            if (!options.allowPrototypes) {
-                return;
-            }
-        }
-        keys.push(segment[1]);
-    }
-
-    // If there's a remainder, just add whatever is left
-
-    if (segment) {
-        keys.push('[' + key.slice(segment.index) + ']');
-    }
-
-    return parseObject(keys, val, options);
-};
-
-var normalizeParseOptions = function normalizeParseOptions(opts) {
-    if (!opts) {
-        return defaults;
-    }
-
-    if (opts.decoder !== null && opts.decoder !== undefined && typeof opts.decoder !== 'function') {
-        throw new TypeError('Decoder has to be a function.');
-    }
-
-    if (typeof opts.charset !== 'undefined' && opts.charset !== 'utf-8' && opts.charset !== 'iso-8859-1') {
-        throw new Error('The charset option must be either utf-8, iso-8859-1, or undefined');
-    }
-    var charset = typeof opts.charset === 'undefined' ? defaults.charset : opts.charset;
-
-    return {
-        allowDots: typeof opts.allowDots === 'undefined' ? defaults.allowDots : !!opts.allowDots,
-        allowPrototypes: typeof opts.allowPrototypes === 'boolean' ? opts.allowPrototypes : defaults.allowPrototypes,
-        arrayLimit: typeof opts.arrayLimit === 'number' ? opts.arrayLimit : defaults.arrayLimit,
-        charset: charset,
-        charsetSentinel: typeof opts.charsetSentinel === 'boolean' ? opts.charsetSentinel : defaults.charsetSentinel,
-        comma: typeof opts.comma === 'boolean' ? opts.comma : defaults.comma,
-        decoder: typeof opts.decoder === 'function' ? opts.decoder : defaults.decoder,
-        delimiter: typeof opts.delimiter === 'string' || utils.isRegExp(opts.delimiter) ? opts.delimiter : defaults.delimiter,
-        depth: typeof opts.depth === 'number' ? opts.depth : defaults.depth,
-        ignoreQueryPrefix: opts.ignoreQueryPrefix === true,
-        interpretNumericEntities: typeof opts.interpretNumericEntities === 'boolean' ? opts.interpretNumericEntities : defaults.interpretNumericEntities,
-        parameterLimit: typeof opts.parameterLimit === 'number' ? opts.parameterLimit : defaults.parameterLimit,
-        parseArrays: opts.parseArrays !== false,
-        plainObjects: typeof opts.plainObjects === 'boolean' ? opts.plainObjects : defaults.plainObjects,
-        strictNullHandling: typeof opts.strictNullHandling === 'boolean' ? opts.strictNullHandling : defaults.strictNullHandling
-    };
-};
-
-module.exports = function (str, opts) {
-    var options = normalizeParseOptions(opts);
-
-    if (str === '' || str === null || typeof str === 'undefined') {
-        return options.plainObjects ? Object.create(null) : {};
-    }
-
-    var tempObj = typeof str === 'string' ? parseValues(str, options) : str;
-    var obj = options.plainObjects ? Object.create(null) : {};
-
-    // Iterate over the keys and setup the new object
-
-    var keys = Object.keys(tempObj);
-    for (var i = 0; i < keys.length; ++i) {
-        var key = keys[i];
-        var newObj = parseKeys(key, tempObj[key], options);
-        obj = utils.merge(obj, newObj, options);
-    }
-
-    return utils.compact(obj);
-};
-
-
-/***/ }),
-
-/***/ "9fa6":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-// btoa polyfill for IE<10 courtesy https://github.com/davidchambers/Base64.js
-
-var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
-
-function E() {
-  this.message = 'String contains an invalid character';
-}
-E.prototype = new Error;
-E.prototype.code = 5;
-E.prototype.name = 'InvalidCharacterError';
-
-function btoa(input) {
-  var str = String(input);
-  var output = '';
-  for (
-    // initialize result and counter
-    var block, charCode, idx = 0, map = chars;
-    // if the next str index does not exist:
-    //   change the mapping table to "="
-    //   check if d has no fractional digits
-    str.charAt(idx | 0) || (map = '=', idx % 1);
-    // "8 - idx % 1 * 8" generates the sequence 2, 4, 6, 8
-    output += map.charAt(63 & block >> 8 - idx % 1 * 8)
-  ) {
-    charCode = str.charCodeAt(idx += 3 / 4);
-    if (charCode > 0xFF) {
-      throw new E();
-    }
-    block = block << 8 | charCode;
-  }
-  return output;
-}
-
-module.exports = btoa;
-
-
-/***/ }),
-
 /***/ "aa77":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -9541,227 +8178,6 @@ for (var collections = getKeys(DOMIterables), i = 0; i < collections.length; i++
 
 /***/ }),
 
-/***/ "b313":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var replace = String.prototype.replace;
-var percentTwenties = /%20/g;
-
-module.exports = {
-    'default': 'RFC3986',
-    formatters: {
-        RFC1738: function (value) {
-            return replace.call(value, percentTwenties, '+');
-        },
-        RFC3986: function (value) {
-            return value;
-        }
-    },
-    RFC1738: 'RFC1738',
-    RFC3986: 'RFC3986'
-};
-
-
-/***/ }),
-
-/***/ "b50d":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var utils = __webpack_require__("c532");
-var settle = __webpack_require__("467f");
-var buildURL = __webpack_require__("30b5");
-var parseHeaders = __webpack_require__("c345");
-var isURLSameOrigin = __webpack_require__("3934");
-var createError = __webpack_require__("2d83");
-var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__("9fa6");
-
-module.exports = function xhrAdapter(config) {
-  return new Promise(function dispatchXhrRequest(resolve, reject) {
-    var requestData = config.data;
-    var requestHeaders = config.headers;
-
-    if (utils.isFormData(requestData)) {
-      delete requestHeaders['Content-Type']; // Let the browser set it
-    }
-
-    var request = new XMLHttpRequest();
-    var loadEvent = 'onreadystatechange';
-    var xDomain = false;
-
-    // For IE 8/9 CORS support
-    // Only supports POST and GET calls and doesn't returns the response headers.
-    // DON'T do this for testing b/c XMLHttpRequest is mocked, not XDomainRequest.
-    if ( true &&
-        typeof window !== 'undefined' &&
-        window.XDomainRequest && !('withCredentials' in request) &&
-        !isURLSameOrigin(config.url)) {
-      request = new window.XDomainRequest();
-      loadEvent = 'onload';
-      xDomain = true;
-      request.onprogress = function handleProgress() {};
-      request.ontimeout = function handleTimeout() {};
-    }
-
-    // HTTP basic authentication
-    if (config.auth) {
-      var username = config.auth.username || '';
-      var password = config.auth.password || '';
-      requestHeaders.Authorization = 'Basic ' + btoa(username + ':' + password);
-    }
-
-    request.open(config.method.toUpperCase(), buildURL(config.url, config.params, config.paramsSerializer), true);
-
-    // Set the request timeout in MS
-    request.timeout = config.timeout;
-
-    // Listen for ready state
-    request[loadEvent] = function handleLoad() {
-      if (!request || (request.readyState !== 4 && !xDomain)) {
-        return;
-      }
-
-      // The request errored out and we didn't get a response, this will be
-      // handled by onerror instead
-      // With one exception: request that using file: protocol, most browsers
-      // will return status as 0 even though it's a successful request
-      if (request.status === 0 && !(request.responseURL && request.responseURL.indexOf('file:') === 0)) {
-        return;
-      }
-
-      // Prepare the response
-      var responseHeaders = 'getAllResponseHeaders' in request ? parseHeaders(request.getAllResponseHeaders()) : null;
-      var responseData = !config.responseType || config.responseType === 'text' ? request.responseText : request.response;
-      var response = {
-        data: responseData,
-        // IE sends 1223 instead of 204 (https://github.com/axios/axios/issues/201)
-        status: request.status === 1223 ? 204 : request.status,
-        statusText: request.status === 1223 ? 'No Content' : request.statusText,
-        headers: responseHeaders,
-        config: config,
-        request: request
-      };
-
-      settle(resolve, reject, response);
-
-      // Clean up request
-      request = null;
-    };
-
-    // Handle low level network errors
-    request.onerror = function handleError() {
-      // Real errors are hidden from us by the browser
-      // onerror should only fire if it's a network error
-      reject(createError('Network Error', config, null, request));
-
-      // Clean up request
-      request = null;
-    };
-
-    // Handle timeout
-    request.ontimeout = function handleTimeout() {
-      reject(createError('timeout of ' + config.timeout + 'ms exceeded', config, 'ECONNABORTED',
-        request));
-
-      // Clean up request
-      request = null;
-    };
-
-    // Add xsrf header
-    // This is only done if running in a standard browser environment.
-    // Specifically not if we're in a web worker, or react-native.
-    if (utils.isStandardBrowserEnv()) {
-      var cookies = __webpack_require__("7aac");
-
-      // Add xsrf header
-      var xsrfValue = (config.withCredentials || isURLSameOrigin(config.url)) && config.xsrfCookieName ?
-          cookies.read(config.xsrfCookieName) :
-          undefined;
-
-      if (xsrfValue) {
-        requestHeaders[config.xsrfHeaderName] = xsrfValue;
-      }
-    }
-
-    // Add headers to the request
-    if ('setRequestHeader' in request) {
-      utils.forEach(requestHeaders, function setRequestHeader(val, key) {
-        if (typeof requestData === 'undefined' && key.toLowerCase() === 'content-type') {
-          // Remove Content-Type if data is undefined
-          delete requestHeaders[key];
-        } else {
-          // Otherwise add header to the request
-          request.setRequestHeader(key, val);
-        }
-      });
-    }
-
-    // Add withCredentials to request if needed
-    if (config.withCredentials) {
-      request.withCredentials = true;
-    }
-
-    // Add responseType to request if needed
-    if (config.responseType) {
-      try {
-        request.responseType = config.responseType;
-      } catch (e) {
-        // Expected DOMException thrown by browsers not compatible XMLHttpRequest Level 2.
-        // But, this can be suppressed for 'json' type as it can be parsed by default 'transformResponse' function.
-        if (config.responseType !== 'json') {
-          throw e;
-        }
-      }
-    }
-
-    // Handle progress if needed
-    if (typeof config.onDownloadProgress === 'function') {
-      request.addEventListener('progress', config.onDownloadProgress);
-    }
-
-    // Not all browsers support upload events
-    if (typeof config.onUploadProgress === 'function' && request.upload) {
-      request.upload.addEventListener('progress', config.onUploadProgress);
-    }
-
-    if (config.cancelToken) {
-      // Handle cancellation
-      config.cancelToken.promise.then(function onCanceled(cancel) {
-        if (!request) {
-          return;
-        }
-
-        request.abort();
-        reject(cancel);
-        // Clean up request
-        request = null;
-      });
-    }
-
-    if (requestData === undefined) {
-      requestData = null;
-    }
-
-    // Send the request
-    request.send(requestData);
-  });
-};
-
-
-/***/ }),
-
-/***/ "bc3a":
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__("cee4");
-
-/***/ }),
-
 /***/ "be13":
 /***/ (function(module, exports) {
 
@@ -9769,67 +8185,6 @@ module.exports = __webpack_require__("cee4");
 module.exports = function (it) {
   if (it == undefined) throw TypeError("Can't call method on  " + it);
   return it;
-};
-
-
-/***/ }),
-
-/***/ "c345":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var utils = __webpack_require__("c532");
-
-// Headers whose duplicates are ignored by node
-// c.f. https://nodejs.org/api/http.html#http_message_headers
-var ignoreDuplicateOf = [
-  'age', 'authorization', 'content-length', 'content-type', 'etag',
-  'expires', 'from', 'host', 'if-modified-since', 'if-unmodified-since',
-  'last-modified', 'location', 'max-forwards', 'proxy-authorization',
-  'referer', 'retry-after', 'user-agent'
-];
-
-/**
- * Parse headers into an object
- *
- * ```
- * Date: Wed, 27 Aug 2014 08:58:49 GMT
- * Content-Type: application/json
- * Connection: keep-alive
- * Transfer-Encoding: chunked
- * ```
- *
- * @param {String} headers Headers needing to be parsed
- * @returns {Object} Headers parsed into an object
- */
-module.exports = function parseHeaders(headers) {
-  var parsed = {};
-  var key;
-  var val;
-  var i;
-
-  if (!headers) { return parsed; }
-
-  utils.forEach(headers.split('\n'), function parser(line) {
-    i = line.indexOf(':');
-    key = utils.trim(line.substr(0, i)).toLowerCase();
-    val = utils.trim(line.substr(i + 1));
-
-    if (key) {
-      if (parsed[key] && ignoreDuplicateOf.indexOf(key) >= 0) {
-        return;
-      }
-      if (key === 'set-cookie') {
-        parsed[key] = (parsed[key] ? parsed[key] : []).concat([val]);
-      } else {
-        parsed[key] = parsed[key] ? parsed[key] + ', ' + val : val;
-      }
-    }
-  });
-
-  return parsed;
 };
 
 
@@ -9860,345 +8215,6 @@ module.exports = function (IS_INCLUDES) {
       if (O[index] === el) return IS_INCLUDES || index || 0;
     } return !IS_INCLUDES && -1;
   };
-};
-
-
-/***/ }),
-
-/***/ "c401":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var utils = __webpack_require__("c532");
-
-/**
- * Transform the data for a request or a response
- *
- * @param {Object|String} data The data to be transformed
- * @param {Array} headers The headers for the request or response
- * @param {Array|Function} fns A single function or Array of functions
- * @returns {*} The resulting transformed data
- */
-module.exports = function transformData(data, headers, fns) {
-  /*eslint no-param-reassign:0*/
-  utils.forEach(fns, function transform(fn) {
-    data = fn(data, headers);
-  });
-
-  return data;
-};
-
-
-/***/ }),
-
-/***/ "c532":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var bind = __webpack_require__("1d2b");
-var isBuffer = __webpack_require__("044b");
-
-/*global toString:true*/
-
-// utils is a library of generic helper functions non-specific to axios
-
-var toString = Object.prototype.toString;
-
-/**
- * Determine if a value is an Array
- *
- * @param {Object} val The value to test
- * @returns {boolean} True if value is an Array, otherwise false
- */
-function isArray(val) {
-  return toString.call(val) === '[object Array]';
-}
-
-/**
- * Determine if a value is an ArrayBuffer
- *
- * @param {Object} val The value to test
- * @returns {boolean} True if value is an ArrayBuffer, otherwise false
- */
-function isArrayBuffer(val) {
-  return toString.call(val) === '[object ArrayBuffer]';
-}
-
-/**
- * Determine if a value is a FormData
- *
- * @param {Object} val The value to test
- * @returns {boolean} True if value is an FormData, otherwise false
- */
-function isFormData(val) {
-  return (typeof FormData !== 'undefined') && (val instanceof FormData);
-}
-
-/**
- * Determine if a value is a view on an ArrayBuffer
- *
- * @param {Object} val The value to test
- * @returns {boolean} True if value is a view on an ArrayBuffer, otherwise false
- */
-function isArrayBufferView(val) {
-  var result;
-  if ((typeof ArrayBuffer !== 'undefined') && (ArrayBuffer.isView)) {
-    result = ArrayBuffer.isView(val);
-  } else {
-    result = (val) && (val.buffer) && (val.buffer instanceof ArrayBuffer);
-  }
-  return result;
-}
-
-/**
- * Determine if a value is a String
- *
- * @param {Object} val The value to test
- * @returns {boolean} True if value is a String, otherwise false
- */
-function isString(val) {
-  return typeof val === 'string';
-}
-
-/**
- * Determine if a value is a Number
- *
- * @param {Object} val The value to test
- * @returns {boolean} True if value is a Number, otherwise false
- */
-function isNumber(val) {
-  return typeof val === 'number';
-}
-
-/**
- * Determine if a value is undefined
- *
- * @param {Object} val The value to test
- * @returns {boolean} True if the value is undefined, otherwise false
- */
-function isUndefined(val) {
-  return typeof val === 'undefined';
-}
-
-/**
- * Determine if a value is an Object
- *
- * @param {Object} val The value to test
- * @returns {boolean} True if value is an Object, otherwise false
- */
-function isObject(val) {
-  return val !== null && typeof val === 'object';
-}
-
-/**
- * Determine if a value is a Date
- *
- * @param {Object} val The value to test
- * @returns {boolean} True if value is a Date, otherwise false
- */
-function isDate(val) {
-  return toString.call(val) === '[object Date]';
-}
-
-/**
- * Determine if a value is a File
- *
- * @param {Object} val The value to test
- * @returns {boolean} True if value is a File, otherwise false
- */
-function isFile(val) {
-  return toString.call(val) === '[object File]';
-}
-
-/**
- * Determine if a value is a Blob
- *
- * @param {Object} val The value to test
- * @returns {boolean} True if value is a Blob, otherwise false
- */
-function isBlob(val) {
-  return toString.call(val) === '[object Blob]';
-}
-
-/**
- * Determine if a value is a Function
- *
- * @param {Object} val The value to test
- * @returns {boolean} True if value is a Function, otherwise false
- */
-function isFunction(val) {
-  return toString.call(val) === '[object Function]';
-}
-
-/**
- * Determine if a value is a Stream
- *
- * @param {Object} val The value to test
- * @returns {boolean} True if value is a Stream, otherwise false
- */
-function isStream(val) {
-  return isObject(val) && isFunction(val.pipe);
-}
-
-/**
- * Determine if a value is a URLSearchParams object
- *
- * @param {Object} val The value to test
- * @returns {boolean} True if value is a URLSearchParams object, otherwise false
- */
-function isURLSearchParams(val) {
-  return typeof URLSearchParams !== 'undefined' && val instanceof URLSearchParams;
-}
-
-/**
- * Trim excess whitespace off the beginning and end of a string
- *
- * @param {String} str The String to trim
- * @returns {String} The String freed of excess whitespace
- */
-function trim(str) {
-  return str.replace(/^\s*/, '').replace(/\s*$/, '');
-}
-
-/**
- * Determine if we're running in a standard browser environment
- *
- * This allows axios to run in a web worker, and react-native.
- * Both environments support XMLHttpRequest, but not fully standard globals.
- *
- * web workers:
- *  typeof window -> undefined
- *  typeof document -> undefined
- *
- * react-native:
- *  navigator.product -> 'ReactNative'
- */
-function isStandardBrowserEnv() {
-  if (typeof navigator !== 'undefined' && navigator.product === 'ReactNative') {
-    return false;
-  }
-  return (
-    typeof window !== 'undefined' &&
-    typeof document !== 'undefined'
-  );
-}
-
-/**
- * Iterate over an Array or an Object invoking a function for each item.
- *
- * If `obj` is an Array callback will be called passing
- * the value, index, and complete array for each item.
- *
- * If 'obj' is an Object callback will be called passing
- * the value, key, and complete object for each property.
- *
- * @param {Object|Array} obj The object to iterate
- * @param {Function} fn The callback to invoke for each item
- */
-function forEach(obj, fn) {
-  // Don't bother if no value provided
-  if (obj === null || typeof obj === 'undefined') {
-    return;
-  }
-
-  // Force an array if not already something iterable
-  if (typeof obj !== 'object') {
-    /*eslint no-param-reassign:0*/
-    obj = [obj];
-  }
-
-  if (isArray(obj)) {
-    // Iterate over array values
-    for (var i = 0, l = obj.length; i < l; i++) {
-      fn.call(null, obj[i], i, obj);
-    }
-  } else {
-    // Iterate over object keys
-    for (var key in obj) {
-      if (Object.prototype.hasOwnProperty.call(obj, key)) {
-        fn.call(null, obj[key], key, obj);
-      }
-    }
-  }
-}
-
-/**
- * Accepts varargs expecting each argument to be an object, then
- * immutably merges the properties of each object and returns result.
- *
- * When multiple objects contain the same key the later object in
- * the arguments list will take precedence.
- *
- * Example:
- *
- * ```js
- * var result = merge({foo: 123}, {foo: 456});
- * console.log(result.foo); // outputs 456
- * ```
- *
- * @param {Object} obj1 Object to merge
- * @returns {Object} Result of all merge properties
- */
-function merge(/* obj1, obj2, obj3, ... */) {
-  var result = {};
-  function assignValue(val, key) {
-    if (typeof result[key] === 'object' && typeof val === 'object') {
-      result[key] = merge(result[key], val);
-    } else {
-      result[key] = val;
-    }
-  }
-
-  for (var i = 0, l = arguments.length; i < l; i++) {
-    forEach(arguments[i], assignValue);
-  }
-  return result;
-}
-
-/**
- * Extends object a by mutably adding to it the properties of object b.
- *
- * @param {Object} a The object to be extended
- * @param {Object} b The object to copy properties from
- * @param {Object} thisArg The object to bind function to
- * @return {Object} The resulting value of object a
- */
-function extend(a, b, thisArg) {
-  forEach(b, function assignValue(val, key) {
-    if (thisArg && typeof val === 'function') {
-      a[key] = bind(val, thisArg);
-    } else {
-      a[key] = val;
-    }
-  });
-  return a;
-}
-
-module.exports = {
-  isArray: isArray,
-  isArrayBuffer: isArrayBuffer,
-  isBuffer: isBuffer,
-  isFormData: isFormData,
-  isArrayBufferView: isArrayBufferView,
-  isString: isString,
-  isNumber: isNumber,
-  isObject: isObject,
-  isUndefined: isUndefined,
-  isDate: isDate,
-  isFile: isFile,
-  isBlob: isBlob,
-  isFunction: isFunction,
-  isStream: isStream,
-  isURLSearchParams: isURLSearchParams,
-  isStandardBrowserEnv: isStandardBrowserEnv,
-  forEach: forEach,
-  merge: merge,
-  extend: extend,
-  trim: trim
 };
 
 
@@ -10287,26 +8303,6 @@ if (!$Number(' 0o1') || !$Number('0b1') || $Number('+0x1')) {
 module.exports = !__webpack_require__("9e1e") && !__webpack_require__("79e5")(function () {
   return Object.defineProperty(__webpack_require__("230e")('div'), 'a', { get: function () { return 7; } }).a != 7;
 });
-
-
-/***/ }),
-
-/***/ "c8af":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var utils = __webpack_require__("c532");
-
-module.exports = function normalizeHeaderName(headers, normalizedName) {
-  utils.forEach(headers, function processHeader(value, name) {
-    if (name !== normalizedName && name.toUpperCase() === normalizedName.toUpperCase()) {
-      headers[normalizedName] = value;
-      delete headers[name];
-    }
-  });
-};
 
 
 /***/ }),
@@ -10428,304 +8424,6 @@ module.exports = function (object, names) {
 
 /***/ }),
 
-/***/ "cee4":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var utils = __webpack_require__("c532");
-var bind = __webpack_require__("1d2b");
-var Axios = __webpack_require__("0a06");
-var defaults = __webpack_require__("2444");
-
-/**
- * Create an instance of Axios
- *
- * @param {Object} defaultConfig The default config for the instance
- * @return {Axios} A new instance of Axios
- */
-function createInstance(defaultConfig) {
-  var context = new Axios(defaultConfig);
-  var instance = bind(Axios.prototype.request, context);
-
-  // Copy axios.prototype to instance
-  utils.extend(instance, Axios.prototype, context);
-
-  // Copy context to instance
-  utils.extend(instance, context);
-
-  return instance;
-}
-
-// Create the default instance to be exported
-var axios = createInstance(defaults);
-
-// Expose Axios class to allow class inheritance
-axios.Axios = Axios;
-
-// Factory for creating new instances
-axios.create = function create(instanceConfig) {
-  return createInstance(utils.merge(defaults, instanceConfig));
-};
-
-// Expose Cancel & CancelToken
-axios.Cancel = __webpack_require__("7a77");
-axios.CancelToken = __webpack_require__("8df4");
-axios.isCancel = __webpack_require__("2e67");
-
-// Expose all/spread
-axios.all = function all(promises) {
-  return Promise.all(promises);
-};
-axios.spread = __webpack_require__("0df6");
-
-module.exports = axios;
-
-// Allow use of default import syntax in TypeScript
-module.exports.default = axios;
-
-
-/***/ }),
-
-/***/ "d233":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var has = Object.prototype.hasOwnProperty;
-var isArray = Array.isArray;
-
-var hexTable = (function () {
-    var array = [];
-    for (var i = 0; i < 256; ++i) {
-        array.push('%' + ((i < 16 ? '0' : '') + i.toString(16)).toUpperCase());
-    }
-
-    return array;
-}());
-
-var compactQueue = function compactQueue(queue) {
-    while (queue.length > 1) {
-        var item = queue.pop();
-        var obj = item.obj[item.prop];
-
-        if (isArray(obj)) {
-            var compacted = [];
-
-            for (var j = 0; j < obj.length; ++j) {
-                if (typeof obj[j] !== 'undefined') {
-                    compacted.push(obj[j]);
-                }
-            }
-
-            item.obj[item.prop] = compacted;
-        }
-    }
-};
-
-var arrayToObject = function arrayToObject(source, options) {
-    var obj = options && options.plainObjects ? Object.create(null) : {};
-    for (var i = 0; i < source.length; ++i) {
-        if (typeof source[i] !== 'undefined') {
-            obj[i] = source[i];
-        }
-    }
-
-    return obj;
-};
-
-var merge = function merge(target, source, options) {
-    if (!source) {
-        return target;
-    }
-
-    if (typeof source !== 'object') {
-        if (isArray(target)) {
-            target.push(source);
-        } else if (target && typeof target === 'object') {
-            if ((options && (options.plainObjects || options.allowPrototypes)) || !has.call(Object.prototype, source)) {
-                target[source] = true;
-            }
-        } else {
-            return [target, source];
-        }
-
-        return target;
-    }
-
-    if (!target || typeof target !== 'object') {
-        return [target].concat(source);
-    }
-
-    var mergeTarget = target;
-    if (isArray(target) && !isArray(source)) {
-        mergeTarget = arrayToObject(target, options);
-    }
-
-    if (isArray(target) && isArray(source)) {
-        source.forEach(function (item, i) {
-            if (has.call(target, i)) {
-                var targetItem = target[i];
-                if (targetItem && typeof targetItem === 'object' && item && typeof item === 'object') {
-                    target[i] = merge(targetItem, item, options);
-                } else {
-                    target.push(item);
-                }
-            } else {
-                target[i] = item;
-            }
-        });
-        return target;
-    }
-
-    return Object.keys(source).reduce(function (acc, key) {
-        var value = source[key];
-
-        if (has.call(acc, key)) {
-            acc[key] = merge(acc[key], value, options);
-        } else {
-            acc[key] = value;
-        }
-        return acc;
-    }, mergeTarget);
-};
-
-var assign = function assignSingleSource(target, source) {
-    return Object.keys(source).reduce(function (acc, key) {
-        acc[key] = source[key];
-        return acc;
-    }, target);
-};
-
-var decode = function (str, decoder, charset) {
-    var strWithoutPlus = str.replace(/\+/g, ' ');
-    if (charset === 'iso-8859-1') {
-        // unescape never throws, no try...catch needed:
-        return strWithoutPlus.replace(/%[0-9a-f]{2}/gi, unescape);
-    }
-    // utf-8
-    try {
-        return decodeURIComponent(strWithoutPlus);
-    } catch (e) {
-        return strWithoutPlus;
-    }
-};
-
-var encode = function encode(str, defaultEncoder, charset) {
-    // This code was originally written by Brian White (mscdex) for the io.js core querystring library.
-    // It has been adapted here for stricter adherence to RFC 3986
-    if (str.length === 0) {
-        return str;
-    }
-
-    var string = typeof str === 'string' ? str : String(str);
-
-    if (charset === 'iso-8859-1') {
-        return escape(string).replace(/%u[0-9a-f]{4}/gi, function ($0) {
-            return '%26%23' + parseInt($0.slice(2), 16) + '%3B';
-        });
-    }
-
-    var out = '';
-    for (var i = 0; i < string.length; ++i) {
-        var c = string.charCodeAt(i);
-
-        if (
-            c === 0x2D // -
-            || c === 0x2E // .
-            || c === 0x5F // _
-            || c === 0x7E // ~
-            || (c >= 0x30 && c <= 0x39) // 0-9
-            || (c >= 0x41 && c <= 0x5A) // a-z
-            || (c >= 0x61 && c <= 0x7A) // A-Z
-        ) {
-            out += string.charAt(i);
-            continue;
-        }
-
-        if (c < 0x80) {
-            out = out + hexTable[c];
-            continue;
-        }
-
-        if (c < 0x800) {
-            out = out + (hexTable[0xC0 | (c >> 6)] + hexTable[0x80 | (c & 0x3F)]);
-            continue;
-        }
-
-        if (c < 0xD800 || c >= 0xE000) {
-            out = out + (hexTable[0xE0 | (c >> 12)] + hexTable[0x80 | ((c >> 6) & 0x3F)] + hexTable[0x80 | (c & 0x3F)]);
-            continue;
-        }
-
-        i += 1;
-        c = 0x10000 + (((c & 0x3FF) << 10) | (string.charCodeAt(i) & 0x3FF));
-        out += hexTable[0xF0 | (c >> 18)]
-            + hexTable[0x80 | ((c >> 12) & 0x3F)]
-            + hexTable[0x80 | ((c >> 6) & 0x3F)]
-            + hexTable[0x80 | (c & 0x3F)];
-    }
-
-    return out;
-};
-
-var compact = function compact(value) {
-    var queue = [{ obj: { o: value }, prop: 'o' }];
-    var refs = [];
-
-    for (var i = 0; i < queue.length; ++i) {
-        var item = queue[i];
-        var obj = item.obj[item.prop];
-
-        var keys = Object.keys(obj);
-        for (var j = 0; j < keys.length; ++j) {
-            var key = keys[j];
-            var val = obj[key];
-            if (typeof val === 'object' && val !== null && refs.indexOf(val) === -1) {
-                queue.push({ obj: obj, prop: key });
-                refs.push(val);
-            }
-        }
-    }
-
-    compactQueue(queue);
-
-    return value;
-};
-
-var isRegExp = function isRegExp(obj) {
-    return Object.prototype.toString.call(obj) === '[object RegExp]';
-};
-
-var isBuffer = function isBuffer(obj) {
-    if (!obj || typeof obj !== 'object') {
-        return false;
-    }
-
-    return !!(obj.constructor && obj.constructor.isBuffer && obj.constructor.isBuffer(obj));
-};
-
-var combine = function combine(a, b) {
-    return [].concat(a, b);
-};
-
-module.exports = {
-    arrayToObject: arrayToObject,
-    assign: assign,
-    combine: combine,
-    compact: compact,
-    decode: decode,
-    encode: encode,
-    isBuffer: isBuffer,
-    isRegExp: isRegExp,
-    merge: merge
-};
-
-
-/***/ }),
-
 /***/ "d3f4":
 /***/ (function(module, exports) {
 
@@ -10757,28 +8455,6 @@ module.exports = function (it) {
 
 /***/ }),
 
-/***/ "d925":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-/**
- * Determines whether the specified URL is absolute
- *
- * @param {string} url The URL to test
- * @returns {boolean} True if the specified URL is absolute, otherwise false
- */
-module.exports = function isAbsoluteURL(url) {
-  // A URL is considered absolute if it begins with "<scheme>://" or "//" (protocol-relative URL).
-  // RFC 3986 defines scheme name as a sequence of characters beginning with a letter and followed
-  // by any combination of letters, digits, plus, period, or hyphen.
-  return /^([a-z][a-z\d\+\-\.]*:)?\/\//i.test(url);
-};
-
-
-/***/ }),
-
 /***/ "e11e":
 /***/ (function(module, exports) {
 
@@ -10786,28 +8462,6 @@ module.exports = function isAbsoluteURL(url) {
 module.exports = (
   'constructor,hasOwnProperty,isPrototypeOf,propertyIsEnumerable,toLocaleString,toString,valueOf'
 ).split(',');
-
-
-/***/ }),
-
-/***/ "e683":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-/**
- * Creates a new URL by combining the specified URLs
- *
- * @param {string} baseURL The base URL
- * @param {string} relativeURL The relative URL
- * @returns {string} The combined URL
- */
-module.exports = function combineURLs(baseURL, relativeURL) {
-  return relativeURL
-    ? baseURL.replace(/\/+$/, '') + '/' + relativeURL.replace(/^\/+/, '')
-    : baseURL;
-};
 
 
 /***/ }),
@@ -11003,66 +8657,6 @@ process.umask = function() { return 0; };
 
 /***/ }),
 
-/***/ "f6b4":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var utils = __webpack_require__("c532");
-
-function InterceptorManager() {
-  this.handlers = [];
-}
-
-/**
- * Add a new interceptor to the stack
- *
- * @param {Function} fulfilled The function to handle `then` for a `Promise`
- * @param {Function} rejected The function to handle `reject` for a `Promise`
- *
- * @return {Number} An ID used to remove interceptor later
- */
-InterceptorManager.prototype.use = function use(fulfilled, rejected) {
-  this.handlers.push({
-    fulfilled: fulfilled,
-    rejected: rejected
-  });
-  return this.handlers.length - 1;
-};
-
-/**
- * Remove an interceptor from the stack
- *
- * @param {Number} id The ID that was returned by `use`
- */
-InterceptorManager.prototype.eject = function eject(id) {
-  if (this.handlers[id]) {
-    this.handlers[id] = null;
-  }
-};
-
-/**
- * Iterate over all the registered interceptors
- *
- * This method is particularly useful for skipping over any
- * interceptors that may have become `null` calling `eject`.
- *
- * @param {Function} fn The function to call for each interceptor
- */
-InterceptorManager.prototype.forEach = function forEach(fn) {
-  utils.forEach(this.handlers, function forEachHandler(h) {
-    if (h !== null) {
-      fn(h);
-    }
-  });
-};
-
-module.exports = InterceptorManager;
-
-
-/***/ }),
-
 /***/ "f6fd":
 /***/ (function(module, exports) {
 
@@ -11146,12 +8740,12 @@ if (typeof window !== 'undefined') {
 // Indicate to webpack that this file can be concatenated
 /* harmony default export */ var setPublicPath = (null);
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"515f0534-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/VueBootstrapTable.vue?vue&type=template&id=073c7644&
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('div',{staticClass:"row"},[_c('div',{staticClass:"col-6"},[(_vm.showFilter)?_c('div',{staticStyle:{"padding-top":"10px","padding-bottom":"10px"}},[_c('div',{staticClass:"input-group"},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.filterKey),expression:"filterKey"}],staticClass:"form-control",attrs:{"type":"text","placeholder":"Filter"},domProps:{"value":(_vm.filterKey)},on:{"input":function($event){if($event.target.composing){ return; }_vm.filterKey=$event.target.value}}})])]):_vm._e()]),_c('div',{staticClass:"col-6"},[(_vm.showColumnPicker)?_c('div',{staticStyle:{"padding-top":"10px","padding-bottom":"10px","float":"right"}},[_c('div',{staticClass:"btn-group"},[_vm._m(0),_c('div',{staticClass:"dropdown-menu dropdown-menu-right"},_vm._l((_vm.displayCols),function(column){return _c('button',{staticClass:"dropdown-item",on:{"click":function($event){$event.stopPropagation();$event.preventDefault();return _vm.toggleColumn(column)}}},[(column.visible)?_c('i',{staticClass:"fa fa-check"}):_vm._e(),_vm._v(" "+_vm._s(column.title)+"\n                        ")])}),0)])]):_vm._e()])]),_c('div',{staticClass:"row"},[_c('div',{staticClass:"col-sm-12"},[_c('div',{class:{'vue-table-loading': this.loading , 'vue-table-loading-hidden': !this.loading}},[_c('div',{staticClass:"spinner"})]),_c('table',{staticClass:"table table-bordered table-hover table-condensed table-striped vue-table"},[_c('thead',[_c('tr',[(_vm.selectable)?_c('th',{staticStyle:{"width":"40px"}},[_c('div',{staticClass:"custom-control custom-checkbox"},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.allSelected),expression:"allSelected"}],staticClass:"custom-control-input",attrs:{"type":"checkbox","id":'checkAll'+_vm.instanceId,"aria-label":"Select All"},domProps:{"checked":Array.isArray(_vm.allSelected)?_vm._i(_vm.allSelected,null)>-1:(_vm.allSelected)},on:{"change":function($event){var $$a=_vm.allSelected,$$el=$event.target,$$c=$$el.checked?(true):(false);if(Array.isArray($$a)){var $$v=null,$$i=_vm._i($$a,$$v);if($$el.checked){$$i<0&&(_vm.allSelected=$$a.concat([$$v]))}else{$$i>-1&&(_vm.allSelected=$$a.slice(0,$$i).concat($$a.slice($$i+1)))}}else{_vm.allSelected=$$c}}}}),_c('label',{staticClass:"custom-control-label",attrs:{"for":'checkAll'+_vm.instanceId}})])]):_vm._e(),_vm._l((_vm.displayColsVisible),function(column){return _c('th',{staticClass:"icon",class:_vm.getClasses(column),attrs:{"track-by":"column"},on:{"click":function($event){return _vm.sortBy($event, column.name, column.sortable)}}},[_vm._v("\n                        "+_vm._s(column.title)+"\n                    ")])})],2)]),_c('tbody',_vm._l((_vm.filteredValuesSorted),function(entry,index){return _c('tr',{attrs:{"track-by":"entry"},on:{"click":function($event){return _vm.rowClickHandler($event, entry)}}},[(_vm.selectable)?_c('td',[_c('div',{staticClass:"custom-control custom-checkbox"},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(entry.selected),expression:"entry.selected"}],staticClass:"custom-control-input",attrs:{"type":"checkbox","id":'check'+_vm.instanceId+index},domProps:{"checked":Array.isArray(entry.selected)?_vm._i(entry.selected,null)>-1:(entry.selected)},on:{"change":function($event){var $$a=entry.selected,$$el=$event.target,$$c=$$el.checked?(true):(false);if(Array.isArray($$a)){var $$v=null,$$i=_vm._i($$a,$$v);if($$el.checked){$$i<0&&(_vm.$set(entry, "selected", $$a.concat([$$v])))}else{$$i>-1&&(_vm.$set(entry, "selected", $$a.slice(0,$$i).concat($$a.slice($$i+1))))}}else{_vm.$set(entry, "selected", $$c)}}}}),_c('label',{staticClass:"custom-control-label",attrs:{"for":'check'+_vm.instanceId+index}})])]):_vm._e(),_vm._l((_vm.displayColsVisible),function(column){return _c('td',{directives:[{name:"show",rawName:"v-show",value:(column.visible),expression:"column.visible"}],class:column.cellstyle,attrs:{"track-by":"column"}},[_vm._t(column.name,[(column.renderfunction!==false)?_c('span',{domProps:{"innerHTML":_vm._s(column.renderfunction( column.name, entry ))}}):(!column.editable)?_c('span',[_vm._v(_vm._s(entry[column.name]))]):_c('value-field-section',{attrs:{"entry":entry,"columnname":column.name}})],{"column":column,"value":entry})],2)})],2)}),0)])]),(_vm.paginated)?_c('div',{staticClass:"col-sm-12"},[_c('div',{staticClass:"btn-toolbar",attrs:{"role":"toolbar","aria-label":"pagination bar"}},[_c('div',{staticClass:"btn-group mr-2",attrs:{"role":"group","aria-label":"first page"}},[_c('button',{staticClass:"btn btn-outline-primary",attrs:{"type":"button"},on:{"click":function($event){_vm.page=1}}},[_vm._v("«")])]),_c('div',{staticClass:"btn-group mr-2",attrs:{"role":"group","aria-label":"pages"}},_vm._l((_vm.validPageNumbers),function(index){return _c('button',{staticClass:"btn btn-outline-primary",class:{ active: _vm.page===index },attrs:{"type":"button"},on:{"click":function($event){_vm.page=index}}},[_vm._v("\n                        "+_vm._s(index)+"\n                    ")])}),0),(_vm.showPaginationEtc)?_c('div',{staticClass:"btn-group mr-2"},[_vm._v("...")]):_vm._e(),_c('div',{staticClass:"btn-group",attrs:{"role":"group","aria-label":"last page"}},[_c('button',{staticClass:"btn btn-outline-primary",attrs:{"type":"button"},on:{"click":function($event){_vm.page=_vm.maxPage}}},[_vm._v("»")])])])]):_vm._e()])])}
-var staticRenderFns = [function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('button',{staticClass:"btn btn-outline-primary dropdown-toggle",attrs:{"type":"button","data-toggle":"dropdown","aria-haspopup":"true"}},[_vm._v("\n                        Columns "),_c('span',{staticClass:"caret"})])}]
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"c4dc2c22-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/VueBootstrapTable.vue?vue&type=template&id=7af3c5cf&
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('div',{staticClass:"row"},[_c('div',{staticClass:"col-6"},[(_vm.showFilter)?_c('div',{staticClass:"mb-3 mt-3"},[_c('search-input',{model:{value:(_vm.filterKey),callback:function ($$v) {_vm.filterKey=$$v},expression:"filterKey"}})],1):_vm._e()]),_c('div',{staticClass:"col-6"},[(_vm.showColumnPicker)?_c('div',{staticStyle:{"padding-top":"10px","padding-bottom":"10px","float":"right"}},[_c('column-picker',{attrs:{"options":_vm.displayCols},on:{"selected":_vm.toggleColumn}})],1):_vm._e()])]),_c('div',{staticClass:"row"},[_c('div',{staticClass:"col-sm-12"},[_c('table',{staticClass:"table table-bordered table-hover table-condensed table-striped vue-table"},[_c('thead',[_c('table-header',{attrs:{"columns":_vm.displayColsVisible,"sortable":_vm.sortable,"sort-key":_vm.sortKey,"sort-orders":_vm.sortOrders},on:{"selected":_vm.sortBy}},[(_vm.selectable)?_c('check-box',{attrs:{"checked":_vm.allSelected},on:{"selected":_vm.changeAllSelected}}):_vm._e()],1)],1),_c('tbody',_vm._l((_vm.filteredValuesSorted),function(entry,index){return _c('table-row',{key:index,attrs:{"entry":entry,"columns":_vm.displayColsVisible,"track-by":"entry"}},[(_vm.selectable)?_c('check-box',{attrs:{"checked":entry.selected},on:{"selected":function (value) { return _vm.toggleCheckbox(index, value); }}}):_vm._e()],1)}),1)])]),(_vm.paginated)?_c('div',{staticClass:"col-sm-12"},[_c('pagination',{attrs:{"page-numbers":_vm.validPageNumbers,"max-page":_vm.maxPage,"page":_vm.page,"show-pagination-etc":_vm.showPaginationEtc},on:{"selected":_vm.updateCurrentPage}})],1):_vm._e()])])}
+var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/VueBootstrapTable.vue?vue&type=template&id=073c7644&
+// CONCATENATED MODULE: ./src/components/VueBootstrapTable.vue?vue&type=template&id=7af3c5cf&
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es6.function.name.js
 var es6_function_name = __webpack_require__("7f7f");
@@ -11168,14 +8762,6 @@ var es6_number_constructor = __webpack_require__("c5f6");
 // EXTERNAL MODULE: ./node_modules/es6-promise/dist/es6-promise.js
 var es6_promise = __webpack_require__("1368");
 
-// EXTERNAL MODULE: ./node_modules/axios/index.js
-var axios = __webpack_require__("bc3a");
-var axios_default = /*#__PURE__*/__webpack_require__.n(axios);
-
-// EXTERNAL MODULE: ./node_modules/qs/lib/index.js
-var lib = __webpack_require__("4328");
-var lib_default = /*#__PURE__*/__webpack_require__.n(lib);
-
 // EXTERNAL MODULE: ./node_modules/lodash.orderby/index.js
 var lodash_orderby = __webpack_require__("48f9");
 var lodash_orderby_default = /*#__PURE__*/__webpack_require__.n(lodash_orderby);
@@ -11188,14 +8774,14 @@ var lodash_includes_default = /*#__PURE__*/__webpack_require__.n(lodash_includes
 var lodash_findindex = __webpack_require__("07a7");
 var lodash_findindex_default = /*#__PURE__*/__webpack_require__.n(lodash_findindex);
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"515f0534-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/ValueFieldSection.vue?vue&type=template&id=4aa5b17a&scoped=true&
-var ValueFieldSectionvue_type_template_id_4aa5b17a_scoped_true_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return (!_vm.enabled)?_c('span',{staticClass:"editableField",on:{"dblclick":_vm.toggleInput}},[_vm._v(_vm._s(this.entry[this.columnname]))]):(_vm.enabled)?_c('div',{staticClass:"input-group"},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.datavalue),expression:"datavalue"}],staticClass:"form-control",attrs:{"type":"text"},domProps:{"value":(_vm.datavalue)},on:{"keyup":[function($event){if(!$event.type.indexOf('key')&&_vm._k($event.keyCode,"enter",13,$event.key,"Enter")){ return null; }return _vm.saveThis($event)},function($event){if(!$event.type.indexOf('key')&&_vm._k($event.keyCode,"esc",27,$event.key,["Esc","Escape"])){ return null; }return _vm.cancelThis($event)}],"input":function($event){if($event.target.composing){ return; }_vm.datavalue=$event.target.value}}}),_c('span',{staticClass:"input-group-btn"},[_c('button',{staticClass:"btn btn-danger",attrs:{"type":"button"},on:{"click":_vm.cancelThis}},[_c('span',{staticClass:"fa fa-times",attrs:{"aria-hidden":"true"}})]),_c('button',{staticClass:"btn btn-primary",attrs:{"type":"button"},on:{"click":_vm.saveThis}},[_c('span',{staticClass:"fa fa-check",attrs:{"aria-hidden":"true"}})])])]):_vm._e()}
-var ValueFieldSectionvue_type_template_id_4aa5b17a_scoped_true_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"c4dc2c22-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/SearchInput.vue?vue&type=template&id=7b1a0172&
+var SearchInputvue_type_template_id_7b1a0172_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"input-group"},[_c('input',{staticClass:"form-control",attrs:{"type":"text","placeholder":"Filter","aria-label":"","aria-describedby":"FilterItems"},domProps:{"value":_vm.value},on:{"input":_vm.uppdate}}),_vm._m(0)])}
+var SearchInputvue_type_template_id_7b1a0172_staticRenderFns = [function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"input-group-append"},[_c('span',{staticClass:"input-group-text fa fa-search",attrs:{"id":"FilterItems"}})])}]
 
 
-// CONCATENATED MODULE: ./src/components/ValueFieldSection.vue?vue&type=template&id=4aa5b17a&scoped=true&
+// CONCATENATED MODULE: ./src/components/SearchInput.vue?vue&type=template&id=7b1a0172&
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/ValueFieldSection.vue?vue&type=script&lang=js&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/SearchInput.vue?vue&type=script&lang=js&
 //
 //
 //
@@ -11206,35 +8792,21 @@ var ValueFieldSectionvue_type_template_id_4aa5b17a_scoped_true_staticRenderFns =
 //
 //
 //
-//
-/* harmony default export */ var ValueFieldSectionvue_type_script_lang_js_ = ({
-  name: "ValueFieldSection",
-  props: ['entry', 'columnname'],
-  data: function data() {
-    return {
-      enabled: false,
-      datavalue: ""
-    };
+/* harmony default export */ var SearchInputvue_type_script_lang_js_ = ({
+  name: "SearchInput",
+  props: {
+    value: {
+      type: String
+    }
   },
   methods: {
-    saveThis: function saveThis() {
-      var originalValue = this.entry[this.columnname];
-      this.entry[this.columnname] = this.datavalue;
-      this.$parent.$emit('cellDataModifiedEvent', originalValue, this.datavalue, this.columnname, this.entry);
-      this.enabled = !this.enabled;
-    },
-    cancelThis: function cancelThis() {
-      this.datavalue = this.entry[this.columnname];
-      this.enabled = !this.enabled;
-    },
-    toggleInput: function toggleInput() {
-      this.datavalue = this.entry[this.columnname];
-      this.enabled = !this.enabled;
+    uppdate: function uppdate(e) {
+      this.$emit('input', e.target.value);
     }
   }
 });
-// CONCATENATED MODULE: ./src/components/ValueFieldSection.vue?vue&type=script&lang=js&
- /* harmony default export */ var components_ValueFieldSectionvue_type_script_lang_js_ = (ValueFieldSectionvue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./src/components/SearchInput.vue?vue&type=script&lang=js&
+ /* harmony default export */ var components_SearchInputvue_type_script_lang_js_ = (SearchInputvue_type_script_lang_js_); 
 // CONCATENATED MODULE: ./node_modules/vue-loader/lib/runtime/componentNormalizer.js
 /* globals __VUE_SSR_CONTEXT__ */
 
@@ -11330,7 +8902,7 @@ function normalizeComponent (
   }
 }
 
-// CONCATENATED MODULE: ./src/components/ValueFieldSection.vue
+// CONCATENATED MODULE: ./src/components/SearchInput.vue
 
 
 
@@ -11339,17 +8911,464 @@ function normalizeComponent (
 /* normalize component */
 
 var component = normalizeComponent(
-  components_ValueFieldSectionvue_type_script_lang_js_,
-  ValueFieldSectionvue_type_template_id_4aa5b17a_scoped_true_render,
-  ValueFieldSectionvue_type_template_id_4aa5b17a_scoped_true_staticRenderFns,
+  components_SearchInputvue_type_script_lang_js_,
+  SearchInputvue_type_template_id_7b1a0172_render,
+  SearchInputvue_type_template_id_7b1a0172_staticRenderFns,
   false,
   null,
-  "4aa5b17a",
+  null,
   null
   
 )
 
-/* harmony default export */ var ValueFieldSection = (component.exports);
+/* harmony default export */ var SearchInput = (component.exports);
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"c4dc2c22-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/ColumnPicker.vue?vue&type=template&id=137ca13e&
+var ColumnPickervue_type_template_id_137ca13e_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"btn-group"},[_vm._m(0),_c('div',{staticClass:"dropdown-menu dropdown-menu-right",attrs:{"aria-labelledby":"dropdownMenuButton"}},_vm._l((_vm.options),function(column,i){return _c('button',{key:i,staticClass:"dropdown-item",on:{"click":function($event){$event.preventDefault();return (function () { return _vm.selectColumn(column); })($event)}}},[(column.visible)?_c('i',{staticClass:"fa fa-check"}):_vm._e(),_vm._v(" "+_vm._s(column.title)+"\n        ")])}),0)])}
+var ColumnPickervue_type_template_id_137ca13e_staticRenderFns = [function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('button',{staticClass:"btn btn-outline-primary dropdown-toggle",attrs:{"type":"button","id":"dropdownMenuButton","data-toggle":"dropdown","aria-haspopup":"true","aria-expanded":"false"}},[_vm._v("\n        Columns "),_c('span',{staticClass:"caret"})])}]
+
+
+// CONCATENATED MODULE: ./src/components/ColumnPicker.vue?vue&type=template&id=137ca13e&
+
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/ColumnPicker.vue?vue&type=script&lang=js&
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ var ColumnPickervue_type_script_lang_js_ = ({
+  name: "ColumnPicker",
+  props: {
+    options: {
+      required: true,
+      type: Array
+    }
+  },
+  methods: {
+    selectColumn: function selectColumn(column) {
+      this.$emit('selected', column);
+    }
+  }
+});
+// CONCATENATED MODULE: ./src/components/ColumnPicker.vue?vue&type=script&lang=js&
+ /* harmony default export */ var components_ColumnPickervue_type_script_lang_js_ = (ColumnPickervue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./src/components/ColumnPicker.vue
+
+
+
+
+
+/* normalize component */
+
+var ColumnPicker_component = normalizeComponent(
+  components_ColumnPickervue_type_script_lang_js_,
+  ColumnPickervue_type_template_id_137ca13e_render,
+  ColumnPickervue_type_template_id_137ca13e_staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* harmony default export */ var ColumnPicker = (ColumnPicker_component.exports);
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"c4dc2c22-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/TableHeader.vue?vue&type=template&id=12d86304&
+var TableHeadervue_type_template_id_12d86304_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('tr',[_vm._t("default"),_vm._l((_vm.columns),function(column,i){return _c('th',{key:i,staticClass:"icon",class:_vm.getClasses(column),attrs:{"track-by":"column"},on:{"click":function ($event) { return _vm.select($event, column); }}},[_vm._v("\n        "+_vm._s(column.title)+"\n    ")])})],2)}
+var TableHeadervue_type_template_id_12d86304_staticRenderFns = []
+
+
+// CONCATENATED MODULE: ./src/components/TableHeader.vue?vue&type=template&id=12d86304&
+
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/TableHeader.vue?vue&type=script&lang=js&
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ var TableHeadervue_type_script_lang_js_ = ({
+  name: "TableHeader",
+  props: {
+    columns: {
+      required: true,
+      type: Array
+    },
+    sortable: {
+      type: Boolean,
+      required: false,
+      default: true
+    },
+    sortKey: {
+      type: Array
+    },
+    sortOrders: {
+      type: Object
+    }
+  },
+  methods: {
+    select: function select($e, column) {
+      this.$emit('selected', {
+        event: $e,
+        column: column
+      });
+    },
+    getClasses: function getClasses(column) {
+      var classes = [column.columnstyle];
+      var key = column.name;
+
+      if (this.sortable && column.sortable) {
+        classes.push("arrow");
+
+        if (lodash_findindex_default()(this.sortKey, function (o) {
+          return o === key;
+        }) !== -1) {
+          classes.push("active");
+        }
+
+        if (this.sortOrders[key] === "ASC") {
+          classes.push("asc");
+        } else if (this.sortOrders[key] === "DESC") {
+          classes.push("dsc");
+        }
+      }
+
+      return classes;
+    }
+  }
+});
+// CONCATENATED MODULE: ./src/components/TableHeader.vue?vue&type=script&lang=js&
+ /* harmony default export */ var components_TableHeadervue_type_script_lang_js_ = (TableHeadervue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./src/components/TableHeader.vue
+
+
+
+
+
+/* normalize component */
+
+var TableHeader_component = normalizeComponent(
+  components_TableHeadervue_type_script_lang_js_,
+  TableHeadervue_type_template_id_12d86304_render,
+  TableHeadervue_type_template_id_12d86304_staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* harmony default export */ var TableHeader = (TableHeader_component.exports);
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"c4dc2c22-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/CheckBox.vue?vue&type=template&id=3ea9a02c&
+var CheckBoxvue_type_template_id_3ea9a02c_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('th',[_c('div',{staticClass:"custom-control custom-checkbox"},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.checkedLocal),expression:"checkedLocal"}],staticClass:"custom-control-input",attrs:{"type":"checkbox","id":_vm.id,"aria-label":"Select All"},domProps:{"checked":Array.isArray(_vm.checkedLocal)?_vm._i(_vm.checkedLocal,null)>-1:(_vm.checkedLocal)},on:{"change":function($event){var $$a=_vm.checkedLocal,$$el=$event.target,$$c=$$el.checked?(true):(false);if(Array.isArray($$a)){var $$v=null,$$i=_vm._i($$a,$$v);if($$el.checked){$$i<0&&(_vm.checkedLocal=$$a.concat([$$v]))}else{$$i>-1&&(_vm.checkedLocal=$$a.slice(0,$$i).concat($$a.slice($$i+1)))}}else{_vm.checkedLocal=$$c}}}}),_c('label',{staticClass:"custom-control-label",attrs:{"for":_vm.id}})])])}
+var CheckBoxvue_type_template_id_3ea9a02c_staticRenderFns = []
+
+
+// CONCATENATED MODULE: ./src/components/CheckBox.vue?vue&type=template&id=3ea9a02c&
+
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/CheckBox.vue?vue&type=script&lang=js&
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ var CheckBoxvue_type_script_lang_js_ = ({
+  name: "CheckBox",
+  props: {
+    checked: {
+      type: Boolean,
+      required: false,
+      default: false
+    }
+  },
+  watch: {
+    checked: function checked(newVal) {
+      return this.checkedLocal = newVal;
+    },
+    checkedLocal: function checkedLocal(newValue) {
+      this.$emit('selected', newValue);
+    }
+  },
+  data: function data() {
+    return {
+      id: Math.floor(Math.random() * 100000000 + 1),
+      checkedLocal: this.checked
+    };
+  }
+});
+// CONCATENATED MODULE: ./src/components/CheckBox.vue?vue&type=script&lang=js&
+ /* harmony default export */ var components_CheckBoxvue_type_script_lang_js_ = (CheckBoxvue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./src/components/CheckBox.vue
+
+
+
+
+
+/* normalize component */
+
+var CheckBox_component = normalizeComponent(
+  components_CheckBoxvue_type_script_lang_js_,
+  CheckBoxvue_type_template_id_3ea9a02c_render,
+  CheckBoxvue_type_template_id_3ea9a02c_staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* harmony default export */ var CheckBox = (CheckBox_component.exports);
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"c4dc2c22-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/TableRow.vue?vue&type=template&id=705f031b&
+var TableRowvue_type_template_id_705f031b_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('tr',[_vm._t("default"),_vm._l((_vm.columns),function(column,index){return _c('td',{directives:[{name:"show",rawName:"v-show",value:(column.visible),expression:"column.visible"}],key:index,class:column.cellstyle,attrs:{"track-by":"column"}},[_vm._t(column.name,[(column.renderfunction!==false)?_c('span',{domProps:{"innerHTML":_vm._s(column.renderfunction( column.name, _vm.entry ))}}):(!column.editable)?_c('span',[_vm._v(_vm._s(_vm.entry[column.name]))]):_c('value-field-section',{attrs:{"entry":_vm.entry,"columnname":column.name}})],{"column":column,"value":_vm.entry})],2)})],2)}
+var TableRowvue_type_template_id_705f031b_staticRenderFns = []
+
+
+// CONCATENATED MODULE: ./src/components/TableRow.vue?vue&type=template&id=705f031b&
+
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"c4dc2c22-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/ValueFieldSection.vue?vue&type=template&id=20a71ddc&scoped=true&
+var ValueFieldSectionvue_type_template_id_20a71ddc_scoped_true_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return (!_vm.enabled)?_c('span',{staticClass:"editableField",on:{"dblclick":_vm.toggleInput}},[_vm._v(_vm._s(this.entry[this.columnname]))]):(_vm.enabled)?_c('div',{staticClass:"input-group"},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.datavalue),expression:"datavalue"}],staticClass:"form-control",attrs:{"type":"text"},domProps:{"value":(_vm.datavalue)},on:{"keyup":[function($event){if(!$event.type.indexOf('key')&&_vm._k($event.keyCode,"enter",13,$event.key,"Enter")){ return null; }return _vm.saveThis($event)},function($event){if(!$event.type.indexOf('key')&&_vm._k($event.keyCode,"esc",27,$event.key,["Esc","Escape"])){ return null; }return _vm.cancelThis($event)}],"input":function($event){if($event.target.composing){ return; }_vm.datavalue=$event.target.value}}}),_c('span',{staticClass:"input-group-btn"},[_c('button',{staticClass:"btn btn-danger",attrs:{"type":"button"},on:{"click":_vm.cancelThis}},[_c('span',{staticClass:"fa fa-times",attrs:{"aria-hidden":"true"}})]),_c('button',{staticClass:"btn btn-primary",attrs:{"type":"button"},on:{"click":_vm.saveThis}},[_c('span',{staticClass:"fa fa-check",attrs:{"aria-hidden":"true"}})])])]):_vm._e()}
+var ValueFieldSectionvue_type_template_id_20a71ddc_scoped_true_staticRenderFns = []
+
+
+// CONCATENATED MODULE: ./src/components/ValueFieldSection.vue?vue&type=template&id=20a71ddc&scoped=true&
+
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/ValueFieldSection.vue?vue&type=script&lang=js&
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ var ValueFieldSectionvue_type_script_lang_js_ = ({
+  name: "ValueFieldSection",
+  props: ['entry', 'columnname'],
+  data: function data() {
+    return {
+      enabled: false,
+      datavalue: ""
+    };
+  },
+  methods: {
+    saveThis: function saveThis() {
+      var originalValue = this.entry[this.columnname];
+      this.entry[this.columnname] = this.datavalue;
+      this.$parent.$emit('cellDataModifiedEvent', originalValue, this.datavalue, this.columnname, this.entry);
+      this.enabled = !this.enabled;
+    },
+    cancelThis: function cancelThis() {
+      this.datavalue = this.entry[this.columnname];
+      this.enabled = !this.enabled;
+    },
+    toggleInput: function toggleInput() {
+      this.datavalue = this.entry[this.columnname];
+      this.enabled = !this.enabled;
+    }
+  }
+});
+// CONCATENATED MODULE: ./src/components/ValueFieldSection.vue?vue&type=script&lang=js&
+ /* harmony default export */ var components_ValueFieldSectionvue_type_script_lang_js_ = (ValueFieldSectionvue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./src/components/ValueFieldSection.vue
+
+
+
+
+
+/* normalize component */
+
+var ValueFieldSection_component = normalizeComponent(
+  components_ValueFieldSectionvue_type_script_lang_js_,
+  ValueFieldSectionvue_type_template_id_20a71ddc_scoped_true_render,
+  ValueFieldSectionvue_type_template_id_20a71ddc_scoped_true_staticRenderFns,
+  false,
+  null,
+  "20a71ddc",
+  null
+  
+)
+
+/* harmony default export */ var ValueFieldSection = (ValueFieldSection_component.exports);
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/TableRow.vue?vue&type=script&lang=js&
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ var TableRowvue_type_script_lang_js_ = ({
+  name: "TableRow",
+  components: {
+    'value-field-section': ValueFieldSection
+  },
+  props: {
+    columns: {
+      type: Array,
+      required: true
+    },
+    entry: {
+      type: Object,
+      required: false
+    }
+  }
+});
+// CONCATENATED MODULE: ./src/components/TableRow.vue?vue&type=script&lang=js&
+ /* harmony default export */ var components_TableRowvue_type_script_lang_js_ = (TableRowvue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./src/components/TableRow.vue
+
+
+
+
+
+/* normalize component */
+
+var TableRow_component = normalizeComponent(
+  components_TableRowvue_type_script_lang_js_,
+  TableRowvue_type_template_id_705f031b_render,
+  TableRowvue_type_template_id_705f031b_staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* harmony default export */ var TableRow = (TableRow_component.exports);
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"c4dc2c22-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/Pagination.vue?vue&type=template&id=4f49df6a&
+var Paginationvue_type_template_id_4f49df6a_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"btn-toolbar",attrs:{"role":"toolbar","aria-label":"pagination bar"}},[_c('div',{staticClass:"btn-group mr-2",attrs:{"role":"group","aria-label":"first page"}},[_c('button',{staticClass:"btn btn-outline-primary",attrs:{"type":"button"},on:{"click":function($event){return _vm.click(1)}}},[_vm._v("«")])]),_c('div',{staticClass:"btn-group mr-2",attrs:{"role":"group","aria-label":"pages"}},_vm._l((_vm.pageNumbers),function(index){return _c('button',{key:index,staticClass:"btn btn-outline-primary",class:{ active: _vm.currentPage===index },attrs:{"type":"button"},on:{"click":function($event){return _vm.click(index)}}},[_vm._v("\n            "+_vm._s(index)+"\n        ")])}),0),(_vm.showPaginationEtc)?_c('div',{staticClass:"btn-group mr-2"},[_vm._v("...")]):_vm._e(),_c('div',{staticClass:"btn-group",attrs:{"role":"group","aria-label":"last page"}},[_c('button',{staticClass:"btn btn-outline-primary",attrs:{"type":"button"},on:{"click":function($event){return _vm.click(_vm.maxPage)}}},[_vm._v("»")])])])}
+var Paginationvue_type_template_id_4f49df6a_staticRenderFns = []
+
+
+// CONCATENATED MODULE: ./src/components/Pagination.vue?vue&type=template&id=4f49df6a&
+
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/Pagination.vue?vue&type=script&lang=js&
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ var Paginationvue_type_script_lang_js_ = ({
+  name: "Pagination",
+  props: {
+    pageNumbers: {
+      type: Array,
+      required: true
+    },
+    maxPage: {
+      type: Number,
+      required: true
+    },
+    page: {
+      type: Number,
+      required: true
+    },
+    showPaginationEtc: {
+      type: Boolean,
+      required: true
+    }
+  },
+  data: function data() {
+    return {
+      currentPage: this.page
+    };
+  },
+  watch: {
+    page: function page(newValue) {
+      return this.currentPage = newValue;
+    }
+  },
+  methods: {
+    click: function click(newCurrentPage) {
+      this.$emit('selected', newCurrentPage);
+    }
+  }
+});
+// CONCATENATED MODULE: ./src/components/Pagination.vue?vue&type=script&lang=js&
+ /* harmony default export */ var components_Paginationvue_type_script_lang_js_ = (Paginationvue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./src/components/Pagination.vue
+
+
+
+
+
+/* normalize component */
+
+var Pagination_component = normalizeComponent(
+  components_Paginationvue_type_script_lang_js_,
+  Paginationvue_type_template_id_4f49df6a_render,
+  Paginationvue_type_template_id_4f49df6a_staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* harmony default export */ var Pagination = (Pagination_component.exports);
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/VueBootstrapTable.vue?vue&type=script&lang=js&
 
 
@@ -11484,96 +9503,15 @@ var component = normalizeComponent(
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* used for fixing IE problems*/
 
-Object(es6_promise["polyfill"])();
+Object(es6_promise["polyfill"])(); //import axios from 'axios'
+//import qs from 'qs'
+
+
+
+
 
 
 
@@ -11583,7 +9521,12 @@ Object(es6_promise["polyfill"])();
 /* harmony default export */ var VueBootstrapTablevue_type_script_lang_js_ = ({
   name: "VueBootstrapTable",
   components: {
-    'value-field-section': ValueFieldSection
+    Pagination: Pagination,
+    TableRow: TableRow,
+    CheckBox: CheckBox,
+    TableHeader: TableHeader,
+    ColumnPicker: ColumnPicker,
+    SearchInput: SearchInput
   },
   props: {
     /**
@@ -11697,19 +9640,20 @@ Object(es6_promise["polyfill"])();
     /**
      * If loading of table is to be done through ajax, then this object must be set
      */
-    ajax: {
+
+    /*ajax: {
       type: Object,
       required: false,
-      default: function _default() {
+      default: function () {
         return {
           enabled: false,
           url: "",
           method: "GET",
           delegate: false,
           axiosConfig: {}
-        };
+        }
       }
-    },
+    },*/
 
     /**
      * Function to handle row clicks
@@ -11722,21 +9666,20 @@ Object(es6_promise["polyfill"])();
   },
   data: function data() {
     return {
-      instanceId: Math.floor(Math.random() * 100000000 + 1),
       filteredSize: 0,
       filterKey: "",
       sortKey: [],
       sortOrders: {},
       sortChanged: 1,
-      // columnMenuOpen: false,
       displayCols: [],
       filteredValues: [],
       rawValues: [],
       page: 1,
       definedPageSize: 10,
-      echo: 0,
-      loading: true,
-      allSelected: false
+      allSelected: false // Used in relation to AJAX
+      //echo: 0,
+      //loading: true,
+
     };
   },
 
@@ -11745,13 +9688,12 @@ Object(es6_promise["polyfill"])();
    */
   mounted: function mounted() {
     this.$nextTick(function () {
-      this.loading = true;
+      //this.loading = true;
       this.setSortOrders();
       this.definedPageSize = this.pageSize;
       var self = this; //
 
       if (this.defaultOrderColumn !== null) {
-        console.log("setting order default");
         self.sortKey[0] = this.defaultOrderColumn;
         if (this.defaultOrderDirection) self.sortOrders[this.defaultOrderColumn] = "ASC";else self.sortOrders[this.defaultOrderColumn] = "DESC";
       } // Build columns
@@ -11762,7 +9704,7 @@ Object(es6_promise["polyfill"])();
         self.displayCols.push(obj);
       }); // Work the data
 
-      if (this.ajax.enabled) {
+      /*if (this.ajax.enabled) {
         if (!this.ajax.delegate) {
           // If ajax but NOT delegate
           // Perform the fetch of data now and set the raw values
@@ -11770,33 +9712,36 @@ Object(es6_promise["polyfill"])();
           this.fetchData(function (data) {
             self.rawValues = data.data;
           });
-        } else {// If ajax and also delegate
+        } else {
+          // If ajax and also delegate
           // Simply call processFilter, which will take care of the fetching
           //this.processFilter();
         }
-      } else {
-        // Not ajax, therefore working with given elements
-        // Pass the Prop values to rawValues data object.
-        self.rawValues = self.values;
-      }
+      } else {*/
+      // Not ajax, therefore working with given elements
+      // Pass the Prop values to rawValues data object.
+
+      self.rawValues = self.values; //}
     });
   },
 
   /**
    * On created register on CellDataModified event
    */
-  created: function created() {
+
+  /*created: function () {
     var self = this;
     this.$on('cellDataModifiedEvent', self.fireCellDataModifiedEvent);
-  },
+  },*/
 
   /**
    * On destroy unregister the event
    */
-  beforeDestroy: function beforeDestroy() {
+
+  /*beforeDestroy: function () {
     var self = this;
     this.$off('cellDataModifiedEvent', self.fireCellDataModifiedEvent);
-  },
+  },*/
   watch: {
     values: function values() {
       this.rawValues = this.values;
@@ -11839,10 +9784,11 @@ Object(es6_promise["polyfill"])();
     paginated: function paginated() {
       this.processFilter();
     },
-    loading: function loading() {
+
+    /*loading: function () {
       /*document.getElementById("loadingdiv").style.width = document.getElementById("maindiv").getBoundingClientRect().width + "px";
-      document.getElementById("loadingdiv").style.height = document.getElementById("maindiv").getBoundingClientRect().height+"px";*/
-    },
+      document.getElementById("loadingdiv").style.height = document.getElementById("maindiv").getBoundingClientRect().height+"px";
+    },*/
     allSelected: function allSelected() {
       var val = this.allSelected;
       this.values.forEach(function (value) {
@@ -11899,6 +9845,20 @@ Object(es6_promise["polyfill"])();
     }
   },
   methods: {
+    updateCurrentPage: function updateCurrentPage(index) {
+      this.page = index;
+    },
+    toggleCheckbox: function toggleCheckbox(index, value) {
+      var row = this.values[index];
+      row.selected = false;
+      this.values[index] = row;
+      var rowf = this.filteredValuesSorted[index];
+      rowf.selected = value;
+      this.filteredValuesSorted[index] = rowf;
+    },
+    changeAllSelected: function changeAllSelected(value) {
+      this.allSelected = value;
+    },
     refresh: function refresh() {
       this.processFilter();
     },
@@ -11910,173 +9870,159 @@ Object(es6_promise["polyfill"])();
     /**
      * Used to fire off events when something happens to a cell
      */
-    fireCellDataModifiedEvent: function fireCellDataModifiedEvent(originalValue, newValue, columnTitle, entry) {
-      this.$parent.$emit('cellDataModifiedEvent', originalValue, newValue, columnTitle, entry);
-    },
-    processFilter: function processFilter() {
-      var self = this;
-      this.loading = true;
 
-      if (this.ajax.enabled && this.ajax.delegate) {
+    /*fireCellDataModifiedEvent: function (originalValue, newValue, columnTitle, entry) {
+      this.$parent.$emit('cellDataModifiedEvent', originalValue, newValue, columnTitle, entry);
+    },*/
+    processFilter: function processFilter() {
+      var self = this; //this.loading = true;
+
+      /*if (this.ajax.enabled && this.ajax.delegate) {
         this.fetchData(function (data) {
           self.filteredSize = data.filtered;
           self.filteredValues = data.data;
           self.loading = false;
         });
-      } else {
-        var result = this.rawValues.filter(function (item) {
-          for (var col in self.displayColsVisible) {
-            if (self.displayColsVisible[col].filterable) {
-              if (self.filterCaseSensitive) {
-                if (lodash_includes_default()(item[self.displayColsVisible[col].name] + "", self.filterKey + "")) {
-                  return true;
-                }
-              } else {
-                if (lodash_includes_default()((item[self.displayColsVisible[col].name] + "").toLowerCase(), (self.filterKey + "").toLowerCase())) {
-                  return true;
-                }
+      } else {*/
+
+      var result = this.rawValues.filter(function (item) {
+        for (var col in self.displayColsVisible) {
+          if (self.displayColsVisible[col].filterable) {
+            if (self.filterCaseSensitive) {
+              if (lodash_includes_default()(item[self.displayColsVisible[col].name] + "", self.filterKey + "")) {
+                return true;
+              }
+            } else {
+              if (lodash_includes_default()((item[self.displayColsVisible[col].name] + "").toLowerCase(), (self.filterKey + "").toLowerCase())) {
+                return true;
               }
             }
           }
-
-          return false;
-        });
-        var tColsDir = [];
-
-        for (var i = 0, len = this.sortKey.length; i < len; i++) {
-          tColsDir.push(this.sortOrders[this.sortKey[i]].toLowerCase());
         }
 
-        if (typeof this.ajax !== 'undefined' && this.ajax.enabled && this.ajax.delegate) {} else {
-          result = lodash_orderby_default()(result, this.sortKey, tColsDir);
-        }
+        return false;
+      });
+      var tColsDir = [];
 
-        this.filteredSize = result.length;
-
-        if (this.paginated) {
-          var startIndex = (this.page - 1) * this.definedPageSize;
-          var tIndex = 0;
-          var tempResult = [];
-
-          while (tIndex < this.definedPageSize) {
-            if (typeof result[startIndex + tIndex] !== "undefined") tempResult.push(result[startIndex + tIndex]);
-            tIndex++;
-          }
-
-          self.filteredValues = tempResult;
-        } else self.filteredValues = result;
-
-        self.loading = false;
+      for (var i = 0, len = this.sortKey.length; i < len; i++) {
+        tColsDir.push(this.sortOrders[this.sortKey[i]].toLowerCase());
       }
-    },
-    fetchData: function fetchData(dataCallBackFunction) {
-      var _this = this;
 
-      var self = this;
-      var ajaxParameters = {
+      if (typeof this.ajax !== 'undefined' && this.ajax.enabled && this.ajax.delegate) {// TODO: What is the point here?
+      } else {
+        result = lodash_orderby_default()(result, this.sortKey, tColsDir);
+      }
+
+      this.filteredSize = result.length;
+
+      if (this.paginated) {
+        var startIndex = (this.page - 1) * this.definedPageSize;
+        var tIndex = 0;
+        var tempResult = [];
+
+        while (tIndex < this.definedPageSize) {
+          if (typeof result[startIndex + tIndex] !== "undefined") tempResult.push(result[startIndex + tIndex]);
+          tIndex++;
+        }
+
+        self.filteredValues = tempResult;
+      } else self.filteredValues = result;
+
+      self.loading = false; //}
+    },
+
+    /*fetchData: function (dataCallBackFunction) {
+      var self = this
+       var ajaxParameters = {
         params: {}
-      };
-      this.echo++;
-
-      if (this.ajax.enabled && this.ajax.delegate) {
+      }
+       this.echo++
+       if (this.ajax.enabled && this.ajax.delegate) {
         var tColsDir = [];
-
-        for (var i = 0, len = this.sortKey.length; i < len; i++) {
-          tColsDir.push(this.sortOrders[this.sortKey[i]].toLowerCase());
+         for (var i = 0, len = this.sortKey.length; i < len; i++) {
+          tColsDir.push(this.sortOrders[this.sortKey[i]].toLowerCase())
         }
-
+         if (this.ajax.method === "GET") {
+          //COPY
+          if (this.ajax !== null && this.ajax.axiosConfig !== null && this.ajax.axiosConfig !== undefined) {
+            ajaxParameters = JSON.parse(
+              JSON.stringify(this.ajax.axiosConfig)
+            )
+          }
+           ajaxParameters.params = {}
+          ajaxParameters.params.sortcol = this.sortKey
+          ajaxParameters.params.sortdir = tColsDir
+          ajaxParameters.params.filter = this.filterKey
+           if (self.paginated) {
+            ajaxParameters.params.page = this.page
+            ajaxParameters.params.pagesize = this.definedPageSize
+          } else {
+            ajaxParameters.params.page = 1
+            ajaxParameters.params.pagesize = null
+          }
+           ajaxParameters.params.echo = this.echo
+        }
+         if (this.ajax.method === "POST") {
+          ajaxParameters.sortcol = this.sortKey
+          ajaxParameters.sortdir = tColsDir
+          ajaxParameters.filter = this.filterKey
+           if (self.paginated) {
+            ajaxParameters.page = this.page
+            ajaxParameters.pagesize = this.definedPageSize
+          } else {
+            ajaxParameters.page = 1
+            ajaxParameters.pagesize = null
+          }
+          ajaxParameters.echo = this.echo
+        }
+      }
+       if (this.ajax.enabled && !this.ajax.delegate) {
         if (this.ajax.method === "GET") {
           //COPY
           if (this.ajax !== null && this.ajax.axiosConfig !== null && this.ajax.axiosConfig !== undefined) {
-            ajaxParameters = JSON.parse(JSON.stringify(this.ajax.axiosConfig));
+            ajaxParameters = JSON.parse(JSON.stringify(this.ajax.axiosConfig))
           }
-
-          ajaxParameters.params = {};
-          ajaxParameters.params.sortcol = this.sortKey;
-          ajaxParameters.params.sortdir = tColsDir;
-          ajaxParameters.params.filter = this.filterKey;
-
-          if (self.paginated) {
-            ajaxParameters.params.page = this.page;
-            ajaxParameters.params.pagesize = this.definedPageSize;
-          } else {
-            ajaxParameters.params.page = 1;
-            ajaxParameters.params.pagesize = null;
-          }
-
-          ajaxParameters.params.echo = this.echo;
+           ajaxParameters.params = {}
         }
-
-        if (this.ajax.method === "POST") {
-          ajaxParameters.sortcol = this.sortKey;
-          ajaxParameters.sortdir = tColsDir;
-          ajaxParameters.filter = this.filterKey;
-
-          if (self.paginated) {
-            ajaxParameters.page = this.page;
-            ajaxParameters.pagesize = this.definedPageSize;
-          } else {
-            ajaxParameters.page = 1;
-            ajaxParameters.pagesize = null;
-          }
-
-          ajaxParameters.echo = this.echo;
-        } //console.log(JSON.stringify(ajaxParameters));
-
-      }
-
-      if (this.ajax.enabled && !this.ajax.delegate) {
-        if (this.ajax.method === "GET") {
-          //COPY
-          if (this.ajax !== null && this.ajax.axiosConfig !== null && this.ajax.axiosConfig !== undefined) {
-            ajaxParameters = JSON.parse(JSON.stringify(this.ajax.axiosConfig));
-          }
-
-          ajaxParameters.params = {};
-        }
-
-        if (this.ajax.method === "POST") {// Do nothing at this point !
+         if (this.ajax.method === "POST") {
+          // Do nothing at this point !
         }
       }
-
-      if (this.ajax.enabled && this.ajax.method === "GET") {
-        axios_default.a.get(self.ajax.url, ajaxParameters).then(function (response) {
-          if (_this.ajax.delegate) {
-            if (response.data.echo !== self.echo) {
-              return;
+       if (this.ajax.enabled && this.ajax.method === "GET") {
+        axios.get(self.ajax.url, ajaxParameters)
+          .then(response => {
+            if (this.ajax.delegate) {
+              if (response.data.echo !== self.echo) {
+                return
+              }
             }
-          }
-
-          dataCallBackFunction(response.data);
-
-          _this.$parent.$emit('ajaxLoadedEvent', response.data);
-        }).catch(function (e) {
-          _this.$parent.$emit('ajaxLoadingError', e);
-        });
+            dataCallBackFunction(response.data)
+            this.$parent.$emit('ajaxLoadedEvent', response.data)
+          })
+          .catch(e => {
+            this.$parent.$emit('ajaxLoadingError', e)
+          });
       }
-
-      if (this.ajax.enabled && this.ajax.method === "POST") {
-        var tempAxiosConf = {};
-
-        if (this.ajax !== null && this.ajax.axiosConfig !== null && this.ajax.axiosConfig !== undefined) {
-          tempAxiosConf = this.ajax.axiosConfig;
+       if (this.ajax.enabled && this.ajax.method === "POST") {
+        var tempAxiosConf = {}
+         if (this.ajax !== null && this.ajax.axiosConfig !== null && this.ajax.axiosConfig !== undefined) {
+          tempAxiosConf = this.ajax.axiosConfig
         }
-
-        axios_default.a.post(self.ajax.url, lib_default.a.stringify(ajaxParameters), tempAxiosConf).then(function (response) {
-          if (_this.ajax.delegate) {
-            if (response.data.echo !== self.echo) {
-              return;
+         axios.post(self.ajax.url, qs.stringify(ajaxParameters), tempAxiosConf)
+          .then(response => {
+            if (this.ajax.delegate) {
+              if (response.data.echo !== self.echo) {
+                return
+              }
             }
-          }
-
-          dataCallBackFunction(response.data);
-
-          _this.$parent.$emit('ajaxLoadedEvent', response.data);
-        }).catch(function (e) {
-          _this.$parent.$emit('ajaxLoadingError', e);
-        });
+             dataCallBackFunction(response.data)
+            this.$parent.$emit('ajaxLoadedEvent', response.data)
+           })
+          .catch(e => {
+            this.$parent.$emit('ajaxLoadingError', e)
+          })
       }
-    },
+    },*/
     buildColumnObject: function buildColumnObject(column) {
       var obj = {};
       obj.title = column.title;
@@ -12098,8 +10044,13 @@ Object(es6_promise["polyfill"])();
       });
       this.sortOrders = sortOrders;
     },
-    sortBy: function sortBy(event, key, enabled) {
-      if (!enabled) return;
+    sortBy: function sortBy(_ref) {
+      var event = _ref.event,
+          _ref$column = _ref.column,
+          name = _ref$column.name,
+          sortable = _ref$column.sortable;
+      var key = name;
+      if (!sortable) return;
 
       if (this.sortable) {
         var self = this;
@@ -12130,44 +10081,16 @@ Object(es6_promise["polyfill"])();
         this.sortChanged = this.sortChanged * -1;
       }
     },
-    getClasses: function getClasses(column) {
-      var classes = [column.columnstyle];
-      var key = column.name;
-
-      if (this.sortable && column.sortable) {
-        classes.push("arrow");
-        /*if (this.sortKey === key) {
-            classes.push("active");
-        }*/
-
-        if (lodash_findindex_default()(this.sortKey, function (o) {
-          return o === key;
-        }) !== -1) {
-          classes.push("active");
-        }
-
-        if (this.sortOrders[key] === "ASC") {
-          classes.push("asc");
-        } else if (this.sortOrders[key] === "DESC") {
-          classes.push("dsc");
-        }
-      }
-
-      return classes;
-    },
     toggleColumn: function toggleColumn(column) {
       column.visible = !column.visible;
-    } // closeDropdown: function () {
-    //     this.columnMenuOpen = false;
-    // },
-
+    }
   },
   events: {}
 });
 // CONCATENATED MODULE: ./src/components/VueBootstrapTable.vue?vue&type=script&lang=js&
  /* harmony default export */ var components_VueBootstrapTablevue_type_script_lang_js_ = (VueBootstrapTablevue_type_script_lang_js_); 
-// EXTERNAL MODULE: ./src/components/VueBootstrapTable.vue?vue&type=style&index=0&lang=css&
-var VueBootstrapTablevue_type_style_index_0_lang_css_ = __webpack_require__("1a46");
+// EXTERNAL MODULE: ./src/components/VueBootstrapTable.vue?vue&type=style&index=0&lang=scss&
+var VueBootstrapTablevue_type_style_index_0_lang_scss_ = __webpack_require__("5532");
 
 // CONCATENATED MODULE: ./src/components/VueBootstrapTable.vue
 

@@ -15,9 +15,9 @@
 
         <div class="row">
             <div class="col-sm-12">
-                <div :class="{'vue-table-loading': this.loading , 'vue-table-loading-hidden': !this.loading}">
+                <!--<div :class="{'vue-table-loading': this.loading , 'vue-table-loading-hidden': !this.loading}">
                     <div class="spinner"></div>
-                </div>
+                </div>-->
                 <table class="table table-bordered table-hover table-condensed table-striped vue-table">
                     <thead>
                         <table-header :columns="displayColsVisible" :sortable="sortable" :sort-key="sortKey" :sort-orders="sortOrders" v-on:selected="sortBy">
@@ -297,7 +297,6 @@
 
     data: function () {
       return {
-        instanceId: Math.floor((Math.random() * 100000000) + 1),
         filteredSize: 0,
         filterKey: "",
         sortKey: [],
@@ -308,9 +307,10 @@
         rawValues: [],
         page: 1,
         definedPageSize: 10,
-        echo: 0,
-        loading: true,
         allSelected: false,
+        // Used in relation to AJAX
+        //echo: 0,
+        //loading: true,
       };
     },
 
@@ -319,7 +319,7 @@
      */
     mounted: function () {
       this.$nextTick(function () {
-        this.loading = true;
+        //this.loading = true;
 
         this.setSortOrders();
 
@@ -433,10 +433,10 @@
         this.processFilter();
       },
 
-      loading: function () {
+      /*loading: function () {
         /*document.getElementById("loadingdiv").style.width = document.getElementById("maindiv").getBoundingClientRect().width + "px";
-        document.getElementById("loadingdiv").style.height = document.getElementById("maindiv").getBoundingClientRect().height+"px";*/
-      },
+        document.getElementById("loadingdiv").style.height = document.getElementById("maindiv").getBoundingClientRect().height+"px";
+      },*/
 
       allSelected() {
         const val = this.allSelected;
@@ -535,7 +535,7 @@
 
       processFilter: function () {
         var self = this;
-        this.loading = true;
+        //this.loading = true;
 
         /*if (this.ajax.enabled && this.ajax.delegate) {
           this.fetchData(function (data) {
