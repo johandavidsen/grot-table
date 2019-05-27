@@ -132,11 +132,11 @@
   import { polyfill } from 'es6-promise'
   polyfill()
 
-  import axios from 'axios'
-  import qs from 'qs'
-  import lodashorderby from 'lodash.orderby'
-  import lodashincludes from 'lodash.includes'
-  import lodashfindindex from 'lodash.findindex'
+  //import axios from 'axios'
+  //import qs from 'qs'
+  import orderBy from 'lodash.orderby'
+  import includes from 'lodash.includes'
+  import findIndex from 'lodash.findindex'
 
   import SearchInput from './SearchInput'
   import ColumnPicker from "./ColumnPicker"
@@ -174,6 +174,7 @@
         type: Array,
         required: false,
       },
+
       /**
        * Enable/disable table row selection, optional, default false.
        * When true, it will add a checkbox column on the left side and use the value.selected field
@@ -183,6 +184,7 @@
         required: false,
         default: true,
       },
+
       /**
        * Enable/disable table sorting, optional, default true
        */
@@ -191,6 +193,7 @@
         required: false,
         default: true,
       },
+
       /**
        * Enable/disable table multicolumn sorting, optional, default false.
        * Also sortable must be enabled for this function to work.
@@ -200,6 +203,7 @@
         required: false,
         default: false,
       },
+
       /**
        * Enable/disable input filter, optional, default false
        */
@@ -208,6 +212,7 @@
         required: false,
         default: false,
       },
+
       /**
        * Define if Filter search field is to work in a case Sensitive way. Default: true
        */
@@ -216,6 +221,7 @@
         required: false,
         default: true,
       },
+
       /**
        * Enable/disable column picker to show/hide table columns, optional, default false
        */
@@ -224,6 +230,7 @@
         required: false,
         default: false,
       },
+
       /**
        * Enable/disable pagination for the table, optional, default false
        */
@@ -232,6 +239,7 @@
         required: false,
         default: false,
       },
+
       /**
        * If pagination is enabled defining the page size, optional, default 10
        */
@@ -240,6 +248,7 @@
         required: false,
         default: 10,
       },
+
       /**
        * Setting default order column. Expected name of the column
        */
@@ -248,6 +257,7 @@
         required: false,
         default: null,
       },
+
       /**
        * Setting default order direction. Boolean: true = ASC , false = DESC
        */
@@ -256,10 +266,11 @@
         required: false,
         default: true,
       },
+
       /**
        * If loading of table is to be done through ajax, then this object must be set
        */
-      ajax: {
+      /*ajax: {
         type: Object,
         required: false,
         default: function () {
@@ -271,7 +282,8 @@
             axiosConfig: {}
           }
         }
-      },
+      },*/
+
       /**
        * Function to handle row clicks
        */
@@ -330,7 +342,7 @@
         });
 
         // Work the data
-        if (this.ajax.enabled) {
+        /*if (this.ajax.enabled) {
           if (!this.ajax.delegate) {
             // If ajax but NOT delegate
             // Perform the fetch of data now and set the raw values
@@ -343,29 +355,29 @@
             // Simply call processFilter, which will take care of the fetching
             //this.processFilter();
           }
-        } else {
+        } else {*/
           // Not ajax, therefore working with given elements
           // Pass the Prop values to rawValues data object.
           self.rawValues = self.values;
-        }
+        //}
       })
     },
 
     /**
      * On created register on CellDataModified event
      */
-    created: function () {
+    /*created: function () {
       var self = this;
       this.$on('cellDataModifiedEvent', self.fireCellDataModifiedEvent);
-    },
+    },*/
 
     /**
      * On destroy unregister the event
      */
-    beforeDestroy: function () {
+    /*beforeDestroy: function () {
       var self = this;
       this.$off('cellDataModifiedEvent', self.fireCellDataModifiedEvent);
-    },
+    },*/
 
     watch: {
 
@@ -456,7 +468,7 @@
         if (typeof this.ajax !== 'undefined' && this.ajax.enabled && this.ajax.delegate) {
           return this.filteredValues;
         } else {
-          return lodashorderby(this.filteredValues, this.sortKey, tColsDir);
+          return orderBy(this.filteredValues, this.sortKey, tColsDir);
         }
       },
 
@@ -517,30 +529,30 @@
       /**
        * Used to fire off events when something happens to a cell
        */
-      fireCellDataModifiedEvent: function (originalValue, newValue, columnTitle, entry) {
+      /*fireCellDataModifiedEvent: function (originalValue, newValue, columnTitle, entry) {
         this.$parent.$emit('cellDataModifiedEvent', originalValue, newValue, columnTitle, entry);
-      },
+      },*/
 
       processFilter: function () {
         var self = this;
         this.loading = true;
 
-        if (this.ajax.enabled && this.ajax.delegate) {
+        /*if (this.ajax.enabled && this.ajax.delegate) {
           this.fetchData(function (data) {
             self.filteredSize = data.filtered;
             self.filteredValues = data.data;
             self.loading = false;
           });
-        } else {
+        } else {*/
           var result = this.rawValues.filter(item => {
             for (var col in self.displayColsVisible) {
               if (self.displayColsVisible[col].filterable) {
                 if (self.filterCaseSensitive) {
-                  if (lodashincludes(item[self.displayColsVisible[col].name] + "", self.filterKey + "")) {
+                  if (includes(item[self.displayColsVisible[col].name] + "", self.filterKey + "")) {
                     return true;
                   }
                 } else {
-                  if (lodashincludes((item[self.displayColsVisible[col].name] + "").toLowerCase(), (self.filterKey + "").toLowerCase())) {
+                  if (includes((item[self.displayColsVisible[col].name] + "").toLowerCase(), (self.filterKey + "").toLowerCase())) {
                     return true;
                   }
                 }
@@ -557,7 +569,7 @@
           if (typeof this.ajax !== 'undefined' && this.ajax.enabled && this.ajax.delegate) {
             // TODO: What is the point here?
           } else {
-            result = lodashorderby(result, this.sortKey, tColsDir);
+            result = orderBy(result, this.sortKey, tColsDir);
           }
 
           this.filteredSize = result.length;
@@ -574,10 +586,10 @@
           } else
             self.filteredValues = result;
           self.loading = false;
-        }
+        //}
       },
 
-      fetchData: function (dataCallBackFunction) {
+      /*fetchData: function (dataCallBackFunction) {
         var self = this
 
         var ajaxParameters = {
@@ -687,7 +699,7 @@
               this.$parent.$emit('ajaxLoadingError', e)
             })
         }
-      },
+      },*/
 
       buildColumnObject: function (column) {
         var obj = {}
@@ -754,7 +766,7 @@
               }
             })
           } else {
-            if (lodashfindindex(this.sortKey, function (o) {
+            if (findIndex(this.sortKey, function (o) {
               return o === key
             }) === -1) {
               this.sortKey.push(key)
