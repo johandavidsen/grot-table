@@ -1,12 +1,7 @@
 <template>
     <tr>
-        <!--<th v-if="selectable" style="width:40px;">
-            <div class="custom-control custom-checkbox">
-                <input type="checkbox" class="custom-control-input" :id="'checkAll'+instanceId"
-                       aria-label="Select All" v-model="allSelected">
-                <label class="custom-control-label" :for="'checkAll'+instanceId"></label>
-            </div>
-        </th>-->
+        <slot></slot>
+
         <th v-for="(column, i) in columns" @click="($event) => select($event, column)"
             track-by="column"
             class="icon"
@@ -28,6 +23,20 @@
       columns: {
         required: true,
         type: Array
+      },
+
+      sortable: {
+        type: Boolean,
+        required: false,
+        default: true,
+      },
+
+      sortKey: {
+        type: Array
+      },
+
+      sortOrders: {
+        type: Object
       }
     },
 
@@ -38,9 +47,6 @@
       },
 
       getClasses (column) {
-        /* eslint-disable */
-        console.log(column)
-
         let classes = [ column.columnstyle ]
         let key = column.name
 
@@ -59,7 +65,6 @@
             classes.push("dsc");
           }
         }
-        console.log(classes)
         return classes
       }
     }
