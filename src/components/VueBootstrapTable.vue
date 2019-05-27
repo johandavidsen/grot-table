@@ -500,12 +500,14 @@
     },
 
     methods: {
-      /* eslint-disable */
       toggleCheckbox (index, value) {
-        //let row = this.rawValues[index]
-        console.log(index)
-        console.log(value)
-        console.log(this.values)
+        let row = this.values[index]
+        row.selected = false
+        this.values[index] = row
+
+        let rowf = this.filteredValuesSorted[index]
+        rowf.selected = value
+        this.filteredValuesSorted[index] = rowf
       },
 
       changeAllSelected (value) {
