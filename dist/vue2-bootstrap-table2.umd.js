@@ -8749,12 +8749,12 @@ if (typeof window !== 'undefined') {
 // Indicate to webpack that this file can be concatenated
 /* harmony default export */ var setPublicPath = (null);
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"c4dc2c22-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/VueBootstrapTable.vue?vue&type=template&id=7af3c5cf&
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('div',{staticClass:"row"},[_c('div',{staticClass:"col-6"},[(_vm.showFilter)?_c('div',{staticClass:"mb-3 mt-3"},[_c('search-input',{model:{value:(_vm.filterKey),callback:function ($$v) {_vm.filterKey=$$v},expression:"filterKey"}})],1):_vm._e()]),_c('div',{staticClass:"col-6"},[(_vm.showColumnPicker)?_c('div',{staticStyle:{"padding-top":"10px","padding-bottom":"10px","float":"right"}},[_c('column-picker',{attrs:{"options":_vm.displayCols},on:{"selected":_vm.toggleColumn}})],1):_vm._e()])]),_c('div',{staticClass:"row"},[_c('div',{staticClass:"col-sm-12"},[_c('table',{staticClass:"table table-bordered table-hover table-condensed table-striped vue-table"},[_c('thead',[_c('table-header',{attrs:{"columns":_vm.displayColsVisible,"sortable":_vm.sortable,"sort-key":_vm.sortKey,"sort-orders":_vm.sortOrders},on:{"selected":_vm.sortBy}},[(_vm.selectable)?_c('check-box',{attrs:{"checked":_vm.allSelected},on:{"selected":_vm.changeAllSelected}}):_vm._e()],1)],1),_c('tbody',_vm._l((_vm.filteredValuesSorted),function(entry,index){return _c('table-row',{key:index,attrs:{"entry":entry,"columns":_vm.displayColsVisible,"track-by":"entry"}},[(_vm.selectable)?_c('check-box',{attrs:{"checked":entry.selected},on:{"selected":function (value) { return _vm.toggleCheckbox(index, value); }}}):_vm._e()],1)}),1)])]),(_vm.paginated)?_c('div',{staticClass:"col-sm-12"},[_c('pagination',{attrs:{"page-numbers":_vm.validPageNumbers,"max-page":_vm.maxPage,"page":_vm.page,"show-pagination-etc":_vm.showPaginationEtc},on:{"selected":_vm.updateCurrentPage}})],1):_vm._e()])])}
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"c4dc2c22-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/VueBootstrapTable.vue?vue&type=template&id=39dc7683&
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('div',{staticClass:"row"},[_c('div',{staticClass:"col-6"},[(_vm.showFilter)?_c('div',{staticClass:"mb-3 mt-3"},[_c('search-input',{model:{value:(_vm.filterKey),callback:function ($$v) {_vm.filterKey=$$v},expression:"filterKey"}})],1):_vm._e()]),_c('div',{staticClass:"col-6"},[(_vm.showColumnPicker)?_c('div',{staticStyle:{"padding-top":"10px","padding-bottom":"10px","float":"right"}},[_c('column-picker',{attrs:{"options":_vm.displayCols},on:{"selected":_vm.toggleColumn}})],1):_vm._e()])]),_c('div',{staticClass:"row"},[_c('div',{staticClass:"col-sm-12"},[_c('table',{staticClass:"table table-bordered table-hover table-condensed table-striped vue-table"},[_c('thead',[_c('table-header',{attrs:{"columns":_vm.displayColsVisible,"sortable":_vm.sortable,"sort-key":_vm.sortKey,"sort-orders":_vm.sortOrders},on:{"selected":_vm.sortBy}},[(_vm.selectable)?_c('check-box',{attrs:{"checked":_vm.allSelected},on:{"selected":_vm.changeAllSelected}}):_vm._e()],1)],1),_c('tbody',_vm._l((_vm.filteredValuesSorted),function(entry,index){return _c('table-row',{key:index,attrs:{"entry":entry,"columns":_vm.displayColsVisible,"track-by":"entry"},on:{"selected":_vm.selectRow}},[(_vm.selectable)?_c('check-box',{attrs:{"checked":entry.selected},on:{"selected":function (value) { return _vm.toggleCheckbox(index, value); }}}):_vm._e()],1)}),1)])]),(_vm.paginated)?_c('div',{staticClass:"col-sm-12"},[_c('pagination',{attrs:{"page-numbers":_vm.validPageNumbers,"max-page":_vm.maxPage,"page":_vm.page,"show-pagination-etc":_vm.showPaginationEtc},on:{"selected":_vm.updateCurrentPage}})],1):_vm._e()])])}
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/VueBootstrapTable.vue?vue&type=template&id=7af3c5cf&
+// CONCATENATED MODULE: ./src/components/VueBootstrapTable.vue?vue&type=template&id=39dc7683&
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es6.function.name.js
 var es6_function_name = __webpack_require__("7f7f");
@@ -9157,12 +9157,12 @@ var CheckBox_component = normalizeComponent(
 )
 
 /* harmony default export */ var CheckBox = (CheckBox_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"c4dc2c22-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/TableRow.vue?vue&type=template&id=705f031b&
-var TableRowvue_type_template_id_705f031b_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('tr',[_vm._t("default"),_vm._l((_vm.columns),function(column,index){return _c('td',{directives:[{name:"show",rawName:"v-show",value:(column.visible),expression:"column.visible"}],key:index,class:column.cellstyle,attrs:{"track-by":"column"}},[_vm._t(column.name,[(column.renderfunction!==false)?_c('span',{domProps:{"innerHTML":_vm._s(column.renderfunction( column.name, _vm.entry ))}}):(!column.editable)?_c('span',[_vm._v(_vm._s(_vm.entry[column.name]))]):_c('value-field-section',{attrs:{"entry":_vm.entry,"columnname":column.name}})],{"column":column,"value":_vm.entry})],2)})],2)}
-var TableRowvue_type_template_id_705f031b_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"c4dc2c22-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/TableRow.vue?vue&type=template&id=316ce437&
+var TableRowvue_type_template_id_316ce437_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('tr',{on:{"click":_vm.click}},[_vm._t("default"),_vm._l((_vm.columns),function(column,index){return _c('td',{directives:[{name:"show",rawName:"v-show",value:(column.visible),expression:"column.visible"}],key:index,class:column.cellstyle,attrs:{"track-by":"column"}},[_vm._t(column.name,[(column.renderfunction!==false)?_c('span',{domProps:{"innerHTML":_vm._s(column.renderfunction( column.name, _vm.entry ))}}):(!column.editable)?_c('span',[_vm._v(_vm._s(_vm.entry[column.name]))]):_c('value-field-section',{attrs:{"entry":_vm.entry,"columnname":column.name}})],{"column":column,"value":_vm.entry})],2)})],2)}
+var TableRowvue_type_template_id_316ce437_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/TableRow.vue?vue&type=template&id=705f031b&
+// CONCATENATED MODULE: ./src/components/TableRow.vue?vue&type=template&id=316ce437&
 
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"c4dc2c22-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/ValueFieldSection.vue?vue&type=template&id=20a71ddc&scoped=true&
 var ValueFieldSectionvue_type_template_id_20a71ddc_scoped_true_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return (!_vm.enabled)?_c('span',{staticClass:"editableField",on:{"dblclick":_vm.toggleInput}},[_vm._v(_vm._s(this.entry[this.columnname]))]):(_vm.enabled)?_c('div',{staticClass:"input-group"},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.datavalue),expression:"datavalue"}],staticClass:"form-control",attrs:{"type":"text"},domProps:{"value":(_vm.datavalue)},on:{"keyup":[function($event){if(!$event.type.indexOf('key')&&_vm._k($event.keyCode,"enter",13,$event.key,"Enter")){ return null; }return _vm.saveThis($event)},function($event){if(!$event.type.indexOf('key')&&_vm._k($event.keyCode,"esc",27,$event.key,["Esc","Escape"])){ return null; }return _vm.cancelThis($event)}],"input":function($event){if($event.target.composing){ return; }_vm.datavalue=$event.target.value}}}),_c('span',{staticClass:"input-group-btn"},[_c('button',{staticClass:"btn btn-danger",attrs:{"type":"button"},on:{"click":_vm.cancelThis}},[_c('span',{staticClass:"fa fa-times",attrs:{"aria-hidden":"true"}})]),_c('button',{staticClass:"btn btn-primary",attrs:{"type":"button"},on:{"click":_vm.saveThis}},[_c('span',{staticClass:"fa fa-check",attrs:{"aria-hidden":"true"}})])])]):_vm._e()}
@@ -9265,6 +9265,19 @@ var ValueFieldSection_component = normalizeComponent(
     entry: {
       type: Object,
       required: false
+    },
+    rowClicked: {
+      type: Function,
+      required: false,
+      default: function _default() {}
+    }
+  },
+  methods: {
+    click: function click($e) {
+      this.$emit('selected', {
+        event: $e,
+        entry: this.entry
+      });
     }
   }
 });
@@ -9280,8 +9293,8 @@ var ValueFieldSection_component = normalizeComponent(
 
 var TableRow_component = normalizeComponent(
   components_TableRowvue_type_script_lang_js_,
-  TableRowvue_type_template_id_705f031b_render,
-  TableRowvue_type_template_id_705f031b_staticRenderFns,
+  TableRowvue_type_template_id_316ce437_render,
+  TableRowvue_type_template_id_316ce437_staticRenderFns,
   false,
   null,
   null,
@@ -9383,6 +9396,7 @@ var Pagination_component = normalizeComponent(
 
 
 
+//
 //
 //
 //
@@ -9854,6 +9868,11 @@ Object(es6_promise["polyfill"])(); //import axios from 'axios'
     }
   },
   methods: {
+    selectRow: function selectRow(_ref) {
+      var event = _ref.event,
+          entry = _ref.entry;
+      this.rowClickHandler(event, entry);
+    },
     updateCurrentPage: function updateCurrentPage(index) {
       this.page = index;
     },
@@ -10053,11 +10072,11 @@ Object(es6_promise["polyfill"])(); //import axios from 'axios'
       });
       this.sortOrders = sortOrders;
     },
-    sortBy: function sortBy(_ref) {
-      var event = _ref.event,
-          _ref$column = _ref.column,
-          name = _ref$column.name,
-          sortable = _ref$column.sortable;
+    sortBy: function sortBy(_ref2) {
+      var event = _ref2.event,
+          _ref2$column = _ref2.column,
+          name = _ref2$column.name,
+          sortable = _ref2$column.sortable;
       var key = name;
       if (!sortable) return;
 

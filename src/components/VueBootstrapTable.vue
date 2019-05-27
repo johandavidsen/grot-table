@@ -500,7 +500,7 @@
 
     methods: {
 
-      selectRow ({ event, entry}) {
+      selectRow ({ event, entry }) {
         this.rowClickHandler(event, entry)
       },
 
