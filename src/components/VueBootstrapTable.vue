@@ -38,29 +38,13 @@
             </div>
 
             <div v-if="paginated" class="col-sm-12">
-                <div class="btn-toolbar" role="toolbar" aria-label="pagination bar">
-                    <div class="btn-group mr-2" role="group" aria-label="first page">
-                        <button type="button" class="btn btn-outline-primary" @click="page=1">&laquo;</button>
-                    </div>
-                    <div class="btn-group mr-2" role="group" aria-label="pages">
-                        <button v-for="index in validPageNumbers"
-                                :key="index"
-                                type="button" class="btn btn-outline-primary"
-                                :class="{ active: page===index }"
-                                @click="page=index">
-                            {{index}}
-                        </button>
-                    </div>
-                    <div class="btn-group mr-2" v-if="showPaginationEtc">...</div>
-                    <div class="btn-group" role="group" aria-label="last page">
-                        <button type="button" class="btn btn-outline-primary" @click="page=maxPage">&raquo;</button>
-                    </div>
-                </div>
+                <pagination :page-numbers="validPageNumbers" :max-page="maxPage" :page="page" :show-pagination-etc="showPaginationEtc" v-on:selected="updateCurrentPage"></pagination>
             </div>
 
         </div>
     </div>
 </template>
+
 <style lang="scss">
     .vue-table { }
 
@@ -159,11 +143,13 @@
   import TableHeader from "./TableHeader"
   import CheckBox from "./CheckBox"
   import TableRow from "./TableRow"
+  import Pagination from "./Pagination"
 
   export default {
     name: "VueBootstrapTable",
 
     components: {
+      Pagination,
       TableRow,
       CheckBox,
       TableHeader,
@@ -500,6 +486,11 @@
     },
 
     methods: {
+
+      updateCurrentPage (index) {
+        this.page = index
+      },
+
       toggleCheckbox (index, value) {
         let row = this.values[index]
         row.selected = false
