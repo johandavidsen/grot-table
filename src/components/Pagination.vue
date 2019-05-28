@@ -3,8 +3,9 @@
         <div class="btn-group mr-2" role="group" aria-label="first page">
             <button type="button" class="btn btn-outline-primary" @click="click(1)">&laquo;</button>
         </div>
+
         <div class="btn-group mr-2" role="group" aria-label="pages">
-            <button v-for="index in pageNumbers"
+            <button v-for="index in currentPages"
                     :key="index"
                     type="button" class="btn btn-outline-primary"
                     :class="{ active: currentPage===index }"
@@ -12,7 +13,11 @@
                 {{index}}
             </button>
         </div>
-        <div class="btn-group mr-2" v-if="showPaginationEtc">...</div>
+
+        <div class="btn-group mr-2" v-if="showPaginationEtc">
+            ...
+        </div>
+
         <div class="btn-group" role="group" aria-label="last page">
             <button type="button" class="btn btn-outline-primary" @click="click(maxPage)">&raquo;</button>
         </div>
@@ -24,36 +29,41 @@
     name: "Pagination",
 
     props: {
-      pageNumbers: {
-        type: Array,
-        required: true
-      },
 
       maxPage: {
         type: Number,
         required: true
       },
 
-      page: {
+      currentPage: {
         type: Number,
         required: true
+      }
+
+    },
+
+    computed: {
+      currentPages: function () {
+        let result = []
+        let start = 1
+
+        if (this.currentPage > 3) {
+          start = this.currentPage - 2
+        }
+
+        for (var i = 0; start <= this.maxPage && i < 5; start++) {
+          result.push(start)
+          i++
+        }
+
+        return result
       },
 
-      showPaginationEtc: {
-        type: Boolean,
-        required: true
-      }
-    },
-
-    data () {
-      return {
-        currentPage: this.page
-      }
-    },
-
-    watch: {
-      page: function (newValue) {
-        return this.currentPage = newValue
+      showPaginationEtc: function () {
+        var temp = 1;
+        if (this.currentPage > 3)
+          temp = this.currentPage - 2;
+        return ((temp + 4) < this.maxPage);
       }
     },
 

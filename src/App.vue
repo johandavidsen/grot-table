@@ -54,14 +54,17 @@
         showSelect: true,
         paginated: true,
         multiColumnSortable: true,
+
         handleRowFunction: function (event, entry) {
           // eslint-disable-next-line no-console
           console.log("CLICK ROW: " + JSON.stringify(entry));
         },
+
         handleRowFunction2: function (event, entry) {
           // eslint-disable-next-line no-console
           console.log("CLICK ROW 2: " + JSON.stringify(entry));
         },
+
         columnToSortBy: "name",
         ajax: {
           enabled: false,

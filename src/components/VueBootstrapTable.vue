@@ -7,7 +7,7 @@
                 </div>
             </div>
             <div class="col-6">
-                <div v-if="showColumnPicker" style="padding-top: 10px;padding-bottom: 10px;float:right;">
+                <div v-if="showColumnPicker" class="mb-3 mt-3 d-flex justify-content-end">
                     <column-picker :options="displayCols" v-on:selected="toggleColumn"></column-picker>
                 </div>
             </div>
@@ -15,9 +15,6 @@
 
         <div class="row">
             <div class="col-sm-12">
-                <!--<div :class="{'vue-table-loading': this.loading , 'vue-table-loading-hidden': !this.loading}">
-                    <div class="spinner"></div>
-                </div>-->
                 <table class="table table-bordered table-hover table-condensed table-striped vue-table">
                     <thead>
                         <table-header :columns="displayColsVisible" :sortable="sortable" :sort-key="sortKey" :sort-orders="sortOrders" v-on:selected="sortBy">
@@ -39,7 +36,10 @@
             </div>
 
             <div v-if="paginated" class="col-sm-12">
-                <pagination :page-numbers="validPageNumbers" :max-page="maxPage" :page="page" :show-pagination-etc="showPaginationEtc" v-on:selected="updateCurrentPage"></pagination>
+                <pagination :max-page="maxPage"
+                            :current-page="page"
+                            v-on:selected="updateCurrentPage">
+                </pagination>
             </div>
 
         </div>
@@ -133,12 +133,11 @@
   import { polyfill } from 'es6-promise'
   polyfill()
 
-  //import axios from 'axios'
-  //import qs from 'qs'
   import orderBy from 'lodash.orderby'
   import includes from 'lodash.includes'
   import findIndex from 'lodash.findindex'
 
+  import Column from './Column'
   import SearchInput from './SearchInput'
   import ColumnPicker from "./ColumnPicker"
   import TableHeader from "./TableHeader"
@@ -269,23 +268,6 @@
       },
 
       /**
-       * If loading of table is to be done through ajax, then this object must be set
-       */
-      /*ajax: {
-        type: Object,
-        required: false,
-        default: function () {
-          return {
-            enabled: false,
-            url: "",
-            method: "GET",
-            delegate: false,
-            axiosConfig: {}
-          }
-        }
-      },*/
-
-      /**
        * Function to handle row clicks
        */
       rowClickHandler: {
@@ -308,11 +290,8 @@
         rawValues: [],
         page: 1,
         definedPageSize: 10,
-        allSelected: false,
-        // Used in relation to AJAX
-        //echo: 0,
-        //loading: true,
-      };
+        allSelected: false
+      }
     },
 
     /**
@@ -320,13 +299,13 @@
      */
     mounted: function () {
       this.$nextTick(function () {
-        //this.loading = true;
 
         this.setSortOrders();
 
         this.definedPageSize = this.pageSize;
 
         var self = this;
+
         //
         if (this.defaultOrderColumn !== null) {
           self.sortKey[0] = this.defaultOrderColumn;
@@ -338,47 +317,13 @@
 
         // Build columns
         this.columns.forEach(function (column) {
-          var obj = self.buildColumnObject(column);
+          var obj = new Column(column);
           self.displayCols.push(obj);
         });
 
-        // Work the data
-        /*if (this.ajax.enabled) {
-          if (!this.ajax.delegate) {
-            // If ajax but NOT delegate
-            // Perform the fetch of data now and set the raw values
-            this.loading = true;
-            this.fetchData(function (data) {
-              self.rawValues = data.data;
-            });
-          } else {
-            // If ajax and also delegate
-            // Simply call processFilter, which will take care of the fetching
-            //this.processFilter();
-          }
-        } else {*/
-          // Not ajax, therefore working with given elements
-          // Pass the Prop values to rawValues data object.
-          self.rawValues = self.values;
-        //}
+        self.rawValues = self.values
       })
     },
-
-    /**
-     * On created register on CellDataModified event
-     */
-    /*created: function () {
-      var self = this;
-      this.$on('cellDataModifiedEvent', self.fireCellDataModifiedEvent);
-    },*/
-
-    /**
-     * On destroy unregister the event
-     */
-    /*beforeDestroy: function () {
-      var self = this;
-      this.$off('cellDataModifiedEvent', self.fireCellDataModifiedEvent);
-    },*/
 
     watch: {
 
@@ -387,59 +332,52 @@
       },
 
       rawValues: function () {
-        this.processFilter();
+        this.processFilter()
       },
 
       columns: function () {
-        this.displayCols = [];
-        var self = this;
+        this.displayCols = []
+        var self = this
         this.columns.forEach(function (column) {
-          var obj = self.buildColumnObject(column);
-          self.displayCols.push(obj);
-        });
-        this.setSortOrders();
+          var obj = new Column(column)
+          self.displayCols.push(obj)
+        })
+        this.setSortOrders()
       },
 
       showFilter: function () {
-        this.filterKey = "";
+        this.filterKey = ""
       },
 
       showColumnPicker: function () {
-        // this.columnMenuOpen = false;
-
         this.displayCols.forEach(function (column) {
-          column.visible = true;
-        });
+          column.visible = true
+        })
       },
 
       filterKey: function () {
         // filter was updated, so resetting to page 1
         this.page = 1;
-        this.processFilter();
+        this.processFilter()
       },
 
       sortKey: function () {
-        this.processFilter();
+        this.processFilter()
       },
 
       sortChanged: function () {
-        this.processFilter();
+        this.processFilter()
       },
 
       page: function () {
-        this.processFilter();
+        this.processFilter()
       },
 
       paginated: function () {
-        this.processFilter();
+        this.processFilter()
       },
 
-      /*loading: function () {
-        /*document.getElementById("loadingdiv").style.width = document.getElementById("maindiv").getBoundingClientRect().width + "px";
-        document.getElementById("loadingdiv").style.height = document.getElementById("maindiv").getBoundingClientRect().height+"px";
-      },*/
-
-      allSelected() {
+      allSelected () {
         const val = this.allSelected;
         this.values.forEach(value => {
           value.selected = false;
@@ -453,49 +391,33 @@
     computed: {
 
       displayColsVisible: function () {
-        var displayColsVisible = [];
+        var displayColsVisible = []
+
         for (var a in this.displayCols) {
           if (this.displayCols[a].visible)
-            displayColsVisible.push(this.displayCols[a]);
+            displayColsVisible.push(this.displayCols[a])
         }
-        return displayColsVisible;
+
+        return displayColsVisible
       },
 
       filteredValuesSorted: function () {
-        var tColsDir = [];
-        for (var i = 0, len = this.sortKey.length; i < len; i++) {
-          tColsDir.push(this.sortOrders[this.sortKey[i]].toLowerCase());
-        }
-        if (typeof this.ajax !== 'undefined' && this.ajax.enabled && this.ajax.delegate) {
-          return this.filteredValues;
-        } else {
-          return orderBy(this.filteredValues, this.sortKey, tColsDir);
-        }
-      },
+        var tColsDir = []
 
-      validPageNumbers: function () {
-        // 5 page max
-        var result = [];
-        var start = 1;
-        if (this.page > 3)
-          start = this.page - 2;
-        for (var i = 0; start <= this.maxPage && i < 5; start++) {
-          result.push(start);
-          i++;
+        for (var i = 0, len = this.sortKey.length; i < len; i++) {
+          tColsDir.push(this.sortOrders[this.sortKey[i]].toLowerCase())
         }
-        return result;
+
+        if (typeof this.ajax !== 'undefined' && this.ajax.enabled && this.ajax.delegate) {
+          return this.filteredValues
+        } else {
+          return orderBy(this.filteredValues, this.sortKey, tColsDir)
+        }
       },
 
       maxPage: function () {
-        return Math.ceil(this.filteredSize / this.definedPageSize);
-      },
-
-      showPaginationEtc: function () {
-        var temp = 1;
-        if (this.page > 3)
-          temp = this.page - 2;
-        return ((temp + 4) < this.maxPage);
-      },
+        return Math.ceil(this.filteredSize / this.definedPageSize)
+      }
     },
 
     methods: {
@@ -523,227 +445,58 @@
       },
 
       refresh: function () {
-        this.processFilter();
+        this.processFilter()
       },
 
       setPageSize: function (newPageSize) {
-        this.definedPageSize = newPageSize;
-        this.processFilter();
+        this.definedPageSize = newPageSize
+        this.processFilter()
       },
-
-      /**
-       * Used to fire off events when something happens to a cell
-       */
-      /*fireCellDataModifiedEvent: function (originalValue, newValue, columnTitle, entry) {
-        this.$parent.$emit('cellDataModifiedEvent', originalValue, newValue, columnTitle, entry);
-      },*/
 
       processFilter: function () {
-        var self = this;
-        //this.loading = true;
+        // Populate and filter data
+        let self = this
 
-        /*if (this.ajax.enabled && this.ajax.delegate) {
-          this.fetchData(function (data) {
-            self.filteredSize = data.filtered;
-            self.filteredValues = data.data;
-            self.loading = false;
-          });
-        } else {*/
-          var result = this.rawValues.filter(item => {
-            for (var col in self.displayColsVisible) {
-              if (self.displayColsVisible[col].filterable) {
-                if (self.filterCaseSensitive) {
-                  if (includes(item[self.displayColsVisible[col].name] + "", self.filterKey + "")) {
-                    return true;
-                  }
-                } else {
-                  if (includes((item[self.displayColsVisible[col].name] + "").toLowerCase(), (self.filterKey + "").toLowerCase())) {
-                    return true;
-                  }
-                }
-              }
+        let result = this.rawValues.filter(item => {
+          for (let col in self.displayColsVisible) {
+
+            if (self.displayColsVisible[col].filterable && self.filterCaseSensitive && includes(item[self.displayColsVisible[col].name] + "", self.filterKey + "")) {
+              return true
+            } else if (self.displayColsVisible[col].filterable && includes((item[self.displayColsVisible[col].name] + "").toLowerCase(), (self.filterKey + "").toLowerCase())) {
+              return true
             }
-            return false;
-          });
-
-          var tColsDir = [];
-          for (var i = 0, len = this.sortKey.length; i < len; i++) {
-            tColsDir.push(this.sortOrders[this.sortKey[i]].toLowerCase());
           }
+          return false
+        })
 
-          if (typeof this.ajax !== 'undefined' && this.ajax.enabled && this.ajax.delegate) {
-            // TODO: What is the point here?
-          } else {
-            result = orderBy(result, this.sortKey, tColsDir);
-          }
-
-          this.filteredSize = result.length;
-          if (this.paginated) {
-            var startIndex = (this.page - 1) * this.definedPageSize;
-            var tIndex = 0;
-            var tempResult = [];
-            while (tIndex < this.definedPageSize) {
-              if (typeof result[startIndex + tIndex] !== "undefined")
-                tempResult.push(result[startIndex + tIndex]);
-              tIndex++;
-            }
-            self.filteredValues = tempResult;
-          } else
-            self.filteredValues = result;
-          self.loading = false;
-        //}
-      },
-
-      /*fetchData: function (dataCallBackFunction) {
-        var self = this
-
-        var ajaxParameters = {
-          params: {}
+        var tColsDir = []
+        for (var i = 0, len = this.sortKey.length; i < len; i++) {
+          tColsDir.push(this.sortOrders[this.sortKey[i]].toLowerCase())
         }
 
-        this.echo++
+        // eslint-disable-next-line
+        console.log(tColsDir)
+        result = orderBy(result, this.sortKey, tColsDir)
 
-        if (this.ajax.enabled && this.ajax.delegate) {
-          var tColsDir = [];
+        // Setup pagination
+        this.filteredSize = result.length
 
-          for (var i = 0, len = this.sortKey.length; i < len; i++) {
-            tColsDir.push(this.sortOrders[this.sortKey[i]].toLowerCase())
-          }
+        if (this.paginated) {
+          var startIndex = (this.page - 1) * this.definedPageSize
+          var tIndex = 0
+          var tempResult = []
 
-          if (this.ajax.method === "GET") {
-            //COPY
-            if (this.ajax !== null && this.ajax.axiosConfig !== null && this.ajax.axiosConfig !== undefined) {
-              ajaxParameters = JSON.parse(
-                JSON.stringify(this.ajax.axiosConfig)
-              )
+          while (tIndex < this.definedPageSize) {
+            if (typeof result[startIndex + tIndex] !== "undefined") {
+              tempResult.push(result[startIndex + tIndex])
             }
-
-            ajaxParameters.params = {}
-            ajaxParameters.params.sortcol = this.sortKey
-            ajaxParameters.params.sortdir = tColsDir
-            ajaxParameters.params.filter = this.filterKey
-
-            if (self.paginated) {
-              ajaxParameters.params.page = this.page
-              ajaxParameters.params.pagesize = this.definedPageSize
-            } else {
-              ajaxParameters.params.page = 1
-              ajaxParameters.params.pagesize = null
-            }
-
-            ajaxParameters.params.echo = this.echo
+            tIndex++
           }
 
-          if (this.ajax.method === "POST") {
-            ajaxParameters.sortcol = this.sortKey
-            ajaxParameters.sortdir = tColsDir
-            ajaxParameters.filter = this.filterKey
-
-            if (self.paginated) {
-              ajaxParameters.page = this.page
-              ajaxParameters.pagesize = this.definedPageSize
-            } else {
-              ajaxParameters.page = 1
-              ajaxParameters.pagesize = null
-            }
-            ajaxParameters.echo = this.echo
-          }
+          self.filteredValues = tempResult
+        } else {
+          self.filteredValues = result
         }
-
-        if (this.ajax.enabled && !this.ajax.delegate) {
-          if (this.ajax.method === "GET") {
-            //COPY
-            if (this.ajax !== null && this.ajax.axiosConfig !== null && this.ajax.axiosConfig !== undefined) {
-              ajaxParameters = JSON.parse(JSON.stringify(this.ajax.axiosConfig))
-            }
-
-            ajaxParameters.params = {}
-          }
-
-          if (this.ajax.method === "POST") {
-            // Do nothing at this point !
-          }
-        }
-
-        if (this.ajax.enabled && this.ajax.method === "GET") {
-          axios.get(self.ajax.url, ajaxParameters)
-            .then(response => {
-              if (this.ajax.delegate) {
-                if (response.data.echo !== self.echo) {
-                  return
-                }
-              }
-              dataCallBackFunction(response.data)
-              this.$parent.$emit('ajaxLoadedEvent', response.data)
-            })
-            .catch(e => {
-              this.$parent.$emit('ajaxLoadingError', e)
-            });
-        }
-
-        if (this.ajax.enabled && this.ajax.method === "POST") {
-          var tempAxiosConf = {}
-
-          if (this.ajax !== null && this.ajax.axiosConfig !== null && this.ajax.axiosConfig !== undefined) {
-            tempAxiosConf = this.ajax.axiosConfig
-          }
-
-          axios.post(self.ajax.url, qs.stringify(ajaxParameters), tempAxiosConf)
-            .then(response => {
-              if (this.ajax.delegate) {
-                if (response.data.echo !== self.echo) {
-                  return
-                }
-              }
-
-              dataCallBackFunction(response.data)
-              this.$parent.$emit('ajaxLoadedEvent', response.data)
-
-            })
-            .catch(e => {
-              this.$parent.$emit('ajaxLoadingError', e)
-            })
-        }
-      },*/
-
-      buildColumnObject: function (column) {
-        var obj = {}
-
-        obj.title = column.title
-        if (typeof column.name !== "undefined")
-          obj.name = column.name
-        else
-          obj.name = column.title
-        if (typeof column.visible !== "undefined")
-          obj.visible = column.visible
-        else
-          obj.visible = true
-        if (typeof column.editable !== "undefined")
-          obj.editable = column.editable
-        else
-          obj.editable = false
-        if (typeof column.renderfunction !== "undefined")
-          obj.renderfunction = column.renderfunction
-        else
-          obj.renderfunction = false
-        if (typeof column.columnstyle !== "undefined")
-          obj.columnstyle = column.columnstyle
-        else
-          obj.columnstyle = ""
-        if (typeof column.cellstyle !== "undefined")
-          obj.cellstyle = column.cellstyle
-        else
-          obj.cellstyle = ""
-        if (typeof column.sortable !== "undefined")
-          obj.sortable = column.sortable
-        else
-          obj.sortable = true;
-        if (typeof column.filterable !== "undefined")
-          obj.filterable = column.filterable
-        else
-          obj.filterable = true
-
-        return obj
       },
 
       setSortOrders: function () {
@@ -791,9 +544,7 @@
 
       toggleColumn: function (column) {
         column.visible = !column.visible
-      },
-
-    },
-    events: {}
+      }
+    }
   }
 </script>
