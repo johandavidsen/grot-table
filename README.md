@@ -1,42 +1,10 @@
 # vue2-bootstrap-table
 
-<p align="center">
-<a href="https://www.npmjs.com/package/vue2-bootstrap-table2"><img src="https://img.shields.io/npm/v/vue2-bootstrap-table2.svg"/> <img src="https://img.shields.io/npm/dm/vue2-bootstrap-table2.svg"/></a> <a href="https://vuejs.org/"><img src="https://img.shields.io/badge/vue-2.6.x-brightgreen.svg"/></a>
-</p>
+This project is a fork of [jbaysolutions/vue-bootstrap-table](https://github.com/jbaysolutions/vue-bootstrap-table) for 
+further information about that project. The main reason for this fork is to increase control of the table components and 
+to reduce the project size. 
 
-vue-bootstrap-table is a sortable and searchable table, with Bootstrap styling, for Vue.js.
-
-### Vue 2.6.0 : 1.2.1 (column slots support, Bootstrap v4.3.1) 
-
-### Vue < 2.6.0: 1.1.13 (Bootstrap v3) 
-
-### Vue 1 : [jbaysolutions/vue-bootstrap-table](https://github.com/jbaysolutions/vue-bootstrap-table)
-
-### [Demo](https://jbaysolutions.github.io/vue2-bootstrap-table/examples/01-basic.html)
-### [Changelog](/CHANGELOG.md)
-
-<!--
-## Table of Contents
-
-- [Features](#features)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Contribute](#contribute)
-- [TODO List](#todo-list)
-
-## Demos
-
-
-TODO UPDATE DOCS
-TODO UPDATE CHANGELOG
-
--->
-
-#### Projects using vue-bootstrap-table
-
-- [Draxed](https://www.draxed.com/?utm_source=github&utm_medium=web&utm_campaign=vue-bootstrap-table)
-
-*Know of others? Create a PR to let me know!*
+Please see [Changelog](/CHANGELOG.md) for detailed changes.
 
 ## Features
 
@@ -46,9 +14,6 @@ TODO UPDATE CHANGELOG
 * Select display columns
 * Pagination
 * On Table Editing
-* Remote data loading
-* Remote data processing
-
 
 ## Requirements
 
@@ -276,22 +241,6 @@ Include the browser-ready bundle (download from [releases](https://github.com/jb
             default: true,
         },
         /**
-         * If loading of table is to be done through ajax, then this object must be set
-         */
-        ajax: {
-            type: Object,
-            required: false,
-            default: function () {
-                return {
-                    enabled: false,
-                    url: "",
-                    method: "GET",
-                    delegate: false,
-                    axiosConfig: {}
-                }
-            }
-        },
-        /**
          * Function to handle row clicks
          */
         rowClickHandler: {
@@ -455,143 +404,6 @@ This will make the default column order be :
  * column: name  
  * order: ascending
 
-### AJAX Configuration
-
-Ajax Object properties:
-
-* enabled : to enable loading through ajax call, enable this
-* url: the URL where to request the data
-* methods: GET and POST are the valid methods allowed
-* delegate: False = just get all the data and do processing on browser;  True = Ask for data as needed, and all processing is done on the server side.
-* axiosConfig: check [Axios Page](https://github.com/mzabriskie/axios) for information regarding Method Config.
-
-#### Example AJAX config for Remote Loading
-
-This configuration will only make one request to the server, to get all the data and load it straight into the browser.
-
-```javascript
-ajax: {
-    enabled: true,
-    url: "http://localhost:9430/data/test",
-    method: "GET",
-    delegate: false,
-    axiosConfig: {}
-},
-```
-
-#### Example AJAX config for Remote Processing
-
-This configuration will only make many requests to the server, each time data ir needed, or any processing is required: for filtering, ordering, pagniation, changes of page size, etc.
-
-```javascript
-ajax: {
-    enabled: true,
-    url: "http://localhost:9430/data/test",
-    method: "GET",
-    delegate: true,
-    axiosConfig: {
-        headers: {
-            'Authorization': 'Bearer TESTTESTTESTTESTTEST'
-        }
-    }
-},
-```
-
-### Ajax Request and Expected Response
-
-#### Ajax Request Parameters Sent
-
-When Ajax is enabled, the following parameters are sent with each request for the URL specified:
-
- - `sortcol` : Array of String columns to sort (only sent when `delegate` is true, otherwise will be null)
- - `sortdir` : Array of sorting directions for each column on sortcol, "ASC" or "DESC" (only sent when `delegate` is true, otherwise will be null)
- - `filter` : The filter to be used  (only sent when `delegate` is true, otherwise will be null)
- - `page` : The number of the page being requested ( when delegate is false, it will always be 1 )
- - `pagesize` : The number of records being requested.
- - `echo` : A unique number for the request.
-
-##### When using GET
-
- - `sortcol` : is sent in the following format  `sortcol[]=COLNAME&sortcol[]=COLNAME`
- - `sortdir` : is sent in the following format  `sortdir[]=ASC&sortdir[]=DESC`
-
-This is performed automatically by AXIOS
-
-##### When using POST
-
- - `sortcol` : is sent in the following format  `sortcol[0]=COLNAME ; sortcol[1]=COLNAME; `
- - `sortdir` : is sent in the following format  `sortdir[0]=ASC ; sortdir[1]=DESC`
-
-This is performed automatically by AXIOS
-
-#### Ajax Expected Response
-
-For all requests, vue-bootstrap-table expects an object of the following type:
-
-```javascript
-{
-    echo: INTEGER,
-    filtered: INTEGER,
-    data: [OBJECT],
-},
-```
-
-Where:
-
-- `echo` : is the same integer the request provided.
-- `filtered` : is the total amount of entries for the request, and is used for pagination
-- `data` : is an Array of Object with the entries.
-
-Example:
-
-```javascript
-{
-    echo: 1,
-    filtered: 2000,
-    data: [
-        {
-            id: 1,
-            name: "Rui"
-        },
-        {
-            id: 2,
-            name: "Gustavo"
-        },
-    ],
-},
-```
-
-## Events
-
-* `cellDataModifiedEvent` - When a cell is edited, an `cellDataModifiedEvent` event is dispatched.
-* `ajaxLoadedEvent` - When ajax call is executed successfully an `ajaxLoadedEvent` event is dispatched.
-* `ajaxLoadingError` -When ajax call is executed unsuccessfully an  `ajaxLoadingError` event is dispatched.
-
-### Handling Events
-
-```javascript
-    created: function () {
-        this.$on('cellDataModifiedEvent',
-            function( originalValue, newValue, columnTitle, entry) {
-                console.log("cellDataModifiedEvent - Original Value : " + originalValue +
-                                         " | New Value : " + newValue +
-                                         " | Column : " + columnTitle +
-                                         " | Complete Entry : " +  entry );
-            }
-        );
-        this.$on('ajaxLoadedEvent',
-            function( data ) {
-                console.log("ajaxLoadedEvent - data : " + data );
-            }
-        );
-        this.$on('ajaxLoadingError',
-            function( error ) {
-                console.log("ajaxLoadingError - error : " + error );
-            }
-        );
-    },
-```
-
 ## Contribute
 
 If you have a feature request, please add it as an issue or make a pull request.
@@ -606,95 +418,9 @@ If you have a feature request, please add it as an issue or make a pull request.
 - [x] Column picker
 - [x] Pagination
 - [x] Editing
-- [x] Ajax
+- [ ] Ajax
 - [ ] Responsive
 - [ ] Dates sorting
 - [ ] Keyboard navigation
 
 
-## Changelog
-
-### 1.1.13
-
-* #19 - Disable filter for specific columns
-
-### 1.1.12
-
-* Enhancement - exposed methods.
-
-### 1.1.11
-
-* Enhancement - #11 - Dynamic Page Size
-* Enhancement - Started creating public methods to simplify stuff.
-
-### 1.1.10.1
-
-* Bug fix - axios problem with passing axios config object
-
-### 1.1.10
-
-* Bug fix - Delegate true and false behaviours leading to not loading data
-* Bug fix - Ajax redundant fetch when not needed
-* Enhancement - #14 - Adding support for default ordering
-* Enhancement - Documentation of code
-
-### 1.1.9
-
-* Bug fix - Support for IE11 (maybe fixed for IE10 aswell)
-
-### 1.1.8
-
-* Bug fix - Issue 5 - Axios config not being loaded with GET method and Delegate false.
-
-### 1.1.7
-
-* Allowing Axios configuration to be passed for the requests
-
-### 1.1.6
-
-* Search case sensitivity configurable
-
-### 1.1.5
-
-* Row Click Handler added
-
-### 1.1.4
-
-* Fix- delegate now doesn't use echo
-
-### 1.1.3
-
-* Define a Render Function support by column
-* Define Column Styles by column
-* Define Cell Styles by column
-
-### 1.1.2
-
-* Fix to Sorting
-* Added Multicolumn Sorting
-* Fix dynamic adding rows with update to interface
-* Ajax with multicolumn sorting
-
-### 1.1.1
-
-* Added more Events
-
-### 1.1.0
-
-* Remote data loading (through ajax call)
-* Remote data processing (through ajax calls)
-* Loading overlay
-
-### 1.0.2
-
-* Pagination working
-* Editing cells on the table
-* Configuration Improvements
-
-### 1.0.1
-
-* Bug fix
-
-### 1.0.0
-
-* First version

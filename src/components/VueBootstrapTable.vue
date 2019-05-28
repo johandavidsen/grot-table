@@ -474,8 +474,6 @@
           tColsDir.push(this.sortOrders[this.sortKey[i]].toLowerCase())
         }
 
-        // eslint-disable-next-line
-        console.log(tColsDir)
         result = orderBy(result, this.sortKey, tColsDir)
 
         // Setup pagination
