@@ -18,7 +18,9 @@
                 <table class="table table-bordered table-hover table-condensed table-striped vue-table">
                     <thead>
                         <table-header :columns="displayColsVisible" :sortable="sortable" :sort-key="sortKey" :sort-orders="sortOrders" v-on:selected="sortBy">
-                            <check-box v-if="selectable" :checked="allSelected" v-on:selected="changeAllSelected"></check-box>
+                            <th>
+                                <check-box v-if="selectable" :checked="allSelected" v-on:selected="changeAllSelected"></check-box>
+                            </th>
                         </table-header>
                     </thead>
 
@@ -29,7 +31,9 @@
                                    track-by="entry"
                                    :key="index"
                                    v-on:selected="selectRow">
-                            <check-box v-if="selectable" :checked="entry.selected" v-on:selected="(value) => toggleCheckbox(index, value)"></check-box>
+                            <td>
+                                <check-box v-if="selectable" :checked="entry.selected" v-on:selected="(value) => toggleCheckbox(index, value)"></check-box>
+                            </td>
                         </table-row>
                     </tbody>
                 </table>

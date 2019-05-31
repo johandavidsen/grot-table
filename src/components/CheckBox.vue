@@ -1,11 +1,9 @@
 <template>
-    <th>
-        <div class="custom-control custom-checkbox">
-            <input type="checkbox" class="custom-control-input" :id="id"
-                   aria-label="Select All" v-model="checkedLocal">
-            <label class="custom-control-label" :for="id"></label>
-        </div>
-    </th>
+    <div class="custom-control custom-checkbox">
+        <input type="checkbox" class="custom-control-input" :id="id"
+               aria-label="Select All" v-model="checkedLocal">
+        <label class="custom-control-label" :for="id"></label>
+    </div>
 </template>
 
 <script>
@@ -30,7 +28,7 @@
       }
     },
 
-    data () {
+    data() {
       return {
         id: Math.floor((Math.random() * 100000000) + 1),
         checkedLocal: this.checked

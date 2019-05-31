@@ -8740,12 +8740,12 @@ if (typeof window !== 'undefined') {
 // Indicate to webpack that this file can be concatenated
 /* harmony default export */ var setPublicPath = (null);
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"c4dc2c22-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/VueBootstrapTable.vue?vue&type=template&id=39dc7683&
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('div',{staticClass:"row"},[_c('div',{staticClass:"col-6"},[(_vm.showFilter)?_c('div',{staticClass:"mb-3 mt-3"},[_c('search-input',{model:{value:(_vm.filterKey),callback:function ($$v) {_vm.filterKey=$$v},expression:"filterKey"}})],1):_vm._e()]),_c('div',{staticClass:"col-6"},[(_vm.showColumnPicker)?_c('div',{staticStyle:{"padding-top":"10px","padding-bottom":"10px","float":"right"}},[_c('column-picker',{attrs:{"options":_vm.displayCols},on:{"selected":_vm.toggleColumn}})],1):_vm._e()])]),_c('div',{staticClass:"row"},[_c('div',{staticClass:"col-sm-12"},[_c('table',{staticClass:"table table-bordered table-hover table-condensed table-striped vue-table"},[_c('thead',[_c('table-header',{attrs:{"columns":_vm.displayColsVisible,"sortable":_vm.sortable,"sort-key":_vm.sortKey,"sort-orders":_vm.sortOrders},on:{"selected":_vm.sortBy}},[(_vm.selectable)?_c('check-box',{attrs:{"checked":_vm.allSelected},on:{"selected":_vm.changeAllSelected}}):_vm._e()],1)],1),_c('tbody',_vm._l((_vm.filteredValuesSorted),function(entry,index){return _c('table-row',{key:index,attrs:{"entry":entry,"columns":_vm.displayColsVisible,"track-by":"entry"},on:{"selected":_vm.selectRow}},[(_vm.selectable)?_c('check-box',{attrs:{"checked":entry.selected},on:{"selected":function (value) { return _vm.toggleCheckbox(index, value); }}}):_vm._e()],1)}),1)])]),(_vm.paginated)?_c('div',{staticClass:"col-sm-12"},[_c('pagination',{attrs:{"page-numbers":_vm.validPageNumbers,"max-page":_vm.maxPage,"page":_vm.page,"show-pagination-etc":_vm.showPaginationEtc},on:{"selected":_vm.updateCurrentPage}})],1):_vm._e()])])}
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"4b834286-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/VueBootstrapTable.vue?vue&type=template&id=56d7c504&
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('div',{staticClass:"row"},[_c('div',{staticClass:"col-6"},[(_vm.showFilter)?_c('div',{staticClass:"mb-3 mt-3"},[_c('search-input',{model:{value:(_vm.filterKey),callback:function ($$v) {_vm.filterKey=$$v},expression:"filterKey"}})],1):_vm._e()]),_c('div',{staticClass:"col-6"},[(_vm.showColumnPicker)?_c('div',{staticClass:"mb-3 mt-3 d-flex justify-content-end"},[_c('column-picker',{attrs:{"options":_vm.displayCols},on:{"selected":_vm.toggleColumn}})],1):_vm._e()])]),_c('div',{staticClass:"row"},[_c('div',{staticClass:"col-sm-12"},[_c('table',{staticClass:"table table-bordered table-hover table-condensed table-striped vue-table"},[_c('thead',[_c('table-header',{attrs:{"columns":_vm.displayColsVisible,"sortable":_vm.sortable,"sort-key":_vm.sortKey,"sort-orders":_vm.sortOrders},on:{"selected":_vm.sortBy}},[_c('th',[(_vm.selectable)?_c('check-box',{attrs:{"checked":_vm.allSelected},on:{"selected":_vm.changeAllSelected}}):_vm._e()],1)])],1),_c('tbody',_vm._l((_vm.filteredValuesSorted),function(entry,index){return _c('table-row',{key:index,attrs:{"entry":entry,"columns":_vm.displayColsVisible,"track-by":"entry"},on:{"selected":_vm.selectRow}},[_c('td',[(_vm.selectable)?_c('check-box',{attrs:{"checked":entry.selected},on:{"selected":function (value) { return _vm.toggleCheckbox(index, value); }}}):_vm._e()],1)])}),1)])]),(_vm.paginated)?_c('div',{staticClass:"col-sm-12"},[_c('pagination',{attrs:{"max-page":_vm.maxPage,"current-page":_vm.page},on:{"selected":_vm.updateCurrentPage}})],1):_vm._e()])])}
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/VueBootstrapTable.vue?vue&type=template&id=39dc7683&
+// CONCATENATED MODULE: ./src/components/VueBootstrapTable.vue?vue&type=template&id=56d7c504&
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es6.function.name.js
 var es6_function_name = __webpack_require__("7f7f");
@@ -8774,7 +8774,42 @@ var lodash_includes_default = /*#__PURE__*/__webpack_require__.n(lodash_includes
 var lodash_findindex = __webpack_require__("07a7");
 var lodash_findindex_default = /*#__PURE__*/__webpack_require__.n(lodash_findindex);
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"c4dc2c22-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/SearchInput.vue?vue&type=template&id=7b1a0172&
+// CONCATENATED MODULE: ./node_modules/@babel/runtime-corejs2/helpers/esm/classCallCheck.js
+function _classCallCheck(instance, Constructor) {
+  if (!(instance instanceof Constructor)) {
+    throw new TypeError("Cannot call a class as a function");
+  }
+}
+// CONCATENATED MODULE: ./src/components/Column.js
+
+
+
+var Column_Column = function Column(_ref) {
+  var title = _ref.title,
+      name = _ref.name,
+      visible = _ref.visible,
+      editable = _ref.editable,
+      renderfunction = _ref.renderfunction,
+      columnstyle = _ref.columnstyle,
+      cellstyle = _ref.cellstyle,
+      sortable = _ref.sortable,
+      filterable = _ref.filterable;
+
+  _classCallCheck(this, Column);
+
+  this.title = title;
+  this.name = name ? name : title;
+  this.visible = visible ? visible : true;
+  this.editable = editable ? editable : false;
+  this.renderfunction = renderfunction ? renderfunction : false;
+  this.columnstyle = columnstyle ? columnstyle : "";
+  this.cellstyle = cellstyle ? cellstyle : "";
+  this.sortable = sortable ? sortable : true;
+  this.filterable = filterable ? filterable : true;
+};
+
+
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"4b834286-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/SearchInput.vue?vue&type=template&id=7b1a0172&
 var SearchInputvue_type_template_id_7b1a0172_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"input-group"},[_c('input',{staticClass:"form-control",attrs:{"type":"text","placeholder":"Filter","aria-label":"","aria-describedby":"FilterItems"},domProps:{"value":_vm.value},on:{"input":_vm.uppdate}}),_vm._m(0)])}
 var SearchInputvue_type_template_id_7b1a0172_staticRenderFns = [function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"input-group-append"},[_c('span',{staticClass:"input-group-text fa fa-search",attrs:{"id":"FilterItems"}})])}]
 
@@ -8922,7 +8957,7 @@ var component = normalizeComponent(
 )
 
 /* harmony default export */ var SearchInput = (component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"c4dc2c22-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/ColumnPicker.vue?vue&type=template&id=137ca13e&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"4b834286-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/ColumnPicker.vue?vue&type=template&id=137ca13e&
 var ColumnPickervue_type_template_id_137ca13e_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"btn-group"},[_vm._m(0),_c('div',{staticClass:"dropdown-menu dropdown-menu-right",attrs:{"aria-labelledby":"dropdownMenuButton"}},_vm._l((_vm.options),function(column,i){return _c('button',{key:i,staticClass:"dropdown-item",on:{"click":function($event){$event.preventDefault();return (function () { return _vm.selectColumn(column); })($event)}}},[(column.visible)?_c('i',{staticClass:"fa fa-check"}):_vm._e(),_vm._v(" "+_vm._s(column.title)+"\n        ")])}),0)])}
 var ColumnPickervue_type_template_id_137ca13e_staticRenderFns = [function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('button',{staticClass:"btn btn-outline-primary dropdown-toggle",attrs:{"type":"button","id":"dropdownMenuButton","data-toggle":"dropdown","aria-haspopup":"true","aria-expanded":"false"}},[_vm._v("\n        Columns "),_c('span',{staticClass:"caret"})])}]
 
@@ -8987,7 +9022,7 @@ var ColumnPicker_component = normalizeComponent(
 )
 
 /* harmony default export */ var ColumnPicker = (ColumnPicker_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"c4dc2c22-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/TableHeader.vue?vue&type=template&id=12d86304&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"4b834286-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/TableHeader.vue?vue&type=template&id=12d86304&
 var TableHeadervue_type_template_id_12d86304_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('tr',[_vm._t("default"),_vm._l((_vm.columns),function(column,i){return _c('th',{key:i,staticClass:"icon",class:_vm.getClasses(column),attrs:{"track-by":"column"},on:{"click":function ($event) { return _vm.select($event, column); }}},[_vm._v("\n        "+_vm._s(column.title)+"\n    ")])})],2)}
 var TableHeadervue_type_template_id_12d86304_staticRenderFns = []
 
@@ -9084,16 +9119,14 @@ var TableHeader_component = normalizeComponent(
 )
 
 /* harmony default export */ var TableHeader = (TableHeader_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"c4dc2c22-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/CheckBox.vue?vue&type=template&id=3ea9a02c&
-var CheckBoxvue_type_template_id_3ea9a02c_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('th',[_c('div',{staticClass:"custom-control custom-checkbox"},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.checkedLocal),expression:"checkedLocal"}],staticClass:"custom-control-input",attrs:{"type":"checkbox","id":_vm.id,"aria-label":"Select All"},domProps:{"checked":Array.isArray(_vm.checkedLocal)?_vm._i(_vm.checkedLocal,null)>-1:(_vm.checkedLocal)},on:{"change":function($event){var $$a=_vm.checkedLocal,$$el=$event.target,$$c=$$el.checked?(true):(false);if(Array.isArray($$a)){var $$v=null,$$i=_vm._i($$a,$$v);if($$el.checked){$$i<0&&(_vm.checkedLocal=$$a.concat([$$v]))}else{$$i>-1&&(_vm.checkedLocal=$$a.slice(0,$$i).concat($$a.slice($$i+1)))}}else{_vm.checkedLocal=$$c}}}}),_c('label',{staticClass:"custom-control-label",attrs:{"for":_vm.id}})])])}
-var CheckBoxvue_type_template_id_3ea9a02c_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"4b834286-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/CheckBox.vue?vue&type=template&id=2fd4917d&
+var CheckBoxvue_type_template_id_2fd4917d_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"custom-control custom-checkbox"},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.checkedLocal),expression:"checkedLocal"}],staticClass:"custom-control-input",attrs:{"type":"checkbox","id":_vm.id,"aria-label":"Select All"},domProps:{"checked":Array.isArray(_vm.checkedLocal)?_vm._i(_vm.checkedLocal,null)>-1:(_vm.checkedLocal)},on:{"change":function($event){var $$a=_vm.checkedLocal,$$el=$event.target,$$c=$$el.checked?(true):(false);if(Array.isArray($$a)){var $$v=null,$$i=_vm._i($$a,$$v);if($$el.checked){$$i<0&&(_vm.checkedLocal=$$a.concat([$$v]))}else{$$i>-1&&(_vm.checkedLocal=$$a.slice(0,$$i).concat($$a.slice($$i+1)))}}else{_vm.checkedLocal=$$c}}}}),_c('label',{staticClass:"custom-control-label",attrs:{"for":_vm.id}})])}
+var CheckBoxvue_type_template_id_2fd4917d_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/CheckBox.vue?vue&type=template&id=3ea9a02c&
+// CONCATENATED MODULE: ./src/components/CheckBox.vue?vue&type=template&id=2fd4917d&
 
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/CheckBox.vue?vue&type=script&lang=js&
-//
-//
 //
 //
 //
@@ -9138,8 +9171,8 @@ var CheckBoxvue_type_template_id_3ea9a02c_staticRenderFns = []
 
 var CheckBox_component = normalizeComponent(
   components_CheckBoxvue_type_script_lang_js_,
-  CheckBoxvue_type_template_id_3ea9a02c_render,
-  CheckBoxvue_type_template_id_3ea9a02c_staticRenderFns,
+  CheckBoxvue_type_template_id_2fd4917d_render,
+  CheckBoxvue_type_template_id_2fd4917d_staticRenderFns,
   false,
   null,
   null,
@@ -9148,14 +9181,14 @@ var CheckBox_component = normalizeComponent(
 )
 
 /* harmony default export */ var CheckBox = (CheckBox_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"c4dc2c22-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/TableRow.vue?vue&type=template&id=316ce437&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"4b834286-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/TableRow.vue?vue&type=template&id=316ce437&
 var TableRowvue_type_template_id_316ce437_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('tr',{on:{"click":_vm.click}},[_vm._t("default"),_vm._l((_vm.columns),function(column,index){return _c('td',{directives:[{name:"show",rawName:"v-show",value:(column.visible),expression:"column.visible"}],key:index,class:column.cellstyle,attrs:{"track-by":"column"}},[_vm._t(column.name,[(column.renderfunction!==false)?_c('span',{domProps:{"innerHTML":_vm._s(column.renderfunction( column.name, _vm.entry ))}}):(!column.editable)?_c('span',[_vm._v(_vm._s(_vm.entry[column.name]))]):_c('value-field-section',{attrs:{"entry":_vm.entry,"columnname":column.name}})],{"column":column,"value":_vm.entry})],2)})],2)}
 var TableRowvue_type_template_id_316ce437_staticRenderFns = []
 
 
 // CONCATENATED MODULE: ./src/components/TableRow.vue?vue&type=template&id=316ce437&
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"c4dc2c22-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/ValueFieldSection.vue?vue&type=template&id=20a71ddc&scoped=true&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"4b834286-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/ValueFieldSection.vue?vue&type=template&id=20a71ddc&scoped=true&
 var ValueFieldSectionvue_type_template_id_20a71ddc_scoped_true_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return (!_vm.enabled)?_c('span',{staticClass:"editableField",on:{"dblclick":_vm.toggleInput}},[_vm._v(_vm._s(this.entry[this.columnname]))]):(_vm.enabled)?_c('div',{staticClass:"input-group"},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.datavalue),expression:"datavalue"}],staticClass:"form-control",attrs:{"type":"text"},domProps:{"value":(_vm.datavalue)},on:{"keyup":[function($event){if(!$event.type.indexOf('key')&&_vm._k($event.keyCode,"enter",13,$event.key,"Enter")){ return null; }return _vm.saveThis($event)},function($event){if(!$event.type.indexOf('key')&&_vm._k($event.keyCode,"esc",27,$event.key,["Esc","Escape"])){ return null; }return _vm.cancelThis($event)}],"input":function($event){if($event.target.composing){ return; }_vm.datavalue=$event.target.value}}}),_c('span',{staticClass:"input-group-btn"},[_c('button',{staticClass:"btn btn-danger",attrs:{"type":"button"},on:{"click":_vm.cancelThis}},[_c('span',{staticClass:"fa fa-times",attrs:{"aria-hidden":"true"}})]),_c('button',{staticClass:"btn btn-primary",attrs:{"type":"button"},on:{"click":_vm.saveThis}},[_c('span',{staticClass:"fa fa-check",attrs:{"aria-hidden":"true"}})])])]):_vm._e()}
 var ValueFieldSectionvue_type_template_id_20a71ddc_scoped_true_staticRenderFns = []
 
@@ -9294,12 +9327,12 @@ var TableRow_component = normalizeComponent(
 )
 
 /* harmony default export */ var TableRow = (TableRow_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"c4dc2c22-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/Pagination.vue?vue&type=template&id=4f49df6a&
-var Paginationvue_type_template_id_4f49df6a_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"btn-toolbar",attrs:{"role":"toolbar","aria-label":"pagination bar"}},[_c('div',{staticClass:"btn-group mr-2",attrs:{"role":"group","aria-label":"first page"}},[_c('button',{staticClass:"btn btn-outline-primary",attrs:{"type":"button"},on:{"click":function($event){return _vm.click(1)}}},[_vm._v("«")])]),_c('div',{staticClass:"btn-group mr-2",attrs:{"role":"group","aria-label":"pages"}},_vm._l((_vm.pageNumbers),function(index){return _c('button',{key:index,staticClass:"btn btn-outline-primary",class:{ active: _vm.currentPage===index },attrs:{"type":"button"},on:{"click":function($event){return _vm.click(index)}}},[_vm._v("\n            "+_vm._s(index)+"\n        ")])}),0),(_vm.showPaginationEtc)?_c('div',{staticClass:"btn-group mr-2"},[_vm._v("...")]):_vm._e(),_c('div',{staticClass:"btn-group",attrs:{"role":"group","aria-label":"last page"}},[_c('button',{staticClass:"btn btn-outline-primary",attrs:{"type":"button"},on:{"click":function($event){return _vm.click(_vm.maxPage)}}},[_vm._v("»")])])])}
-var Paginationvue_type_template_id_4f49df6a_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"4b834286-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/Pagination.vue?vue&type=template&id=f4d7cd00&
+var Paginationvue_type_template_id_f4d7cd00_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"btn-toolbar",attrs:{"role":"toolbar","aria-label":"pagination bar"}},[_c('div',{staticClass:"btn-group mr-2",attrs:{"role":"group","aria-label":"first page"}},[_c('button',{staticClass:"btn btn-outline-primary",attrs:{"type":"button"},on:{"click":function($event){return _vm.click(1)}}},[_vm._v("«")])]),_c('div',{staticClass:"btn-group mr-2",attrs:{"role":"group","aria-label":"pages"}},_vm._l((_vm.currentPages),function(index){return _c('button',{key:index,staticClass:"btn btn-outline-primary",class:{ active: _vm.currentPage===index },attrs:{"type":"button"},on:{"click":function($event){return _vm.click(index)}}},[_vm._v("\n            "+_vm._s(index)+"\n        ")])}),0),(_vm.showPaginationEtc)?_c('div',{staticClass:"btn-group mr-2"},[_vm._v("\n        ...\n    ")]):_vm._e(),_c('div',{staticClass:"btn-group",attrs:{"role":"group","aria-label":"last page"}},[_c('button',{staticClass:"btn btn-outline-primary",attrs:{"type":"button"},on:{"click":function($event){return _vm.click(_vm.maxPage)}}},[_vm._v("»")])])])}
+var Paginationvue_type_template_id_f4d7cd00_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/Pagination.vue?vue&type=template&id=4f49df6a&
+// CONCATENATED MODULE: ./src/components/Pagination.vue?vue&type=template&id=f4d7cd00&
 
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/Pagination.vue?vue&type=script&lang=js&
 
@@ -9324,34 +9357,43 @@ var Paginationvue_type_template_id_4f49df6a_staticRenderFns = []
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ var Paginationvue_type_script_lang_js_ = ({
   name: "Pagination",
   props: {
-    pageNumbers: {
-      type: Array,
-      required: true
-    },
     maxPage: {
       type: Number,
       required: true
     },
-    page: {
+    currentPage: {
       type: Number,
-      required: true
-    },
-    showPaginationEtc: {
-      type: Boolean,
       required: true
     }
   },
-  data: function data() {
-    return {
-      currentPage: this.page
-    };
-  },
-  watch: {
-    page: function page(newValue) {
-      return this.currentPage = newValue;
+  computed: {
+    currentPages: function currentPages() {
+      var result = [];
+      var start = 1;
+
+      if (this.currentPage > 3) {
+        start = this.currentPage - 2;
+      }
+
+      for (var i = 0; start <= this.maxPage && i < 5; start++) {
+        result.push(start);
+        i++;
+      }
+
+      return result;
+    },
+    showPaginationEtc: function showPaginationEtc() {
+      var temp = 1;
+      if (this.currentPage > 3) temp = this.currentPage - 2;
+      return temp + 4 < this.maxPage;
     }
   },
   methods: {
@@ -9372,8 +9414,8 @@ var Paginationvue_type_template_id_4f49df6a_staticRenderFns = []
 
 var Pagination_component = normalizeComponent(
   components_Paginationvue_type_script_lang_js_,
-  Paginationvue_type_template_id_4f49df6a_render,
-  Paginationvue_type_template_id_4f49df6a_staticRenderFns,
+  Paginationvue_type_template_id_f4d7cd00_render,
+  Paginationvue_type_template_id_f4d7cd00_staticRenderFns,
   false,
   null,
   null,
@@ -9517,11 +9559,14 @@ var Pagination_component = normalizeComponent(
 //
 //
 //
+//
+//
+//
+//
 
 /* used for fixing IE problems*/
 
-Object(es6_promise["polyfill"])(); //import axios from 'axios'
-//import qs from 'qs'
+Object(es6_promise["polyfill"])();
 
 
 
@@ -9652,24 +9697,6 @@ Object(es6_promise["polyfill"])(); //import axios from 'axios'
     },
 
     /**
-     * If loading of table is to be done through ajax, then this object must be set
-     */
-
-    /*ajax: {
-      type: Object,
-      required: false,
-      default: function () {
-        return {
-          enabled: false,
-          url: "",
-          method: "GET",
-          delegate: false,
-          axiosConfig: {}
-        }
-      }
-    },*/
-
-    /**
      * Function to handle row clicks
      */
     rowClickHandler: {
@@ -9690,10 +9717,7 @@ Object(es6_promise["polyfill"])(); //import axios from 'axios'
       rawValues: [],
       page: 1,
       definedPageSize: 10,
-      allSelected: false // Used in relation to AJAX
-      //echo: 0,
-      //loading: true,
-
+      allSelected: false
     };
   },
 
@@ -9702,7 +9726,6 @@ Object(es6_promise["polyfill"])(); //import axios from 'axios'
    */
   mounted: function mounted() {
     this.$nextTick(function () {
-      //this.loading = true;
       this.setSortOrders();
       this.definedPageSize = this.pageSize;
       var self = this; //
@@ -9714,48 +9737,12 @@ Object(es6_promise["polyfill"])(); //import axios from 'axios'
 
 
       this.columns.forEach(function (column) {
-        var obj = self.buildColumnObject(column);
+        var obj = new Column_Column(column);
         self.displayCols.push(obj);
-      }); // Work the data
-
-      /*if (this.ajax.enabled) {
-        if (!this.ajax.delegate) {
-          // If ajax but NOT delegate
-          // Perform the fetch of data now and set the raw values
-          this.loading = true;
-          this.fetchData(function (data) {
-            self.rawValues = data.data;
-          });
-        } else {
-          // If ajax and also delegate
-          // Simply call processFilter, which will take care of the fetching
-          //this.processFilter();
-        }
-      } else {*/
-      // Not ajax, therefore working with given elements
-      // Pass the Prop values to rawValues data object.
-
-      self.rawValues = self.values; //}
+      });
+      self.rawValues = self.values;
     });
   },
-
-  /**
-   * On created register on CellDataModified event
-   */
-
-  /*created: function () {
-    var self = this;
-    this.$on('cellDataModifiedEvent', self.fireCellDataModifiedEvent);
-  },*/
-
-  /**
-   * On destroy unregister the event
-   */
-
-  /*beforeDestroy: function () {
-    var self = this;
-    this.$off('cellDataModifiedEvent', self.fireCellDataModifiedEvent);
-  },*/
   watch: {
     values: function values() {
       this.rawValues = this.values;
@@ -9767,7 +9754,7 @@ Object(es6_promise["polyfill"])(); //import axios from 'axios'
       this.displayCols = [];
       var self = this;
       this.columns.forEach(function (column) {
-        var obj = self.buildColumnObject(column);
+        var obj = new Column_Column(column);
         self.displayCols.push(obj);
       });
       this.setSortOrders();
@@ -9776,7 +9763,6 @@ Object(es6_promise["polyfill"])(); //import axios from 'axios'
       this.filterKey = "";
     },
     showColumnPicker: function showColumnPicker() {
-      // this.columnMenuOpen = false;
       this.displayCols.forEach(function (column) {
         column.visible = true;
       });
@@ -9798,11 +9784,6 @@ Object(es6_promise["polyfill"])(); //import axios from 'axios'
     paginated: function paginated() {
       this.processFilter();
     },
-
-    /*loading: function () {
-      /*document.getElementById("loadingdiv").style.width = document.getElementById("maindiv").getBoundingClientRect().width + "px";
-      document.getElementById("loadingdiv").style.height = document.getElementById("maindiv").getBoundingClientRect().height+"px";
-    },*/
     allSelected: function allSelected() {
       var val = this.allSelected;
       this.values.forEach(function (value) {
@@ -9836,26 +9817,8 @@ Object(es6_promise["polyfill"])(); //import axios from 'axios'
         return lodash_orderby_default()(this.filteredValues, this.sortKey, tColsDir);
       }
     },
-    validPageNumbers: function validPageNumbers() {
-      // 5 page max
-      var result = [];
-      var start = 1;
-      if (this.page > 3) start = this.page - 2;
-
-      for (var i = 0; start <= this.maxPage && i < 5; start++) {
-        result.push(start);
-        i++;
-      }
-
-      return result;
-    },
     maxPage: function maxPage() {
       return Math.ceil(this.filteredSize / this.definedPageSize);
-    },
-    showPaginationEtc: function showPaginationEtc() {
-      var temp = 1;
-      if (this.page > 3) temp = this.page - 2;
-      return temp + 4 < this.maxPage;
     }
   },
   methods: {
@@ -9885,37 +9848,15 @@ Object(es6_promise["polyfill"])(); //import axios from 'axios'
       this.definedPageSize = newPageSize;
       this.processFilter();
     },
-
-    /**
-     * Used to fire off events when something happens to a cell
-     */
-
-    /*fireCellDataModifiedEvent: function (originalValue, newValue, columnTitle, entry) {
-      this.$parent.$emit('cellDataModifiedEvent', originalValue, newValue, columnTitle, entry);
-    },*/
     processFilter: function processFilter() {
-      var self = this; //this.loading = true;
-
-      /*if (this.ajax.enabled && this.ajax.delegate) {
-        this.fetchData(function (data) {
-          self.filteredSize = data.filtered;
-          self.filteredValues = data.data;
-          self.loading = false;
-        });
-      } else {*/
-
+      // Populate and filter data
+      var self = this;
       var result = this.rawValues.filter(function (item) {
         for (var col in self.displayColsVisible) {
-          if (self.displayColsVisible[col].filterable) {
-            if (self.filterCaseSensitive) {
-              if (lodash_includes_default()(item[self.displayColsVisible[col].name] + "", self.filterKey + "")) {
-                return true;
-              }
-            } else {
-              if (lodash_includes_default()((item[self.displayColsVisible[col].name] + "").toLowerCase(), (self.filterKey + "").toLowerCase())) {
-                return true;
-              }
-            }
+          if (self.displayColsVisible[col].filterable && self.filterCaseSensitive && lodash_includes_default()(item[self.displayColsVisible[col].name] + "", self.filterKey + "")) {
+            return true;
+          } else if (self.displayColsVisible[col].filterable && lodash_includes_default()((item[self.displayColsVisible[col].name] + "").toLowerCase(), (self.filterKey + "").toLowerCase())) {
+            return true;
           }
         }
 
@@ -9927,10 +9868,7 @@ Object(es6_promise["polyfill"])(); //import axios from 'axios'
         tColsDir.push(this.sortOrders[this.sortKey[i]].toLowerCase());
       }
 
-      if (typeof this.ajax !== 'undefined' && this.ajax.enabled && this.ajax.delegate) {// TODO: What is the point here?
-      } else {
-        result = lodash_orderby_default()(result, this.sortKey, tColsDir);
-      }
+      result = lodash_orderby_default()(result, this.sortKey, tColsDir); // Setup pagination
 
       this.filteredSize = result.length;
 
@@ -9940,120 +9878,17 @@ Object(es6_promise["polyfill"])(); //import axios from 'axios'
         var tempResult = [];
 
         while (tIndex < this.definedPageSize) {
-          if (typeof result[startIndex + tIndex] !== "undefined") tempResult.push(result[startIndex + tIndex]);
+          if (typeof result[startIndex + tIndex] !== "undefined") {
+            tempResult.push(result[startIndex + tIndex]);
+          }
+
           tIndex++;
         }
 
         self.filteredValues = tempResult;
-      } else self.filteredValues = result;
-
-      self.loading = false; //}
-    },
-
-    /*fetchData: function (dataCallBackFunction) {
-      var self = this
-       var ajaxParameters = {
-        params: {}
+      } else {
+        self.filteredValues = result;
       }
-       this.echo++
-       if (this.ajax.enabled && this.ajax.delegate) {
-        var tColsDir = [];
-         for (var i = 0, len = this.sortKey.length; i < len; i++) {
-          tColsDir.push(this.sortOrders[this.sortKey[i]].toLowerCase())
-        }
-         if (this.ajax.method === "GET") {
-          //COPY
-          if (this.ajax !== null && this.ajax.axiosConfig !== null && this.ajax.axiosConfig !== undefined) {
-            ajaxParameters = JSON.parse(
-              JSON.stringify(this.ajax.axiosConfig)
-            )
-          }
-           ajaxParameters.params = {}
-          ajaxParameters.params.sortcol = this.sortKey
-          ajaxParameters.params.sortdir = tColsDir
-          ajaxParameters.params.filter = this.filterKey
-           if (self.paginated) {
-            ajaxParameters.params.page = this.page
-            ajaxParameters.params.pagesize = this.definedPageSize
-          } else {
-            ajaxParameters.params.page = 1
-            ajaxParameters.params.pagesize = null
-          }
-           ajaxParameters.params.echo = this.echo
-        }
-         if (this.ajax.method === "POST") {
-          ajaxParameters.sortcol = this.sortKey
-          ajaxParameters.sortdir = tColsDir
-          ajaxParameters.filter = this.filterKey
-           if (self.paginated) {
-            ajaxParameters.page = this.page
-            ajaxParameters.pagesize = this.definedPageSize
-          } else {
-            ajaxParameters.page = 1
-            ajaxParameters.pagesize = null
-          }
-          ajaxParameters.echo = this.echo
-        }
-      }
-       if (this.ajax.enabled && !this.ajax.delegate) {
-        if (this.ajax.method === "GET") {
-          //COPY
-          if (this.ajax !== null && this.ajax.axiosConfig !== null && this.ajax.axiosConfig !== undefined) {
-            ajaxParameters = JSON.parse(JSON.stringify(this.ajax.axiosConfig))
-          }
-           ajaxParameters.params = {}
-        }
-         if (this.ajax.method === "POST") {
-          // Do nothing at this point !
-        }
-      }
-       if (this.ajax.enabled && this.ajax.method === "GET") {
-        axios.get(self.ajax.url, ajaxParameters)
-          .then(response => {
-            if (this.ajax.delegate) {
-              if (response.data.echo !== self.echo) {
-                return
-              }
-            }
-            dataCallBackFunction(response.data)
-            this.$parent.$emit('ajaxLoadedEvent', response.data)
-          })
-          .catch(e => {
-            this.$parent.$emit('ajaxLoadingError', e)
-          });
-      }
-       if (this.ajax.enabled && this.ajax.method === "POST") {
-        var tempAxiosConf = {}
-         if (this.ajax !== null && this.ajax.axiosConfig !== null && this.ajax.axiosConfig !== undefined) {
-          tempAxiosConf = this.ajax.axiosConfig
-        }
-         axios.post(self.ajax.url, qs.stringify(ajaxParameters), tempAxiosConf)
-          .then(response => {
-            if (this.ajax.delegate) {
-              if (response.data.echo !== self.echo) {
-                return
-              }
-            }
-             dataCallBackFunction(response.data)
-            this.$parent.$emit('ajaxLoadedEvent', response.data)
-           })
-          .catch(e => {
-            this.$parent.$emit('ajaxLoadingError', e)
-          })
-      }
-    },*/
-    buildColumnObject: function buildColumnObject(column) {
-      var obj = {};
-      obj.title = column.title;
-      if (typeof column.name !== "undefined") obj.name = column.name;else obj.name = column.title;
-      if (typeof column.visible !== "undefined") obj.visible = column.visible;else obj.visible = true;
-      if (typeof column.editable !== "undefined") obj.editable = column.editable;else obj.editable = false;
-      if (typeof column.renderfunction !== "undefined") obj.renderfunction = column.renderfunction;else obj.renderfunction = false;
-      if (typeof column.columnstyle !== "undefined") obj.columnstyle = column.columnstyle;else obj.columnstyle = "";
-      if (typeof column.cellstyle !== "undefined") obj.cellstyle = column.cellstyle;else obj.cellstyle = "";
-      if (typeof column.sortable !== "undefined") obj.sortable = column.sortable;else obj.sortable = true;
-      if (typeof column.filterable !== "undefined") obj.filterable = column.filterable;else obj.filterable = true;
-      return obj;
     },
     setSortOrders: function setSortOrders() {
       this.sortKey = [];
@@ -10103,8 +9938,7 @@ Object(es6_promise["polyfill"])(); //import axios from 'axios'
     toggleColumn: function toggleColumn(column) {
       column.visible = !column.visible;
     }
-  },
-  events: {}
+  }
 });
 // CONCATENATED MODULE: ./src/components/VueBootstrapTable.vue?vue&type=script&lang=js&
  /* harmony default export */ var components_VueBootstrapTablevue_type_script_lang_js_ = (VueBootstrapTablevue_type_script_lang_js_); 
