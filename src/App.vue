@@ -88,7 +88,7 @@
             name: 'description'
           },
           {
-            title: 'Street Address',
+            title: 'Address',
             name: 'street_address'
           },
           {
@@ -100,7 +100,7 @@
             name: 'state_province'
           },
           {
-            title: 'Postal Code',
+            title: 'Code',
             name: 'postal_code'
           }
         ],

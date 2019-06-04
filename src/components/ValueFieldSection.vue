@@ -3,9 +3,9 @@
     <div v-else-if="enabled" class="input-group">
       <input type="text" class="form-control" v-model="datavalue" @keyup.enter="saveThis" @keyup.esc="cancelThis">
       <span class="input-group-btn">
-              <button class="btn btn-danger" type="button" @click="cancelThis" ><span class="fa fa-times" aria-hidden="true"></span></button>
-              <button class="btn btn-primary" type="button" @click="saveThis" ><span class="fa fa-check" aria-hidden="true"></span></button>
-            </span>
+          <button class="btn btn-danger" type="button" @click="cancelThis" ><span class="fa fa-times" aria-hidden="true"></span></button>
+          <button class="btn btn-primary" type="button" @click="saveThis" ><span class="fa fa-check" aria-hidden="true"></span></button>
+      </span>
     </div>
 </template>
 

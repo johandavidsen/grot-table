@@ -15,34 +15,36 @@
 
         <div class="row">
             <div class="col-sm-12">
-                <table class="table table-bordered table-hover table-condensed table-striped vue-table">
-                    <thead>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover table-condensed table-striped vue-table">
+                        <thead>
                         <table-header :columns="displayColsVisible" :sortable="sortable" :sort-key="sortKey" :sort-orders="sortOrders" v-on:selected="sortBy">
-                            <th>
-                                <check-box v-if="selectable" :checked="allSelected" v-on:selected="changeAllSelected"></check-box>
+                            <th v-if="selectable">
+                                <check-box  :checked="allSelected" v-on:selected="selectAll"></check-box>
                             </th>
                         </table-header>
-                    </thead>
+                        </thead>
 
-                    <tbody>
+                        <tbody>
                         <table-row v-for="(entry, index) in filteredValuesSorted"
                                    :entry="entry"
                                    :columns="displayColsVisible"
                                    track-by="entry"
                                    :key="index"
                                    v-on:selected="selectRow">
-                            <td>
-                                <check-box v-if="selectable" :checked="entry.selected" v-on:selected="(value) => toggleCheckbox(index, value)"></check-box>
+                            <td track-by="entry" v-if="selectable">
+                                <check-box  :checked="entry.selected" v-on:selected="(value) => toggleCheckbox(index, value)"></check-box>
                             </td>
                         </table-row>
-                    </tbody>
-                </table>
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
             <div v-if="paginated" class="col-sm-12">
                 <pagination :max-page="maxPage"
                             :current-page="page"
-                            v-on:selected="updateCurrentPage">
+                            v-on:selected="selectPage">
                 </pagination>
             </div>
 
@@ -209,24 +211,6 @@
       },
 
       /**
-       * Enable/disable input filter, optional, default false
-       */
-      showFilter: {
-        type: Boolean,
-        required: false,
-        default: false,
-      },
-
-      /**
-       * Define if Filter search field is to work in a case Sensitive way. Default: true
-       */
-      filterCaseSensitive: {
-        type: Boolean,
-        required: false,
-        default: true,
-      },
-
-      /**
        * Enable/disable column picker to show/hide table columns, optional, default false
        */
       showColumnPicker: {
@@ -280,20 +264,43 @@
         default: function () {
         }
       },
+
+      /**
+       * Enable/disable input filter, optional, default false
+       */
+      showFilter: {
+        type: Boolean,
+        required: false,
+        default: false,
+      },
+
+      /**
+       * Define if Filter search field is to work in a case Sensitive way. Default: true
+       */
+      filterCaseSensitive: {
+        type: Boolean,
+        required: false,
+        default: true,
+      },
     },
 
     data: function () {
       return {
         filteredSize: 0,
         filterKey: "",
+        filteredValues: [],
+
         sortKey: [],
         sortOrders: {},
         sortChanged: 1,
+
         displayCols: [],
-        filteredValues: [],
+
         rawValues: [],
+
         page: 1,
         definedPageSize: 10,
+
         allSelected: false
       }
     },
@@ -349,14 +356,15 @@
         this.setSortOrders()
       },
 
-      showFilter: function () {
-        this.filterKey = ""
-      },
-
       showColumnPicker: function () {
         this.displayCols.forEach(function (column) {
           column.visible = true
         })
+      },
+
+      showFilter: function () {
+        // Reset filter key on toggle showFilter
+        this.filterKey = ""
       },
 
       filterKey: function () {
@@ -426,14 +434,6 @@
 
     methods: {
 
-      selectRow ({ event, entry }) {
-        this.rowClickHandler(event, entry)
-      },
-
-      updateCurrentPage (index) {
-        this.page = index
-      },
-
       toggleCheckbox (index, value) {
         let row = this.values[index]
         row.selected = false
@@ -444,7 +444,15 @@
         this.filteredValuesSorted[index] = rowf
       },
 
-      changeAllSelected (value) {
+      selectRow ({ event, entry }) {
+        this.rowClickHandler(event, entry)
+      },
+
+      selectPage (index) {
+        this.page = index
+      },
+
+      selectAll (value) {
         this.allSelected = value
       },
 
@@ -457,6 +465,9 @@
         this.processFilter()
       },
 
+      /**
+       * This function is called on filterKey change
+       */
       processFilter: function () {
         // Populate and filter data
         let self = this
@@ -481,6 +492,7 @@
         result = orderBy(result, this.sortKey, tColsDir)
 
         // Setup pagination
+        // Based on results filtered on filterKey set Size
         this.filteredSize = result.length
 
         if (this.paginated) {
