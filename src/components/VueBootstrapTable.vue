@@ -18,7 +18,11 @@
                 <div class="table-responsive">
                     <table class="table table-bordered table-hover table-condensed table-striped vue-table">
                         <thead>
-                        <table-header :columns="displayColsVisible" :sortable="sortable" :sort-key="sortKey" :sort-orders="sortOrders" v-on:selected="sortBy">
+                        <table-header :columns="displayColsVisible"
+                                      :sortable="sortable"
+                                      :sort-key="sortKey"
+                                      :sort-orders="sortOrders"
+                                      v-on:selected="sortBy" >
                             <th v-if="selectable">
                                 <check-box  :checked="allSelected" v-on:selected="selectAll"></check-box>
                             </th>
@@ -33,7 +37,7 @@
                                    :key="index"
                                    v-on:selected="selectRow">
                             <td track-by="entry" v-if="selectable">
-                                <check-box  :checked="entry.selected" v-on:selected="(value) => toggleCheckbox(index, value)"></check-box>
+                                <check-box  :checked="entry.selected" v-on:selected="(value) => highlightRow(index, value)"></check-box>
                             </td>
                         </table-row>
                         </tbody>
@@ -434,7 +438,7 @@
 
     methods: {
 
-      toggleCheckbox (index, value) {
+      highlightRow (index, value) {
         let row = this.values[index]
         row.selected = false
         this.values[index] = row
@@ -456,19 +460,63 @@
         this.allSelected = value
       },
 
-      refresh: function () {
+      setPageSize (newPageSize) {
+        this.definedPageSize = newPageSize
         this.processFilter()
       },
 
-      setPageSize: function (newPageSize) {
-        this.definedPageSize = newPageSize
+      setSortOrders () {
+        this.sortKey = []
+        let sortOrders = {}
+        this.columns.forEach(function (column) {
+          sortOrders[column.name] = ""
+        })
+        this.sortOrders = sortOrders
+      },
+
+      sortBy ({ event, column: { name, sortable } }) {
+        let key = name
+
+        if (!sortable) return
+
+        if (this.sortable) {
+          let self = this
+
+          if (!this.multiColumnSortable || (this.multiColumnSortable && !event.shiftKey)) {
+            this.sortKey = [key]
+            this.columns.forEach(function (column) {
+              if (column.name !== key) {
+                self.sortOrders[column.name] = ""
+              }
+            })
+          } else {
+            if (findIndex(this.sortKey, function (o) {
+              return o === key
+            }) === -1) {
+              this.sortKey.push(key)
+            }
+          }
+
+          if (this.sortOrders[key] === "") {
+            this.sortOrders[key] = "ASC"
+          } else if (this.sortOrders[key] === "ASC") {
+            this.sortOrders[key] = "DESC"
+          } else {
+            this.sortOrders[key] = "ASC"
+          }
+
+          this.sortChanged = this.sortChanged * -1
+        }
+      },
+
+      refresh () {
         this.processFilter()
       },
 
       /**
        * This function is called on filterKey change
        */
-      processFilter: function () {
+      processFilter () {
         // Populate and filter data
         let self = this
 
@@ -513,50 +561,7 @@
         }
       },
 
-      setSortOrders: function () {
-        this.sortKey = []
-        var sortOrders = {}
-        this.columns.forEach(function (column) {
-          sortOrders[column.name] = ""
-        })
-        this.sortOrders = sortOrders
-      },
-
-      sortBy: function ({ event, column: { name, sortable } }) {
-        let key = name
-
-        if (!sortable) return
-
-        if (this.sortable) {
-          var self = this
-
-          if (!this.multiColumnSortable || (this.multiColumnSortable && !event.shiftKey)) {
-            this.sortKey = [key]
-            this.columns.forEach(function (column) {
-              if (column.name !== key) {
-                self.sortOrders[column.name] = ""
-              }
-            })
-          } else {
-            if (findIndex(this.sortKey, function (o) {
-              return o === key
-            }) === -1) {
-              this.sortKey.push(key)
-            }
-          }
-          if (this.sortOrders[key] === "") {
-            this.sortOrders[key] = "ASC"
-          } else if (this.sortOrders[key] === "ASC") {
-            this.sortOrders[key] = "DESC"
-          } else {
-            this.sortOrders[key] = "ASC"
-          }
-
-          this.sortChanged = this.sortChanged * -1
-        }
-      },
-
-      toggleColumn: function (column) {
+      toggleColumn (column) {
         column.visible = !column.visible
       }
     }

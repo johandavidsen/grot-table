@@ -66,12 +66,14 @@
         },
 
         columnToSortBy: "name",
+
         ajax: {
           enabled: false,
           url: "http://172.16.213.1:9430/data/test",
           method: "POST",
           delegate: true
         },
+
         columns: [
           {
             title: 'Id',
@@ -85,7 +87,8 @@
           },
           {
             title: 'Description',
-            name: 'description'
+            name: 'description',
+            editable: true
           },
           {
             title: 'Address',
@@ -104,6 +107,7 @@
             name: 'postal_code'
           }
         ],
+
         values: [
           {
             "id": "111",
@@ -128,6 +132,7 @@
             "status": "open"
           }
         ],
+
         columns2: [
           {
             title: 'Id',
@@ -160,6 +165,7 @@
             name: 'postal_code'
           }
         ],
+
         values2: [
           {
             "id": "222",
@@ -210,29 +216,35 @@
     },
 
     methods: {
-      refreshTable: function () {
+      refreshTable () {
         this.$refs.exampleTable.refresh();
       },
-      setNewPageSize: function () {
+
+      setNewPageSize () {
         this.$refs.exampleTable.setPageSize(1);
       },
-      addItem: function () {
+
+      addItem  () {
         const item = {
           "id": this.values.length + 1,
           "name": "name " + (this.values.length + 1)
         };
         this.values.push(item);
       },
-      toggleFilter: function () {
+
+      toggleFilter () {
         this.showFilter = !this.showFilter;
       },
-      togglePicker: function () {
+
+      togglePicker () {
         this.showPicker = !this.showPicker;
       },
-      toggleSelect: function () {
+
+      toggleSelect () {
         this.showSelect = !this.showSelect;
       },
-      togglePagination: function () {
+
+      togglePagination () {
         this.paginated = !this.paginated;
       }
     }
