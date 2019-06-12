@@ -24,7 +24,7 @@
             </value-field-section>
         </td>
 
-        <td v-if="editFields">
+        <span class="options-button-grp" v-if="editFields">
             <div class="btn-group" role="group" aria-label="Basic example">
                 <button type="button" class="btn btn-outline-primary" @click="saveFields">
                     <span class="fa fa-check" aria-hidden="true"></span>
@@ -33,7 +33,7 @@
                     <span class="fa fa-times" aria-hidden="true"></span>
                 </button>
             </div>
-        </td>
+        </span>
     </tr>
 </template>
 
@@ -95,3 +95,9 @@
     }
   }
 </script>
+
+<style lang="scss">
+    .options-button-grp {
+        position: fixed;
+    }
+</style>
