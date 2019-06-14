@@ -3906,7 +3906,7 @@ exports = module.exports = __webpack_require__("2350")(false);
 
 
 // module
-exports.push([module.i, "@charset \"UTF-8\";.vue-table-loading .spinner{border:16px solid #f3f3f3;border-top:16px solid #3498db;border-radius:50%;width:120px;height:120px;-webkit-animation:spin 2s linear infinite;animation:spin 2s linear infinite;position:absolute;left:50%;top:50%;margin:-60px 0 0 -60px}@-webkit-keyframes spin{0%{-webkit-transform:rotate(0deg);transform:rotate(0deg)}to{-webkit-transform:rotate(1turn);transform:rotate(1turn)}}@keyframes spin{0%{-webkit-transform:rotate(0deg);transform:rotate(0deg)}to{-webkit-transform:rotate(1turn);transform:rotate(1turn)}}.vue-table-loading{position:absolute;z-index:99;background-color:#ddd;opacity:.5;width:100%;height:100%}.vue-table-loading-hidden{display:none}table.vue-table thead>tr>th{cursor:pointer;padding-right:30px!important}.vue-table .icon:before{display:inline-block;font-style:normal;font-variant:normal;text-rendering:auto;-webkit-font-smoothing:antialiased}.vue-table .arrow{opacity:1;position:relative}.vue-table .arrow:before{position:absolute;bottom:8px;right:8px;display:block;font-family:Font Awesome\\ 5 Free;font-weight:900;content:\"\\F0DC\"}.vue-table .arrow.asc:before{content:\"\\F0DE\"}.vue-table .arrow.dsc:before{content:\"\\F0DD\"}.vue-table .editableField{cursor:pointer}", ""]);
+exports.push([module.i, ".table-expanded{padding-bottom:50px}.tr-row-overlay{pointer-events:none}.tr-row-overlay:after{position:absolute;top:0;left:0;right:0;bottom:0;background-color:hsla(0,0%,100%,.8);background-position:50%;background-repeat:no-repeat;content:\"\"}", ""]);
 
 // exports
 
@@ -8434,7 +8434,7 @@ exports = module.exports = __webpack_require__("2350")(false);
 
 
 // module
-exports.push([module.i, ".options-button-grp{position:fixed}", ""]);
+exports.push([module.i, ".custom-row{position:relative;cursor:pointer}.options-button-grp{position:absolute;z-index:1050;background-color:#fff;right:20px;bottom:-48px}", ""]);
 
 // exports
 
@@ -8781,12 +8781,12 @@ if (typeof window !== 'undefined') {
 // Indicate to webpack that this file can be concatenated
 /* harmony default export */ var setPublicPath = (null);
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"a1e93038-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/VueBootstrapTable.vue?vue&type=template&id=5e41960c&
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('div',{staticClass:"row"},[_c('div',{staticClass:"col-6"},[(_vm.showFilter)?_c('div',{staticClass:"mb-3 mt-3"},[_c('search-input',{model:{value:(_vm.filterKey),callback:function ($$v) {_vm.filterKey=$$v},expression:"filterKey"}})],1):_vm._e()]),_c('div',{staticClass:"col-6"},[(_vm.showColumnPicker)?_c('div',{staticClass:"mb-3 mt-3 d-flex justify-content-end"},[_c('column-picker',{attrs:{"options":_vm.displayCols},on:{"selected":_vm.toggleColumn}})],1):_vm._e()])]),_c('div',{staticClass:"row"},[_c('div',{staticClass:"col-sm-12"},[_c('div',{staticClass:"table-responsive"},[_c('table',{staticClass:"table table-bordered table-hover table-condensed table-striped vue-table"},[_c('thead',[_c('table-header',{attrs:{"columns":_vm.displayColsVisible,"sortable":_vm.sortable,"sort-key":_vm.sortKey,"sort-orders":_vm.sortOrders},on:{"selected":_vm.sortBy}},[(_vm.selectable)?_c('th',[_c('check-box',{attrs:{"checked":_vm.allSelected},on:{"selected":_vm.selectAll}})],1):_vm._e()])],1),_c('tbody',_vm._l((_vm.filteredValuesSorted),function(entry,index){return _c('table-row',{key:index,attrs:{"entry":entry,"columns":_vm.displayColsVisible,"track-by":"entry"},on:{"selected":_vm.selectRow}},[(_vm.selectable)?_c('td',{attrs:{"track-by":"entry"}},[_c('check-box',{attrs:{"checked":entry.selected},on:{"selected":function (value) { return _vm.highlightRow(index, value); }}})],1):_vm._e()])}),1)])])]),(_vm.paginated)?_c('div',{staticClass:"col-sm-12"},[_c('pagination',{attrs:{"max-page":_vm.maxPage,"current-page":_vm.page},on:{"selected":_vm.selectPage}})],1):_vm._e()])])}
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"a1e93038-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/VueBootstrapTable.vue?vue&type=template&id=380780dd&
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('div',{staticClass:"row"},[_c('div',{staticClass:"col-6"},[(_vm.showFilter)?_c('div',{staticClass:"mb-3 mt-3"},[_c('search-input',{model:{value:(_vm.filterKey),callback:function ($$v) {_vm.filterKey=$$v},expression:"filterKey"}})],1):_vm._e()]),_c('div',{staticClass:"col-6"},[(_vm.showColumnPicker)?_c('div',{staticClass:"mb-3 mt-3 d-flex justify-content-end"},[_c('column-picker',{attrs:{"options":_vm.displayCols},on:{"selected":_vm.toggleColumn}})],1):_vm._e()])]),_c('div',{staticClass:"row"},[_c('div',{staticClass:"col-sm-12"},[_c('div',{class:{ 'table-responsive': true, 'table-expanded': _vm.selectedRow === (_vm.filteredValuesSorted.length - 1)}},[_c('table',{staticClass:"table table-bordered table-hover table-condensed table-striped"},[_c('thead',[_c('table-header',{attrs:{"columns":_vm.displayColsVisible,"sortable":_vm.sortable,"sort-key":_vm.sortKey,"sort-orders":_vm.sortOrders},on:{"selected":_vm.sortBy}},[(_vm.selectable)?_c('th',[_c('check-box',{attrs:{"checked":_vm.allSelected},on:{"selected":_vm.selectAll}})],1):_vm._e()])],1),_c('tbody',_vm._l((_vm.filteredValuesSorted),function(entry,index){return _c('table-row',{key:index,class:{ 'tr-row-overlay': _vm.selectedRow < 0 ? false : index !== _vm.selectedRow },attrs:{"entry":entry,"columns":_vm.displayColsVisible,"track-by":"entry"},on:{"edit-row":function (obj) { return _vm.selectRow(index, obj); }}},[(_vm.selectable)?_c('td',{attrs:{"track-by":"entry"}},[_c('check-box',{attrs:{"checked":entry.selected},on:{"selected":function (value) { return _vm.highlightRow(index, value); }}})],1):_vm._e()])}),1)])])]),(_vm.paginated)?_c('div',{staticClass:"col-sm-12"},[_c('pagination',{attrs:{"max-page":_vm.maxPage,"current-page":_vm.page},on:{"selected":_vm.selectPage}})],1):_vm._e()])])}
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/VueBootstrapTable.vue?vue&type=template&id=5e41960c&
+// CONCATENATED MODULE: ./src/components/VueBootstrapTable.vue?vue&type=template&id=380780dd&
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es6.function.name.js
 var es6_function_name = __webpack_require__("7f7f");
@@ -9222,21 +9222,28 @@ var CheckBox_component = normalizeComponent(
 )
 
 /* harmony default export */ var CheckBox = (CheckBox_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"a1e93038-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/TableRow.vue?vue&type=template&id=1e2086f2&
-var TableRowvue_type_template_id_1e2086f2_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('tr',{staticStyle:{"cursor":"pointer"},on:{"click":_vm.click}},[_vm._t("default"),_vm._l((_vm.columns),function(column,index){return _c('td',{directives:[{name:"show",rawName:"v-show",value:(column.visible),expression:"column.visible"}],key:index,class:column.cellstyle,attrs:{"track-by":"column"}},[(column.renderfunction!==false)?_c('span',{domProps:{"innerHTML":_vm._s(column.renderfunction( column.name, _vm.entry ))}}):(!column.editable)?_c('span',[_vm._v(_vm._s(_vm.entry[column.name]))]):_c('value-field-section',{attrs:{"entry":_vm.entry,"columnname":column.name,"should-save":_vm.editFields},on:{"toggle-edit":_vm.toggleEdit}})],1)}),(_vm.editFields)?_c('span',{staticClass:"options-button-grp"},[_c('div',{staticClass:"btn-group",attrs:{"role":"group","aria-label":"Basic example"}},[_c('button',{staticClass:"btn btn-outline-primary",attrs:{"type":"button"},on:{"click":_vm.saveFields}},[_c('span',{staticClass:"fa fa-check",attrs:{"aria-hidden":"true"}})]),_c('button',{staticClass:"btn btn-outline-danger",attrs:{"type":"button"},on:{"click":_vm.cancelSave}},[_c('span',{staticClass:"fa fa-times",attrs:{"aria-hidden":"true"}})])])]):_vm._e()],2)}
-var TableRowvue_type_template_id_1e2086f2_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"a1e93038-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/TableRow.vue?vue&type=template&id=2f83d48d&
+var TableRowvue_type_template_id_2f83d48d_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('tr',{staticClass:"custom-row"},[_vm._t("default"),_vm._l((_vm.columns),function(column,index){return _c('td',{directives:[{name:"show",rawName:"v-show",value:(column.visible),expression:"column.visible"}],key:index,class:column.cellstyle,attrs:{"track-by":"column"}},[(column.renderfunction!==false)?_c('span',{domProps:{"innerHTML":_vm._s(column.renderfunction( column.name, _vm.entry ))}}):(!column.editable)?_c('span',[_vm._v("\n            "+_vm._s(_vm.entry[column.name])+"\n        ")]):_c('value-field-section',{attrs:{"entry":_vm.entry,"columnname":column.name,"should-save":_vm.editFields},on:{"toggle-edit":_vm.toggleEdit}}),(_vm.editFields && index === 0)?_c('span',{staticClass:"options-button-grp"},[_c('div',{staticClass:"btn-group",attrs:{"role":"group","aria-label":"Basic example"}},[_c('button',{staticClass:"btn btn-outline-primary",attrs:{"type":"button"},on:{"click":_vm.saveFields}},[_c('span',{staticClass:"fa fa-check",attrs:{"aria-hidden":"true"}})]),_c('button',{staticClass:"btn btn-outline-danger",attrs:{"type":"button"},on:{"click":_vm.cancelSave}},[_c('span',{staticClass:"fa fa-times",attrs:{"aria-hidden":"true"}})])])]):_vm._e()],1)})],2)}
+var TableRowvue_type_template_id_2f83d48d_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/TableRow.vue?vue&type=template&id=1e2086f2&
+// CONCATENATED MODULE: ./src/components/TableRow.vue?vue&type=template&id=2f83d48d&
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"a1e93038-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/ValueFieldSection.vue?vue&type=template&id=36f99f8d&
-var ValueFieldSectionvue_type_template_id_36f99f8d_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return (!_vm.enabled)?_c('span',{staticClass:"editableField",on:{"dblclick":_vm.toggleInput}},[_vm._v(_vm._s(this.entry[this.columnname]))]):(_vm.enabled)?_c('div',{staticClass:"input-group"},[_c('textarea',{directives:[{name:"model",rawName:"v-model",value:(_vm.datavalue),expression:"datavalue"}],staticClass:"form-control",attrs:{"type":"text"},domProps:{"value":(_vm.datavalue)},on:{"input":function($event){if($event.target.composing){ return; }_vm.datavalue=$event.target.value}}})]):_vm._e()}
-var ValueFieldSectionvue_type_template_id_36f99f8d_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"a1e93038-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/ValueFieldSection.vue?vue&type=template&id=3abf12b0&
+var ValueFieldSectionvue_type_template_id_3abf12b0_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return (!_vm.enabled)?_c('span',{staticClass:"editableField",on:{"dblclick":_vm.toggleInput}},[_vm._v("\n    "+_vm._s(this.entry[this.columnname])+"\n")]):(_vm.enabled)?_c('div',{staticClass:"input-group"},[_c('textarea',{directives:[{name:"model",rawName:"v-model",value:(_vm.datavalue),expression:"datavalue"}],staticClass:"form-control",attrs:{"type":"text"},domProps:{"value":(_vm.datavalue)},on:{"input":function($event){if($event.target.composing){ return; }_vm.datavalue=$event.target.value}}})]):_vm._e()}
+var ValueFieldSectionvue_type_template_id_3abf12b0_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/ValueFieldSection.vue?vue&type=template&id=36f99f8d&
+// CONCATENATED MODULE: ./src/components/ValueFieldSection.vue?vue&type=template&id=3abf12b0&
 
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/ValueFieldSection.vue?vue&type=script&lang=js&
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -9258,10 +9265,12 @@ var ValueFieldSectionvue_type_template_id_36f99f8d_staticRenderFns = []
   },
   methods: {
     saveThis: function saveThis() {
-      var originalValue = this.entry[this.columnname];
-      this.entry[this.columnname] = this.datavalue;
-      this.$parent.$emit('cellDataModifiedEvent', originalValue, this.datavalue, this.columnname, this.entry);
-      this.enabled = false;
+      if (this.datavalue) {
+        this.entry[this.columnname] = this.datavalue;
+      }
+
+      this.enabled = false; //var originalValue = this.entry[this.columnname]
+      //this.$parent.$emit('cellDataModifiedEvent', originalValue, this.datavalue, this.columnname,  this.entry)
     },
     handleParent: function handleParent(save) {
       if (save) {
@@ -9293,8 +9302,8 @@ var ValueFieldSectionvue_type_template_id_36f99f8d_staticRenderFns = []
 
 var ValueFieldSection_component = normalizeComponent(
   components_ValueFieldSectionvue_type_script_lang_js_,
-  ValueFieldSectionvue_type_template_id_36f99f8d_render,
-  ValueFieldSectionvue_type_template_id_36f99f8d_staticRenderFns,
+  ValueFieldSectionvue_type_template_id_3abf12b0_render,
+  ValueFieldSectionvue_type_template_id_3abf12b0_staticRenderFns,
   false,
   null,
   null,
@@ -9304,6 +9313,9 @@ var ValueFieldSection_component = normalizeComponent(
 
 /* harmony default export */ var ValueFieldSection = (ValueFieldSection_component.exports);
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/TableRow.vue?vue&type=script&lang=js&
+//
+//
+//
 //
 //
 //
@@ -9370,21 +9382,20 @@ var ValueFieldSection_component = normalizeComponent(
     }
   },
   methods: {
-    click: function click($e) {
-      this.$emit('selected', {
-        event: $e,
-        entry: this.entry
-      });
-    },
     saveFields: function saveFields() {
+      // Used in ValueFieldSection and VueBootstrapTable
       this.$emit('save-fields', true);
       this.toggleEdit(false);
     },
     cancelSave: function cancelSave() {
+      // Used in ValueFieldSection and VueBootstrapTable
       this.$emit('save-fields', false);
       this.toggleEdit(false);
     },
     toggleEdit: function toggleEdit(toggle) {
+      this.$emit('edit-row', {
+        entry: this.entry
+      });
       this.editFields = toggle;
     }
   }
@@ -9405,8 +9416,8 @@ var TableRowvue_type_style_index_0_lang_scss_ = __webpack_require__("0bbc");
 
 var TableRow_component = normalizeComponent(
   components_TableRowvue_type_script_lang_js_,
-  TableRowvue_type_template_id_1e2086f2_render,
-  TableRowvue_type_template_id_1e2086f2_staticRenderFns,
+  TableRowvue_type_template_id_2f83d48d_render,
+  TableRowvue_type_template_id_2f83d48d_staticRenderFns,
   false,
   null,
   null,
@@ -9517,86 +9528,6 @@ var Pagination_component = normalizeComponent(
 
 
 
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -9811,7 +9742,8 @@ Object(es6_promise["polyfill"])();
       rawValues: [],
       page: 1,
       definedPageSize: 10,
-      allSelected: false
+      allSelected: false,
+      selectedRow: -1
     };
   },
 
@@ -9925,10 +9857,16 @@ Object(es6_promise["polyfill"])();
       rowf.selected = value;
       this.filteredValuesSorted[index] = rowf;
     },
-    selectRow: function selectRow(_ref) {
-      var event = _ref.event,
-          entry = _ref.entry;
-      this.rowClickHandler(event, entry);
+    // eslint-disable-next-line
+    selectRow: function selectRow(index, _ref) {
+      var entry = _ref.entry;
+
+      if (this.selectedRow >= 0) {
+        this.selectedRow = -1;
+      } else {
+        this.selectedRow = index;
+      } //this.rowClickHandler(null, entry)
+
     },
     selectPage: function selectPage(index) {
       this.page = index;

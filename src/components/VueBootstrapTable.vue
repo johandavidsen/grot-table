@@ -15,8 +15,8 @@
 
         <div class="row">
             <div class="col-sm-12">
-                <div class="table-responsive">
-                    <table class="table table-bordered table-hover table-condensed table-striped vue-table">
+                <div :class="{ 'table-responsive': true, 'table-expanded': selectedRow === (filteredValuesSorted.length - 1)}">
+                    <table class="table table-bordered table-hover table-condensed table-striped">
                         <thead>
                         <table-header :columns="displayColsVisible"
                                       :sortable="sortable"
@@ -30,16 +30,18 @@
                         </thead>
 
                         <tbody>
-                        <table-row v-for="(entry, index) in filteredValuesSorted"
-                                   :entry="entry"
-                                   :columns="displayColsVisible"
-                                   track-by="entry"
-                                   :key="index"
-                                   v-on:selected="selectRow">
-                            <td track-by="entry" v-if="selectable">
-                                <check-box  :checked="entry.selected" v-on:selected="(value) => highlightRow(index, value)"></check-box>
-                            </td>
-                        </table-row>
+                            <table-row v-for="(entry, index) in filteredValuesSorted"
+                                       :entry="entry"
+                                       :columns="displayColsVisible"
+                                       :key="index"
+                                       :class="{ 'tr-row-overlay': selectedRow < 0 ? false : index !== selectedRow }"
+                                       v-on:edit-row="(obj) => selectRow(index, obj)"
+                                       track-by="entry"
+                                >
+                                <td track-by="entry" v-if="selectable">
+                                    <check-box  :checked="entry.selected" v-on:selected="(value) => highlightRow(index, value)"></check-box>
+                                </td>
+                            </table-row>
                         </tbody>
                     </table>
                 </div>
@@ -55,88 +57,6 @@
         </div>
     </div>
 </template>
-
-<style lang="scss">
-    .vue-table { }
-
-    .vue-table-loading .spinner {
-        border: 16px solid #f3f3f3; /* Light grey */
-        border-top: 16px solid #3498db; /* Blue */
-        border-radius: 50%;
-        width: 120px;
-        height: 120px;
-        animation: spin 2s linear infinite;
-        position: absolute;
-        left: 50%;
-        top: 50%;
-        margin: -60px 0 0 -60px;
-    }
-
-    @keyframes spin {
-        0% {
-            transform: rotate(0deg);
-        }
-        100% {
-            transform: rotate(360deg);
-        }
-    }
-
-
-    .vue-table-loading {
-        position: absolute;
-        z-index: 99;
-        background-color: #ddd;
-        opacity: 0.5;
-        width: 100%;
-        height: 100%;
-    }
-
-    .vue-table-loading-hidden {
-        display: none;
-    }
-
-    table.vue-table thead > tr > th {
-        cursor: pointer;
-        padding-right: 30px !important;
-    }
-
-    .vue-table .icon::before {
-        display: inline-block;
-        font-style: normal;
-        font-variant: normal;
-        text-rendering: auto;
-        -webkit-font-smoothing: antialiased;
-    }
-
-    .vue-table .arrow {
-        opacity: 1;
-        position: relative;
-    }
-
-    .vue-table .arrow:before {
-        position: absolute;
-        bottom: 8px;
-        right: 8px;
-        display: block;
-        font-family: "Font Awesome 5 Free";
-        font-weight: 900;
-        content: "\f0dc";
-    }
-
-    .vue-table .arrow.asc:before {
-        content: "\f0de";
-    }
-
-    .vue-table .arrow.dsc:before {
-        content: "\f0dd";
-    }
-
-
-    .vue-table .editableField {
-        cursor: pointer;
-    }
-
-</style>
 
 <script>
   /* used for fixing IE problems*/
@@ -305,7 +225,8 @@
         page: 1,
         definedPageSize: 10,
 
-        allSelected: false
+        allSelected: false,
+        selectedRow: -1
       }
     },
 
@@ -448,8 +369,15 @@
         this.filteredValuesSorted[index] = rowf
       },
 
-      selectRow ({ event, entry }) {
-        this.rowClickHandler(event, entry)
+      // eslint-disable-next-line
+      selectRow (index, { entry }) {
+
+        if (this.selectedRow >= 0) {
+          this.selectedRow = -1
+        } else {
+          this.selectedRow = index
+        }
+        //this.rowClickHandler(null, entry)
       },
 
       selectPage (index) {
@@ -567,3 +495,25 @@
     }
   }
 </script>
+
+<style lang="scss">
+    .table-expanded {
+        padding-bottom: 50px;
+    }
+
+    .tr-row-overlay {
+        pointer-events: none;
+    }
+
+    .tr-row-overlay:after {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(255, 255, 255, 0.8);
+        background-position: center;
+        background-repeat: no-repeat;
+        content: "";
+    }
+</style>

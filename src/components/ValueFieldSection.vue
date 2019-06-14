@@ -1,7 +1,14 @@
 <template>
-    <span v-if="!enabled" @dblclick="toggleInput" class="editableField">{{this.entry[this.columnname]}}</span>
-    <div v-else-if="enabled" class="input-group">
-      <textarea type="text" class="form-control" v-model="datavalue" />
+    <span v-if="!enabled"
+          @dblclick="toggleInput"
+          class="editableField">
+        {{ this.entry[this.columnname] }}
+    </span>
+    <div v-else-if="enabled"
+         class="input-group">
+      <textarea type="text"
+                class="form-control"
+                v-model="datavalue" />
     </div>
 </template>
 
@@ -27,14 +34,19 @@
     },
 
     methods: {
+
       saveThis () {
-        var originalValue = this.entry[this.columnname]
-        this.entry[this.columnname] = this.datavalue
-        this.$parent.$emit('cellDataModifiedEvent', originalValue, this.datavalue, this.columnname,  this.entry)
+
+        if (this.datavalue) {
+          this.entry[this.columnname] = this.datavalue
+        }
         this.enabled = false
+
+        //var originalValue = this.entry[this.columnname]
+        //this.$parent.$emit('cellDataModifiedEvent', originalValue, this.datavalue, this.columnname,  this.entry)
       },
 
-      handleParent: function (save) {
+      handleParent (save) {
         if (save) {
           this.saveThis()
         } else {
