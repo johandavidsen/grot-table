@@ -10,14 +10,11 @@
                     <button @click="togglePicker" class="btn btn-outline-primary">Toggle Column Picker</button>
                     <button @click="toggleSelect" class="btn btn-outline-primary">Toggle Select column</button>
                     <button @click="togglePagination" class="btn btn-outline-primary">Toggle Pagination</button>
-                    <button @click="refreshTable" class="btn btn-outline-primary">Refresh</button>
-                    <button @click="setNewPageSize" class="btn btn-outline-primary">Page Size = 1</button>
                 </div>
             </div>
         </div>
 
         <vue-bootstrap-table
-                ref="exampleTable"
                 :columns="columns"
                 :values="values"
                 :show-filter="showFilter"
@@ -129,17 +126,9 @@
 
     methods: {
 
-      /* eslint-disable */
       handleModelChange ({ type, entry }) {
-        console.log("CLICK ROW: " + JSON.stringify(entry));
-      },
-
-      refreshTable () {
-        this.$refs.exampleTable.refresh();
-      },
-
-      setNewPageSize () {
-        this.$refs.exampleTable.setPageSize(1);
+        // eslint-disable-next-line
+        console.log("CLICK ROW: " + type + ' ' + JSON.stringify(entry));
       },
 
       addItem  () {

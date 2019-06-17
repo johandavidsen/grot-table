@@ -48,7 +48,7 @@
                 </div>
             </div>
 
-            <div v-if="paginated" class="col-sm-12">
+            <div v-if="paginated" class="col-sm-12 d-flex justify-content-center">
                 <pagination :max-page="maxPage"
                             :current-page="page"
                             v-on:selected="selectPage">
