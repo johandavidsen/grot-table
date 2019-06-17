@@ -15,7 +15,7 @@
 
         <div class="row">
             <div class="col-sm-12">
-                <div :class="{ 'table-responsive': true, 'table-expanded': selectedRow === (filteredValuesSorted.length - 1)}">
+                <div :class="{ 'table-responsive': true, 'table-expanded': currentlyEditedRow === (filteredValuesSorted.length - 1)}">
                     <table class="table table-bordered table-hover table-condensed table-striped">
                         <thead>
                         <table-header :columns="displayColsVisible"
@@ -34,9 +34,9 @@
                                        :entry="entry"
                                        :columns="displayColsVisible"
                                        :key="index"
-                                       :class="{ 'tr-row-overlay': selectedRow < 0 ? false : index !== selectedRow }"
-                                       v-on:edit-row="(obj) => selectRow(index, obj)"
-
+                                       :class="{ 'tr-row-overlay': currentlyEditedRow < 0 ? false : index !== currentlyEditedRow }"
+                                       v-on:edit-row="(obj) => setCurrentlyEditedRow(index, obj)"
+                                       v-on:save-fields="saveFields"
                                        track-by="entry"
                                 >
                                 <td track-by="entry" v-if="selectable">
@@ -225,7 +225,7 @@
         definedPageSize: 10,
 
         allSelected: false,
-        selectedRow: -1
+        currentlyEditedRow: -1
       }
     },
 
@@ -356,6 +356,12 @@
 
     methods: {
 
+      /**
+       * Function HighlightRow
+       *
+       * This functions adds a selected variable to the entry object. This methods generates a SELECTED event.
+       *
+       */
       highlightRow (index, value) {
         let row = this.values[index]
         row.selected = false
@@ -370,15 +376,31 @@
         this.onModelChange({ type: "SELECTED", entry: rowf })
       },
 
-      selectRow (index, { entry }) {
+      /**
+       * Function SetCurrentlyEditedRow
+       *
+       * Indicate which row is currently being edited.
+       *
+       */
+      setCurrentlyEditedRow (index) {
 
-        if (this.selectedRow >= 0) {
-          this.selectedRow = -1
+        if (this.currentlyEditedRow >= 0) {
+          this.currentlyEditedRow = -1
         } else {
-          this.selectedRow = index
+          this.currentlyEditedRow = index
         }
+      },
 
-        this.onModelChange({ type: "SELECTED", entry: entry })
+      /**
+       * Function SaveFields
+       *
+       * This function calls the onModelChange function if the field should be saved.
+       *
+       */
+      saveFields ({ save, entry }) {
+        if (save) {
+          this.onModelChange({ type: "SAVE", entry: entry })
+        }
       },
 
       selectPage (index) {

@@ -75,13 +75,13 @@
 
       saveFields() {
         // Used in ValueFieldSection and VueBootstrapTable
-        this.$emit('save-fields', true)
+        this.$emit('save-fields', { save: true, entry: this.entry })
         this.toggleEdit(false)
       },
 
       cancelSave() {
         // Used in ValueFieldSection and VueBootstrapTable
-        this.$emit('save-fields', false)
+        this.$emit('save-fields',{ save: false })
         this.toggleEdit(false)
       },
 

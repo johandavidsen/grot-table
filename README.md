@@ -378,7 +378,6 @@ If you have a feature request, please add it as an issue or make a pull request.
 - [x] Column picker
 - [x] Pagination
 - [x] Editing
-- [ ] Ajax
 - [ ] Responsive
 - [ ] Dates sorting
 - [ ] Keyboard navigation
