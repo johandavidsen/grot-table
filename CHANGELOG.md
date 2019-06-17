@@ -1,5 +1,25 @@
 # Changelog
 
+## [1.4] - June 17, 2019
+
+### Changed
+
+* Removed all AJAX code as this should be a different abstraction layer.
+* Removed the Row click handler and instead implemented a model change system.
+* Update the Readme to reflect the code changes.
+
+## [1.3] - May 28, 2019
+
+### Changed
+
+* Split the default view into the following ui components: CheckBox, ColumnPicker, Pagination, SearchInput, TableHeader
+  and TableRow.
+* **BREAKING CHANGES**: Moved all the AJAX related code into the file: Ajax. Effectively disabling the AJAX feature.
+* Refactored the function buildColumnObject into the JS class *Column*.
+* Updated the Readme such that it corresponds to the refactored code.
+
+## [Pre-fork Changelog]
+
 ### 1.2.1 (May 22, 2019)
 
 * changed project structure and build using Vue CLI
