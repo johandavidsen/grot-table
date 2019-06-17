@@ -8,7 +8,7 @@
          class="input-group">
       <textarea type="text"
                 class="form-control"
-                v-model="datavalue" />
+                v-model="dataValue" />
     </div>
 </template>
 
@@ -16,16 +16,26 @@
   export default {
     name: "ValueFieldSection",
 
-    props: [
-      'entry',
-      'columnname',
-      'shouldSave'
-    ],
+    props: {
+
+      columnname: {
+
+      },
+
+      entry: {
+
+      },
+
+      shouldSave: {
+        type: Boolean
+      }
+    },
+
 
     data: function () {
       return {
         enabled: false,
-        datavalue: "",
+        dataValue: "",
       }
     },
 
@@ -37,13 +47,10 @@
 
       saveThis () {
 
-        if (this.datavalue) {
-          this.entry[this.columnname] = this.datavalue
+        if (this.dataValue) {
+          this.entry[this.columnname] = this.dataValue
         }
         this.enabled = false
-
-        //var originalValue = this.entry[this.columnname]
-        //this.$parent.$emit('cellDataModifiedEvent', originalValue, this.datavalue, this.columnname,  this.entry)
       },
 
       handleParent (save) {
@@ -55,12 +62,12 @@
       },
 
       cancelThis () {
-        this.datavalue = this.entry[this.columnname]
+        this.dataValue = this.entry[this.columnname]
         this.enabled = false
       },
 
       toggleInput () {
-        this.datavalue= this.entry[this.columnname]
+        this.dataValue= this.entry[this.columnname]
         this.enabled=!this.enabled
         this.$emit('toggle-edit', true)
       },

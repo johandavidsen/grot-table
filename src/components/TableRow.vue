@@ -22,6 +22,7 @@
                                  :columnname="column.name"
                                  :should-save="editFields"
                                  v-on:toggle-edit="toggleEdit"
+                                 v-on:save-entry="saveFields"
                 >
             </value-field-section>
 
@@ -62,18 +63,12 @@
         required: true
       },
 
+
       entry: {
         type: Object,
         required: false
-      },
-
-      rowClicked: {
-        type: Function,
-        required: false,
-        default: function () {
-
-        }
       }
+
     },
 
     methods: {

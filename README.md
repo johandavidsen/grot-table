@@ -239,15 +239,7 @@ Include the browser-ready bundle (download from [releases](https://github.com/jb
             type: Boolean,
             required: false,
             default: true,
-        },
-        /**
-         * Function to handle row clicks
-         */
-        rowClickHandler: {
-            type: Function,
-            required: false,
-            default: function () {}
-        },
+        }
     },
 
 ```
@@ -345,38 +337,6 @@ There must be a javascript function called `renderTestColumn`  :
     };
 </script>
 ```
-
-### ROW Click Handler
-
-To add a Row click handler function:
-
-````html
-
-    <vue-bootstrap-table
-            [...]
-            :row-click-handler=handleRowFunction
-    >
-    </vue-bootstrap-table>
-````
-
-On your Vue instance :
-
-````javascript
-data: {
-        handleRowFunction: handleRow,
-}
-````
-
-And have the javascript function declared like so:
-
-````javascript
-var handleRow = function (event, entry) {
-    console.log("CLICK ROW: " + JSON.stringify(entry));
-};
-````
-
-Where event in the `MouseEvent` and `entry` e the complete entry corresponding to the row.
-
 
 ### DEFAULT Ordering
 

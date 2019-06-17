@@ -36,10 +36,11 @@
                                        :key="index"
                                        :class="{ 'tr-row-overlay': selectedRow < 0 ? false : index !== selectedRow }"
                                        v-on:edit-row="(obj) => selectRow(index, obj)"
+
                                        track-by="entry"
                                 >
                                 <td track-by="entry" v-if="selectable">
-                                    <check-box  :checked="entry.selected" v-on:selected="(value) => highlightRow(index, value)"></check-box>
+                                    <check-box :checked="entry.selected" v-on:selected="(value) => highlightRow(index, value)"></check-box>
                                 </td>
                             </table-row>
                         </tbody>
@@ -67,7 +68,7 @@
   import includes from 'lodash.includes'
   import findIndex from 'lodash.findindex'
 
-  import Column from './Column'
+  import Column from './models/Column'
   import SearchInput from './SearchInput'
   import ColumnPicker from "./ColumnPicker"
   import TableHeader from "./TableHeader"
@@ -180,13 +181,11 @@
       },
 
       /**
-       * Function to handle row clicks
+       * Function that is called every time the model is changed
        */
-      rowClickHandler: {
+      onModelChange: {
         type: Function,
         required: false,
-        default: function () {
-        }
       },
 
       /**
@@ -263,8 +262,8 @@
 
     watch: {
 
-      values() {
-        this.rawValues = this.values;
+      values () {
+        this.rawValues = this.values
       },
 
       rawValues: function () {
@@ -273,11 +272,13 @@
 
       columns: function () {
         this.displayCols = []
-        var self = this
+        let self = this
+
         this.columns.forEach(function (column) {
-          var obj = new Column(column)
+          let obj = new Column(column)
           self.displayCols.push(obj)
         })
+
         this.setSortOrders()
       },
 
@@ -345,11 +346,7 @@
           tColsDir.push(this.sortOrders[this.sortKey[i]].toLowerCase())
         }
 
-        if (typeof this.ajax !== 'undefined' && this.ajax.enabled && this.ajax.delegate) {
-          return this.filteredValues
-        } else {
-          return orderBy(this.filteredValues, this.sortKey, tColsDir)
-        }
+        return orderBy(this.filteredValues, this.sortKey, tColsDir)
       },
 
       maxPage: function () {
@@ -362,14 +359,17 @@
       highlightRow (index, value) {
         let row = this.values[index]
         row.selected = false
+
         this.values[index] = row
 
         let rowf = this.filteredValuesSorted[index]
         rowf.selected = value
+
         this.filteredValuesSorted[index] = rowf
+
+        this.onModelChange({ type: "SELECTED", entry: rowf })
       },
 
-      // eslint-disable-next-line
       selectRow (index, { entry }) {
 
         if (this.selectedRow >= 0) {
@@ -377,7 +377,8 @@
         } else {
           this.selectedRow = index
         }
-        //this.rowClickHandler(null, entry)
+
+        this.onModelChange({ type: "SELECTED", entry: entry })
       },
 
       selectPage (index) {
@@ -396,9 +397,11 @@
       setSortOrders () {
         this.sortKey = []
         let sortOrders = {}
+
         this.columns.forEach(function (column) {
           sortOrders[column.name] = ""
         })
+
         this.sortOrders = sortOrders
       },
 
@@ -448,6 +451,7 @@
         // Populate and filter data
         let self = this
 
+        // Show based on columns that are visible
         let result = this.rawValues.filter(item => {
           for (let col in self.displayColsVisible) {
 
@@ -460,11 +464,11 @@
           return false
         })
 
+        // Sort according to sortOrders
         var tColsDir = []
         for (var i = 0, len = this.sortKey.length; i < len; i++) {
           tColsDir.push(this.sortOrders[this.sortKey[i]].toLowerCase())
         }
-
         result = orderBy(result, this.sortKey, tColsDir)
 
         // Setup pagination
