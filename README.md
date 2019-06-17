@@ -1,8 +1,7 @@
-# vue2-bootstrap-table
+# vue-bootstrap-table
 
-This project is a fork of [jbaysolutions/vue-bootstrap-table](https://github.com/jbaysolutions/vue-bootstrap-table) for 
-further information about that project. The main reason for this fork is to increase control of the table components and 
-to reduce the project size. 
+This project was originally a fork of [jbaysolutions/vue-bootstrap-table](https://github.com/jbaysolutions/vue-bootstrap-table). 
+The main reason for this fork is to increase control of the table components and to reduce the project size. 
 
 Please see [Changelog](/CHANGELOG.md) for detailed changes.
 

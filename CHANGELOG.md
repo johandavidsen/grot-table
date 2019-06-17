@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4] - June 17, 2019
+
+### Changed
+
+* Removed all AJAX code as this should be a different abstraction layer.
+* Removed the Row click handler and instead implemented a model change system.
+* Update the Readme to reflect the code changes.
 
 ## [1.3] - May 28, 2019
 
