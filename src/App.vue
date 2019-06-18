@@ -33,6 +33,7 @@
   import GrotTable from "./components/GrotTable";
 
   export default {
+
     name: 'app',
 
     components: {
@@ -112,47 +113,35 @@
       }
     },
 
-    created: function () {
-      const self = this;
-      this.$on('cellDataModifiedEvent',
-        function (originalValue, newValue, columnTitle, entry) {
-          self.logging.push("cellDataModifiedEvent - Original Value : " + originalValue +
-            " | New Value : " + newValue +
-            " | Column : " + columnTitle +
-            " | Complete Entry : " + entry);
-        }
-      )
-    },
-
     methods: {
 
       handleModelChange ({ type, entry }) {
         // eslint-disable-next-line
-        console.log("CLICK ROW: " + type + ' ' + JSON.stringify(entry));
+        console.log("CLICK ROW: " + type + ' ' + JSON.stringify(entry))
       },
 
       addItem  () {
         const item = {
           "id": this.values.length + 1,
           "name": "name " + (this.values.length + 1)
-        };
-        this.values.push(item);
+        }
+        this.values.push(item)
       },
 
       toggleFilter () {
-        this.showFilter = !this.showFilter;
+        this.showFilter = !this.showFilter
       },
 
       togglePicker () {
-        this.showPicker = !this.showPicker;
+        this.showPicker = !this.showPicker
       },
 
       toggleSelect () {
-        this.showSelect = !this.showSelect;
+        this.showSelect = !this.showSelect
       },
 
       togglePagination () {
-        this.paginated = !this.paginated;
+        this.paginated = !this.paginated
       }
     }
   }

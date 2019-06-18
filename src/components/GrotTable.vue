@@ -24,7 +24,7 @@
                                       :sort-orders="sortOrders"
                                       v-on:selected="sortBy" >
                             <th v-if="selectable">
-                                <check-box  :checked="allSelected" v-on:selected="selectAll"></check-box>
+                                <check-box :checked="allSelected" v-on:selected="selectAll"></check-box>
                             </th>
                         </table-header>
                         </thead>
@@ -39,7 +39,7 @@
                                        v-on:save-fields="saveFields"
                                        track-by="entry"
                                 >
-                                <td track-by="entry" v-if="selectable">
+                                <td v-if="selectable" track-by="entry" >
                                     <check-box :checked="entry.selected" v-on:selected="(value) => highlightRow(index, value)"></check-box>
                                 </td>
                             </table-row>
@@ -66,7 +66,10 @@
 
   import orderBy from 'lodash.orderby'
   import includes from 'lodash.includes'
-  import findIndex from 'lodash.findindex'
+
+  import TableState from './mixin/TableState'
+  import VisualProps from './mixin/VisualProps'
+  import DefaultProps from './mixin/DefaultProps'
 
   import Column from './models/Column'
   import SearchInput from './SearchInput'
@@ -79,6 +82,16 @@
   export default {
     name: "GrotTable",
 
+    /**
+     *
+     */
+    mixins: [
+      VisualProps, DefaultProps, TableState
+    ],
+
+    /**
+     *
+     */
     components: {
       Pagination,
       TableRow,
@@ -88,154 +101,13 @@
       SearchInput
     },
 
-    props: {
-
-      /**
-       * The column titles, required
-       */
-      columns: {
-        type: Array,
-        required: true,
-      },
-
-      /**
-       * The rows, an Array of objects
-       */
-      values: {
-        type: Array,
-        required: false,
-      },
-
-      /**
-       * Enable/disable table row selection, optional, default false.
-       * When true, it will add a checkbox column on the left side and use the value.selected field
-       */
-      selectable: {
-        type: Boolean,
-        required: false,
-        default: true,
-      },
-
-      /**
-       * Enable/disable table sorting, optional, default true
-       */
-      sortable: {
-        type: Boolean,
-        required: false,
-        default: true,
-      },
-
-      /**
-       * Enable/disable table multicolumn sorting, optional, default false.
-       * Also sortable must be enabled for this function to work.
-       */
-      multiColumnSortable: {
-        type: Boolean,
-        required: false,
-        default: false,
-      },
-
-      /**
-       * Enable/disable column picker to show/hide table columns, optional, default false
-       */
-      showColumnPicker: {
-        type: Boolean,
-        required: false,
-        default: false,
-      },
-
-      /**
-       * Enable/disable pagination for the table, optional, default false
-       */
-      paginated: {
-        type: Boolean,
-        required: false,
-        default: false,
-      },
-
-      /**
-       * If pagination is enabled defining the page size, optional, default 10
-       */
-      pageSize: {
-        type: Number,
-        required: false,
-        default: 10,
-      },
-
-      /**
-       * Setting default order column. Expected name of the column
-       */
-      defaultOrderColumn: {
-        type: String,
-        required: false,
-        default: null,
-      },
-
-      /**
-       * Setting default order direction. Boolean: true = ASC , false = DESC
-       */
-      defaultOrderDirection: {
-        type: Boolean,
-        required: false,
-        default: true,
-      },
-
-      /**
-       * Function that is called every time the model is changed
-       */
-      onModelChange: {
-        type: Function,
-        required: false,
-      },
-
-      /**
-       * Enable/disable input filter, optional, default false
-       */
-      showFilter: {
-        type: Boolean,
-        required: false,
-        default: false,
-      },
-
-      /**
-       * Define if Filter search field is to work in a case Sensitive way. Default: true
-       */
-      filterCaseSensitive: {
-        type: Boolean,
-        required: false,
-        default: true,
-      },
-    },
-
-    data: function () {
-      return {
-        filteredSize: 0,
-        filterKey: "",
-        filteredValues: [],
-
-        sortKey: [],
-        sortOrders: {},
-        sortChanged: 1,
-
-        displayCols: [],
-
-        rawValues: [],
-
-        page: 1,
-        definedPageSize: 10,
-
-        allSelected: false,
-        currentlyEditedRow: -1
-      }
-    },
-
     /**
      * Once mounted and ready to start
      */
     mounted: function () {
       this.$nextTick(function () {
 
-        this.setSortOrders();
+        //this.setSortOrders();
 
         this.definedPageSize = this.pageSize;
 
@@ -262,35 +134,8 @@
 
     watch: {
 
-      values () {
-        this.rawValues = this.values
-      },
-
       rawValues: function () {
         this.processFilter()
-      },
-
-      columns: function () {
-        this.displayCols = []
-        let self = this
-
-        this.columns.forEach(function (column) {
-          let obj = new Column(column)
-          self.displayCols.push(obj)
-        })
-
-        this.setSortOrders()
-      },
-
-      showColumnPicker: function () {
-        this.displayCols.forEach(function (column) {
-          column.visible = true
-        })
-      },
-
-      showFilter: function () {
-        // Reset filter key on toggle showFilter
-        this.filterKey = ""
       },
 
       filterKey: function () {
@@ -303,10 +148,6 @@
         this.processFilter()
       },
 
-      sortChanged: function () {
-        this.processFilter()
-      },
-
       page: function () {
         this.processFilter()
       },
@@ -315,15 +156,6 @@
         this.processFilter()
       },
 
-      allSelected () {
-        const val = this.allSelected;
-        this.values.forEach(value => {
-          value.selected = false;
-        })
-        this.filteredValuesSorted.forEach(value => {
-          value.selected = val;
-        })
-      }
     },
 
     computed: {
@@ -405,67 +237,6 @@
 
       selectPage (index) {
         this.page = index
-      },
-
-
-      selectAll (value) {
-        this.allSelected = value
-      },
-
-      setPageSize (newPageSize) {
-        this.definedPageSize = newPageSize
-        this.processFilter()
-      },
-
-      setSortOrders () {
-        this.sortKey = []
-        let sortOrders = {}
-
-        this.columns.forEach(function (column) {
-          sortOrders[column.name] = ""
-        })
-
-        this.sortOrders = sortOrders
-      },
-
-      sortBy ({ event, column: { name, sortable } }) {
-        let key = name
-
-        if (!sortable) return
-
-        if (this.sortable) {
-          let self = this
-
-          if (!this.multiColumnSortable || (this.multiColumnSortable && !event.shiftKey)) {
-            this.sortKey = [key]
-            this.columns.forEach(function (column) {
-              if (column.name !== key) {
-                self.sortOrders[column.name] = ""
-              }
-            })
-          } else {
-            if (findIndex(this.sortKey, function (o) {
-              return o === key
-            }) === -1) {
-              this.sortKey.push(key)
-            }
-
-          }
-
-          if (this.sortOrders[key] === "") {
-            this.sortOrders[key] = "ASC"
-          } else if (this.sortOrders[key] === "ASC") {
-            this.sortOrders[key] = "DESC"
-          } else {
-            this.sortOrders[key] = "ASC"
-          }
-
-          this.sortChanged = this.sortChanged * -1
-        }
-      },
-
-      refresh () {
-        this.processFilter()
       },
 
       /**
