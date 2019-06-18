@@ -77,7 +77,7 @@
   import Pagination from "./Pagination"
 
   export default {
-    name: "VueBootstrapTable",
+    name: "GrotTable",
 
     components: {
       Pagination,

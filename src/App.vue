@@ -14,7 +14,7 @@
             </div>
         </div>
 
-        <vue-bootstrap-table
+        <grot-table
                 :columns="columns"
                 :values="values"
                 :show-filter="showFilter"
@@ -25,18 +25,18 @@
                 :filter-case-sensitive=false
                 :selectable="showSelect"
             >
-        </vue-bootstrap-table>
+        </grot-table>
     </div>
 </template>
 
 <script>
-  import VueBootstrapTable from "./components/VueBootstrapTable";
+  import GrotTable from "./components/GrotTable";
 
   export default {
     name: 'app',
 
     components: {
-      VueBootstrapTable
+      GrotTable
     },
 
     data () {
