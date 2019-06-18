@@ -1,6 +1,6 @@
 {
   "name": "grot-table",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "A sortable and searchable table, built on Vue and using Bootstrap and Fontawesome styling.",
   "keywords": [
     "table",
