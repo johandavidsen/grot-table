@@ -4,9 +4,9 @@
 	else if(typeof define === 'function' && define.amd)
 		define([], factory);
 	else if(typeof exports === 'object')
-		exports["VueBootstrapTable"] = factory();
+		exports["GrotTable"] = factory();
 	else
-		root["VueBootstrapTable"] = factory();
+		root["GrotTable"] = factory();
 })((typeof self !== 'undefined' ? self : this), function() {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
@@ -95,13 +95,6 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ })
 /************************************************************************/
 /******/ ({
-
-/***/ 0:
-/***/ (function(module, exports) {
-
-/* (ignored) */
-
-/***/ }),
 
 /***/ "01f9":
 /***/ (function(module, exports, __webpack_require__) {
@@ -2633,41 +2626,44 @@ exports.f = __webpack_require__("9e1e") ? gOPD : function getOwnPropertyDescript
 /***/ "1368":
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(process, global) {var require;/*!
+/* WEBPACK VAR INJECTION */(function(process, global) {/*!
  * @overview es6-promise - a tiny implementation of Promises/A+.
  * @copyright Copyright (c) 2014 Yehuda Katz, Tom Dale, Stefan Penner and contributors (Conversion to ES6 API by Jake Archibald)
  * @license   Licensed under MIT license
  *            See https://raw.githubusercontent.com/stefanpenner/es6-promise/master/LICENSE
- * @version   3.3.1
+ * @version   v4.2.8+1e68dce6
  */
 
 (function (global, factory) {
-     true ? module.exports = factory() :
-    undefined;
+	 true ? module.exports = factory() :
+	undefined;
 }(this, (function () { 'use strict';
 
 function objectOrFunction(x) {
-  return typeof x === 'function' || typeof x === 'object' && x !== null;
+  var type = typeof x;
+  return x !== null && (type === 'object' || type === 'function');
 }
 
 function isFunction(x) {
   return typeof x === 'function';
 }
 
-var _isArray = undefined;
-if (!Array.isArray) {
+
+
+var _isArray = void 0;
+if (Array.isArray) {
+  _isArray = Array.isArray;
+} else {
   _isArray = function (x) {
     return Object.prototype.toString.call(x) === '[object Array]';
   };
-} else {
-  _isArray = Array.isArray;
 }
 
 var isArray = _isArray;
 
 var len = 0;
-var vertxNext = undefined;
-var customSchedulerFn = undefined;
+var vertxNext = void 0;
+var customSchedulerFn = void 0;
 
 var asap = function asap(callback, arg) {
   queue[len] = callback;
@@ -2696,7 +2692,7 @@ function setAsap(asapFn) {
 var browserWindow = typeof window !== 'undefined' ? window : undefined;
 var browserGlobal = browserWindow || {};
 var BrowserMutationObserver = browserGlobal.MutationObserver || browserGlobal.WebKitMutationObserver;
-var isNode = typeof self === 'undefined' && typeof process !== 'undefined' && ({}).toString.call(process) === '[object process]';
+var isNode = typeof self === 'undefined' && typeof process !== 'undefined' && {}.toString.call(process) === '[object process]';
 
 // test for web worker but not in IE10
 var isWorker = typeof Uint8ClampedArray !== 'undefined' && typeof importScripts !== 'undefined' && typeof MessageChannel !== 'undefined';
@@ -2712,9 +2708,13 @@ function useNextTick() {
 
 // vertx
 function useVertxTimer() {
-  return function () {
-    vertxNext(flush);
-  };
+  if (typeof vertxNext !== 'undefined') {
+    return function () {
+      vertxNext(flush);
+    };
+  }
+
+  return useSetTimeout();
 }
 
 function useMutationObserver() {
@@ -2763,8 +2763,7 @@ function flush() {
 
 function attemptVertx() {
   try {
-    var r = require;
-    var vertx = __webpack_require__(0);
+    var vertx = Function('return this')().require('vertx');
     vertxNext = vertx.runOnLoop || vertx.runOnContext;
     return useVertxTimer();
   } catch (e) {
@@ -2772,7 +2771,7 @@ function attemptVertx() {
   }
 }
 
-var scheduleFlush = undefined;
+var scheduleFlush = void 0;
 // Decide what async method to use to triggering processing of queued callbacks:
 if (isNode) {
   scheduleFlush = useNextTick();
@@ -2787,8 +2786,6 @@ if (isNode) {
 }
 
 function then(onFulfillment, onRejection) {
-  var _arguments = arguments;
-
   var parent = this;
 
   var child = new this.constructor(noop);
@@ -2799,13 +2796,12 @@ function then(onFulfillment, onRejection) {
 
   var _state = parent._state;
 
+
   if (_state) {
-    (function () {
-      var callback = _arguments[_state - 1];
-      asap(function () {
-        return invokeCallback(_state, child, callback, parent._result);
-      });
-    })();
+    var callback = arguments[_state - 1];
+    asap(function () {
+      return invokeCallback(_state, child, callback, parent._result);
+    });
   } else {
     subscribe(parent, child, onFulfillment, onRejection);
   }
@@ -2844,7 +2840,7 @@ function then(onFulfillment, onRejection) {
   @return {Promise} a promise that will become fulfilled with the given
   `value`
 */
-function resolve(object) {
+function resolve$1(object) {
   /*jshint validthis:true */
   var Constructor = this;
 
@@ -2853,19 +2849,17 @@ function resolve(object) {
   }
 
   var promise = new Constructor(noop);
-  _resolve(promise, object);
+  resolve(promise, object);
   return promise;
 }
 
-var PROMISE_ID = Math.random().toString(36).substring(16);
+var PROMISE_ID = Math.random().toString(36).substring(2);
 
 function noop() {}
 
 var PENDING = void 0;
 var FULFILLED = 1;
 var REJECTED = 2;
-
-var GET_THEN_ERROR = new ErrorObject();
 
 function selfFulfillment() {
   return new TypeError("You cannot resolve a promise with itself");
@@ -2875,33 +2869,24 @@ function cannotReturnOwn() {
   return new TypeError('A promises callback cannot return that same promise.');
 }
 
-function getThen(promise) {
+function tryThen(then$$1, value, fulfillmentHandler, rejectionHandler) {
   try {
-    return promise.then;
-  } catch (error) {
-    GET_THEN_ERROR.error = error;
-    return GET_THEN_ERROR;
-  }
-}
-
-function tryThen(then, value, fulfillmentHandler, rejectionHandler) {
-  try {
-    then.call(value, fulfillmentHandler, rejectionHandler);
+    then$$1.call(value, fulfillmentHandler, rejectionHandler);
   } catch (e) {
     return e;
   }
 }
 
-function handleForeignThenable(promise, thenable, then) {
+function handleForeignThenable(promise, thenable, then$$1) {
   asap(function (promise) {
     var sealed = false;
-    var error = tryThen(then, thenable, function (value) {
+    var error = tryThen(then$$1, thenable, function (value) {
       if (sealed) {
         return;
       }
       sealed = true;
       if (thenable !== value) {
-        _resolve(promise, value);
+        resolve(promise, value);
       } else {
         fulfill(promise, value);
       }
@@ -2911,12 +2896,12 @@ function handleForeignThenable(promise, thenable, then) {
       }
       sealed = true;
 
-      _reject(promise, reason);
+      reject(promise, reason);
     }, 'Settle: ' + (promise._label || ' unknown promise'));
 
     if (!sealed && error) {
       sealed = true;
-      _reject(promise, error);
+      reject(promise, error);
     }
   }, promise);
 }
@@ -2925,37 +2910,42 @@ function handleOwnThenable(promise, thenable) {
   if (thenable._state === FULFILLED) {
     fulfill(promise, thenable._result);
   } else if (thenable._state === REJECTED) {
-    _reject(promise, thenable._result);
+    reject(promise, thenable._result);
   } else {
     subscribe(thenable, undefined, function (value) {
-      return _resolve(promise, value);
+      return resolve(promise, value);
     }, function (reason) {
-      return _reject(promise, reason);
+      return reject(promise, reason);
     });
   }
 }
 
-function handleMaybeThenable(promise, maybeThenable, then$$) {
-  if (maybeThenable.constructor === promise.constructor && then$$ === then && maybeThenable.constructor.resolve === resolve) {
+function handleMaybeThenable(promise, maybeThenable, then$$1) {
+  if (maybeThenable.constructor === promise.constructor && then$$1 === then && maybeThenable.constructor.resolve === resolve$1) {
     handleOwnThenable(promise, maybeThenable);
   } else {
-    if (then$$ === GET_THEN_ERROR) {
-      _reject(promise, GET_THEN_ERROR.error);
-    } else if (then$$ === undefined) {
+    if (then$$1 === undefined) {
       fulfill(promise, maybeThenable);
-    } else if (isFunction(then$$)) {
-      handleForeignThenable(promise, maybeThenable, then$$);
+    } else if (isFunction(then$$1)) {
+      handleForeignThenable(promise, maybeThenable, then$$1);
     } else {
       fulfill(promise, maybeThenable);
     }
   }
 }
 
-function _resolve(promise, value) {
+function resolve(promise, value) {
   if (promise === value) {
-    _reject(promise, selfFulfillment());
+    reject(promise, selfFulfillment());
   } else if (objectOrFunction(value)) {
-    handleMaybeThenable(promise, value, getThen(value));
+    var then$$1 = void 0;
+    try {
+      then$$1 = value.then;
+    } catch (error) {
+      reject(promise, error);
+      return;
+    }
+    handleMaybeThenable(promise, value, then$$1);
   } else {
     fulfill(promise, value);
   }
@@ -2982,7 +2972,7 @@ function fulfill(promise, value) {
   }
 }
 
-function _reject(promise, reason) {
+function reject(promise, reason) {
   if (promise._state !== PENDING) {
     return;
   }
@@ -2995,6 +2985,7 @@ function _reject(promise, reason) {
 function subscribe(parent, child, onFulfillment, onRejection) {
   var _subscribers = parent._subscribers;
   var length = _subscribers.length;
+
 
   parent._onerror = null;
 
@@ -3015,8 +3006,8 @@ function publish(promise) {
     return;
   }
 
-  var child = undefined,
-      callback = undefined,
+  var child = void 0,
+      callback = void 0,
       detail = promise._result;
 
   for (var i = 0; i < subscribers.length; i += 3) {
@@ -3033,70 +3024,50 @@ function publish(promise) {
   promise._subscribers.length = 0;
 }
 
-function ErrorObject() {
-  this.error = null;
-}
-
-var TRY_CATCH_ERROR = new ErrorObject();
-
-function tryCatch(callback, detail) {
-  try {
-    return callback(detail);
-  } catch (e) {
-    TRY_CATCH_ERROR.error = e;
-    return TRY_CATCH_ERROR;
-  }
-}
-
 function invokeCallback(settled, promise, callback, detail) {
   var hasCallback = isFunction(callback),
-      value = undefined,
-      error = undefined,
-      succeeded = undefined,
-      failed = undefined;
+      value = void 0,
+      error = void 0,
+      succeeded = true;
 
   if (hasCallback) {
-    value = tryCatch(callback, detail);
-
-    if (value === TRY_CATCH_ERROR) {
-      failed = true;
-      error = value.error;
-      value = null;
-    } else {
-      succeeded = true;
+    try {
+      value = callback(detail);
+    } catch (e) {
+      succeeded = false;
+      error = e;
     }
 
     if (promise === value) {
-      _reject(promise, cannotReturnOwn());
+      reject(promise, cannotReturnOwn());
       return;
     }
   } else {
     value = detail;
-    succeeded = true;
   }
 
   if (promise._state !== PENDING) {
     // noop
   } else if (hasCallback && succeeded) {
-      _resolve(promise, value);
-    } else if (failed) {
-      _reject(promise, error);
-    } else if (settled === FULFILLED) {
-      fulfill(promise, value);
-    } else if (settled === REJECTED) {
-      _reject(promise, value);
-    }
+    resolve(promise, value);
+  } else if (succeeded === false) {
+    reject(promise, error);
+  } else if (settled === FULFILLED) {
+    fulfill(promise, value);
+  } else if (settled === REJECTED) {
+    reject(promise, value);
+  }
 }
 
 function initializePromise(promise, resolver) {
   try {
     resolver(function resolvePromise(value) {
-      _resolve(promise, value);
+      resolve(promise, value);
     }, function rejectPromise(reason) {
-      _reject(promise, reason);
+      reject(promise, reason);
     });
   } catch (e) {
-    _reject(promise, e);
+    reject(promise, e);
   }
 }
 
@@ -3112,101 +3083,115 @@ function makePromise(promise) {
   promise._subscribers = [];
 }
 
-function Enumerator(Constructor, input) {
-  this._instanceConstructor = Constructor;
-  this.promise = new Constructor(noop);
-
-  if (!this.promise[PROMISE_ID]) {
-    makePromise(this.promise);
-  }
-
-  if (isArray(input)) {
-    this._input = input;
-    this.length = input.length;
-    this._remaining = input.length;
-
-    this._result = new Array(this.length);
-
-    if (this.length === 0) {
-      fulfill(this.promise, this._result);
-    } else {
-      this.length = this.length || 0;
-      this._enumerate();
-      if (this._remaining === 0) {
-        fulfill(this.promise, this._result);
-      }
-    }
-  } else {
-    _reject(this.promise, validationError());
-  }
-}
-
 function validationError() {
   return new Error('Array Methods must be provided an Array');
-};
+}
 
-Enumerator.prototype._enumerate = function () {
-  var length = this.length;
-  var _input = this._input;
+var Enumerator = function () {
+  function Enumerator(Constructor, input) {
+    this._instanceConstructor = Constructor;
+    this.promise = new Constructor(noop);
 
-  for (var i = 0; this._state === PENDING && i < length; i++) {
-    this._eachEntry(_input[i], i);
+    if (!this.promise[PROMISE_ID]) {
+      makePromise(this.promise);
+    }
+
+    if (isArray(input)) {
+      this.length = input.length;
+      this._remaining = input.length;
+
+      this._result = new Array(this.length);
+
+      if (this.length === 0) {
+        fulfill(this.promise, this._result);
+      } else {
+        this.length = this.length || 0;
+        this._enumerate(input);
+        if (this._remaining === 0) {
+          fulfill(this.promise, this._result);
+        }
+      }
+    } else {
+      reject(this.promise, validationError());
+    }
   }
-};
 
-Enumerator.prototype._eachEntry = function (entry, i) {
-  var c = this._instanceConstructor;
-  var resolve$$ = c.resolve;
+  Enumerator.prototype._enumerate = function _enumerate(input) {
+    for (var i = 0; this._state === PENDING && i < input.length; i++) {
+      this._eachEntry(input[i], i);
+    }
+  };
 
-  if (resolve$$ === resolve) {
-    var _then = getThen(entry);
+  Enumerator.prototype._eachEntry = function _eachEntry(entry, i) {
+    var c = this._instanceConstructor;
+    var resolve$$1 = c.resolve;
 
-    if (_then === then && entry._state !== PENDING) {
-      this._settledAt(entry._state, i, entry._result);
-    } else if (typeof _then !== 'function') {
+
+    if (resolve$$1 === resolve$1) {
+      var _then = void 0;
+      var error = void 0;
+      var didError = false;
+      try {
+        _then = entry.then;
+      } catch (e) {
+        didError = true;
+        error = e;
+      }
+
+      if (_then === then && entry._state !== PENDING) {
+        this._settledAt(entry._state, i, entry._result);
+      } else if (typeof _then !== 'function') {
+        this._remaining--;
+        this._result[i] = entry;
+      } else if (c === Promise$1) {
+        var promise = new c(noop);
+        if (didError) {
+          reject(promise, error);
+        } else {
+          handleMaybeThenable(promise, entry, _then);
+        }
+        this._willSettleAt(promise, i);
+      } else {
+        this._willSettleAt(new c(function (resolve$$1) {
+          return resolve$$1(entry);
+        }), i);
+      }
+    } else {
+      this._willSettleAt(resolve$$1(entry), i);
+    }
+  };
+
+  Enumerator.prototype._settledAt = function _settledAt(state, i, value) {
+    var promise = this.promise;
+
+
+    if (promise._state === PENDING) {
       this._remaining--;
-      this._result[i] = entry;
-    } else if (c === Promise) {
-      var promise = new c(noop);
-      handleMaybeThenable(promise, entry, _then);
-      this._willSettleAt(promise, i);
-    } else {
-      this._willSettleAt(new c(function (resolve$$) {
-        return resolve$$(entry);
-      }), i);
+
+      if (state === REJECTED) {
+        reject(promise, value);
+      } else {
+        this._result[i] = value;
+      }
     }
-  } else {
-    this._willSettleAt(resolve$$(entry), i);
-  }
-};
 
-Enumerator.prototype._settledAt = function (state, i, value) {
-  var promise = this.promise;
-
-  if (promise._state === PENDING) {
-    this._remaining--;
-
-    if (state === REJECTED) {
-      _reject(promise, value);
-    } else {
-      this._result[i] = value;
+    if (this._remaining === 0) {
+      fulfill(promise, this._result);
     }
-  }
+  };
 
-  if (this._remaining === 0) {
-    fulfill(promise, this._result);
-  }
-};
+  Enumerator.prototype._willSettleAt = function _willSettleAt(promise, i) {
+    var enumerator = this;
 
-Enumerator.prototype._willSettleAt = function (promise, i) {
-  var enumerator = this;
+    subscribe(promise, undefined, function (value) {
+      return enumerator._settledAt(FULFILLED, i, value);
+    }, function (reason) {
+      return enumerator._settledAt(REJECTED, i, reason);
+    });
+  };
 
-  subscribe(promise, undefined, function (value) {
-    return enumerator._settledAt(FULFILLED, i, value);
-  }, function (reason) {
-    return enumerator._settledAt(REJECTED, i, reason);
-  });
-};
+  return Enumerator;
+}();
 
 /**
   `Promise.all` accepts an array of promises, and returns a new promise which
@@ -3376,11 +3361,11 @@ function race(entries) {
   Useful for tooling.
   @return {Promise} a promise rejected with the given `reason`.
 */
-function reject(reason) {
+function reject$1(reason) {
   /*jshint validthis:true */
   var Constructor = this;
   var promise = new Constructor(noop);
-  _reject(promise, reason);
+  reject(promise, reason);
   return promise;
 }
 
@@ -3491,301 +3476,330 @@ function needsNew() {
   ```
 
   @class Promise
-  @param {function} resolver
+  @param {Function} resolver
   Useful for tooling.
   @constructor
 */
-function Promise(resolver) {
-  this[PROMISE_ID] = nextId();
-  this._result = this._state = undefined;
-  this._subscribers = [];
 
-  if (noop !== resolver) {
-    typeof resolver !== 'function' && needsResolver();
-    this instanceof Promise ? initializePromise(this, resolver) : needsNew();
+var Promise$1 = function () {
+  function Promise(resolver) {
+    this[PROMISE_ID] = nextId();
+    this._result = this._state = undefined;
+    this._subscribers = [];
+
+    if (noop !== resolver) {
+      typeof resolver !== 'function' && needsResolver();
+      this instanceof Promise ? initializePromise(this, resolver) : needsNew();
+    }
   }
-}
-
-Promise.all = all;
-Promise.race = race;
-Promise.resolve = resolve;
-Promise.reject = reject;
-Promise._setScheduler = setScheduler;
-Promise._setAsap = setAsap;
-Promise._asap = asap;
-
-Promise.prototype = {
-  constructor: Promise,
 
   /**
-    The primary way of interacting with a promise is through its `then` method,
-    which registers callbacks to receive either a promise's eventual value or the
-    reason why the promise cannot be fulfilled.
-  
-    ```js
-    findUser().then(function(user){
-      // user is available
-    }, function(reason){
-      // user is unavailable, and you are given the reason why
-    });
-    ```
-  
-    Chaining
-    --------
-  
-    The return value of `then` is itself a promise.  This second, 'downstream'
-    promise is resolved with the return value of the first promise's fulfillment
-    or rejection handler, or rejected if the handler throws an exception.
-  
-    ```js
-    findUser().then(function (user) {
-      return user.name;
-    }, function (reason) {
-      return 'default name';
-    }).then(function (userName) {
-      // If `findUser` fulfilled, `userName` will be the user's name, otherwise it
-      // will be `'default name'`
-    });
-  
-    findUser().then(function (user) {
-      throw new Error('Found user, but still unhappy');
-    }, function (reason) {
-      throw new Error('`findUser` rejected and we're unhappy');
-    }).then(function (value) {
-      // never reached
-    }, function (reason) {
-      // if `findUser` fulfilled, `reason` will be 'Found user, but still unhappy'.
-      // If `findUser` rejected, `reason` will be '`findUser` rejected and we're unhappy'.
-    });
-    ```
-    If the downstream promise does not specify a rejection handler, rejection reasons will be propagated further downstream.
-  
-    ```js
-    findUser().then(function (user) {
-      throw new PedagogicalException('Upstream error');
-    }).then(function (value) {
-      // never reached
-    }).then(function (value) {
-      // never reached
-    }, function (reason) {
-      // The `PedgagocialException` is propagated all the way down to here
-    });
-    ```
-  
-    Assimilation
-    ------------
-  
-    Sometimes the value you want to propagate to a downstream promise can only be
-    retrieved asynchronously. This can be achieved by returning a promise in the
-    fulfillment or rejection handler. The downstream promise will then be pending
-    until the returned promise is settled. This is called *assimilation*.
-  
-    ```js
-    findUser().then(function (user) {
-      return findCommentsByAuthor(user);
-    }).then(function (comments) {
-      // The user's comments are now available
-    });
-    ```
-  
-    If the assimliated promise rejects, then the downstream promise will also reject.
-  
-    ```js
-    findUser().then(function (user) {
-      return findCommentsByAuthor(user);
-    }).then(function (comments) {
-      // If `findCommentsByAuthor` fulfills, we'll have the value here
-    }, function (reason) {
-      // If `findCommentsByAuthor` rejects, we'll have the reason here
-    });
-    ```
-  
-    Simple Example
-    --------------
-  
-    Synchronous Example
-  
-    ```javascript
-    let result;
-  
-    try {
-      result = findResult();
-      // success
-    } catch(reason) {
-      // failure
-    }
-    ```
-  
-    Errback Example
-  
-    ```js
-    findResult(function(result, err){
-      if (err) {
-        // failure
-      } else {
-        // success
-      }
-    });
-    ```
-  
-    Promise Example;
-  
-    ```javascript
-    findResult().then(function(result){
-      // success
-    }, function(reason){
-      // failure
-    });
-    ```
-  
-    Advanced Example
-    --------------
-  
-    Synchronous Example
-  
-    ```javascript
-    let author, books;
-  
-    try {
-      author = findAuthor();
-      books  = findBooksByAuthor(author);
-      // success
-    } catch(reason) {
-      // failure
-    }
-    ```
-  
-    Errback Example
-  
-    ```js
-  
-    function foundBooks(books) {
-  
-    }
-  
-    function failure(reason) {
-  
-    }
-  
-    findAuthor(function(author, err){
-      if (err) {
-        failure(err);
-        // failure
-      } else {
-        try {
-          findBoooksByAuthor(author, function(books, err) {
-            if (err) {
-              failure(err);
-            } else {
-              try {
-                foundBooks(books);
-              } catch(reason) {
-                failure(reason);
-              }
-            }
-          });
-        } catch(error) {
-          failure(err);
-        }
-        // success
-      }
-    });
-    ```
-  
-    Promise Example;
-  
-    ```javascript
-    findAuthor().
-      then(findBooksByAuthor).
-      then(function(books){
-        // found books
-    }).catch(function(reason){
-      // something went wrong
-    });
-    ```
-  
-    @method then
-    @param {Function} onFulfilled
-    @param {Function} onRejected
-    Useful for tooling.
-    @return {Promise}
-  */
-  then: then,
-
-  /**
-    `catch` is simply sugar for `then(undefined, onRejection)` which makes it the same
-    as the catch block of a try/catch statement.
-  
-    ```js
-    function findAuthor(){
-      throw new Error('couldn't find that author');
-    }
-  
-    // synchronous
-    try {
-      findAuthor();
-    } catch(reason) {
-      // something went wrong
-    }
-  
-    // async with promises
-    findAuthor().catch(function(reason){
-      // something went wrong
-    });
-    ```
-  
-    @method catch
-    @param {Function} onRejection
-    Useful for tooling.
-    @return {Promise}
-  */
-  'catch': function _catch(onRejection) {
-    return this.then(null, onRejection);
+  The primary way of interacting with a promise is through its `then` method,
+  which registers callbacks to receive either a promise's eventual value or the
+  reason why the promise cannot be fulfilled.
+   ```js
+  findUser().then(function(user){
+    // user is available
+  }, function(reason){
+    // user is unavailable, and you are given the reason why
+  });
+  ```
+   Chaining
+  --------
+   The return value of `then` is itself a promise.  This second, 'downstream'
+  promise is resolved with the return value of the first promise's fulfillment
+  or rejection handler, or rejected if the handler throws an exception.
+   ```js
+  findUser().then(function (user) {
+    return user.name;
+  }, function (reason) {
+    return 'default name';
+  }).then(function (userName) {
+    // If `findUser` fulfilled, `userName` will be the user's name, otherwise it
+    // will be `'default name'`
+  });
+   findUser().then(function (user) {
+    throw new Error('Found user, but still unhappy');
+  }, function (reason) {
+    throw new Error('`findUser` rejected and we're unhappy');
+  }).then(function (value) {
+    // never reached
+  }, function (reason) {
+    // if `findUser` fulfilled, `reason` will be 'Found user, but still unhappy'.
+    // If `findUser` rejected, `reason` will be '`findUser` rejected and we're unhappy'.
+  });
+  ```
+  If the downstream promise does not specify a rejection handler, rejection reasons will be propagated further downstream.
+   ```js
+  findUser().then(function (user) {
+    throw new PedagogicalException('Upstream error');
+  }).then(function (value) {
+    // never reached
+  }).then(function (value) {
+    // never reached
+  }, function (reason) {
+    // The `PedgagocialException` is propagated all the way down to here
+  });
+  ```
+   Assimilation
+  ------------
+   Sometimes the value you want to propagate to a downstream promise can only be
+  retrieved asynchronously. This can be achieved by returning a promise in the
+  fulfillment or rejection handler. The downstream promise will then be pending
+  until the returned promise is settled. This is called *assimilation*.
+   ```js
+  findUser().then(function (user) {
+    return findCommentsByAuthor(user);
+  }).then(function (comments) {
+    // The user's comments are now available
+  });
+  ```
+   If the assimliated promise rejects, then the downstream promise will also reject.
+   ```js
+  findUser().then(function (user) {
+    return findCommentsByAuthor(user);
+  }).then(function (comments) {
+    // If `findCommentsByAuthor` fulfills, we'll have the value here
+  }, function (reason) {
+    // If `findCommentsByAuthor` rejects, we'll have the reason here
+  });
+  ```
+   Simple Example
+  --------------
+   Synchronous Example
+   ```javascript
+  let result;
+   try {
+    result = findResult();
+    // success
+  } catch(reason) {
+    // failure
   }
-};
-
-function polyfill() {
-    var local = undefined;
-
-    if (typeof global !== 'undefined') {
-        local = global;
-    } else if (typeof self !== 'undefined') {
-        local = self;
+  ```
+   Errback Example
+   ```js
+  findResult(function(result, err){
+    if (err) {
+      // failure
     } else {
-        try {
-            local = Function('return this')();
-        } catch (e) {
-            throw new Error('polyfill failed because global object is unavailable in this environment');
-        }
+      // success
+    }
+  });
+  ```
+   Promise Example;
+   ```javascript
+  findResult().then(function(result){
+    // success
+  }, function(reason){
+    // failure
+  });
+  ```
+   Advanced Example
+  --------------
+   Synchronous Example
+   ```javascript
+  let author, books;
+   try {
+    author = findAuthor();
+    books  = findBooksByAuthor(author);
+    // success
+  } catch(reason) {
+    // failure
+  }
+  ```
+   Errback Example
+   ```js
+   function foundBooks(books) {
+   }
+   function failure(reason) {
+   }
+   findAuthor(function(author, err){
+    if (err) {
+      failure(err);
+      // failure
+    } else {
+      try {
+        findBoooksByAuthor(author, function(books, err) {
+          if (err) {
+            failure(err);
+          } else {
+            try {
+              foundBooks(books);
+            } catch(reason) {
+              failure(reason);
+            }
+          }
+        });
+      } catch(error) {
+        failure(err);
+      }
+      // success
+    }
+  });
+  ```
+   Promise Example;
+   ```javascript
+  findAuthor().
+    then(findBooksByAuthor).
+    then(function(books){
+      // found books
+  }).catch(function(reason){
+    // something went wrong
+  });
+  ```
+   @method then
+  @param {Function} onFulfilled
+  @param {Function} onRejected
+  Useful for tooling.
+  @return {Promise}
+  */
+
+  /**
+  `catch` is simply sugar for `then(undefined, onRejection)` which makes it the same
+  as the catch block of a try/catch statement.
+  ```js
+  function findAuthor(){
+  throw new Error('couldn't find that author');
+  }
+  // synchronous
+  try {
+  findAuthor();
+  } catch(reason) {
+  // something went wrong
+  }
+  // async with promises
+  findAuthor().catch(function(reason){
+  // something went wrong
+  });
+  ```
+  @method catch
+  @param {Function} onRejection
+  Useful for tooling.
+  @return {Promise}
+  */
+
+
+  Promise.prototype.catch = function _catch(onRejection) {
+    return this.then(null, onRejection);
+  };
+
+  /**
+    `finally` will be invoked regardless of the promise's fate just as native
+    try/catch/finally behaves
+  
+    Synchronous example:
+  
+    ```js
+    findAuthor() {
+      if (Math.random() > 0.5) {
+        throw new Error();
+      }
+      return new Author();
+    }
+  
+    try {
+      return findAuthor(); // succeed or fail
+    } catch(error) {
+      return findOtherAuther();
+    } finally {
+      // always runs
+      // doesn't affect the return value
+    }
+    ```
+  
+    Asynchronous example:
+  
+    ```js
+    findAuthor().catch(function(reason){
+      return findOtherAuther();
+    }).finally(function(){
+      // author was either found, or not
+    });
+    ```
+  
+    @method finally
+    @param {Function} callback
+    @return {Promise}
+  */
+
+
+  Promise.prototype.finally = function _finally(callback) {
+    var promise = this;
+    var constructor = promise.constructor;
+
+    if (isFunction(callback)) {
+      return promise.then(function (value) {
+        return constructor.resolve(callback()).then(function () {
+          return value;
+        });
+      }, function (reason) {
+        return constructor.resolve(callback()).then(function () {
+          throw reason;
+        });
+      });
     }
 
-    var P = local.Promise;
+    return promise.then(callback, callback);
+  };
 
-    if (P) {
-        var promiseToString = null;
-        try {
-            promiseToString = Object.prototype.toString.call(P.resolve());
-        } catch (e) {
-            // silently ignored
-        }
+  return Promise;
+}();
 
-        if (promiseToString === '[object Promise]' && !P.cast) {
-            return;
-        }
+Promise$1.prototype.then = then;
+Promise$1.all = all;
+Promise$1.race = race;
+Promise$1.resolve = resolve$1;
+Promise$1.reject = reject$1;
+Promise$1._setScheduler = setScheduler;
+Promise$1._setAsap = setAsap;
+Promise$1._asap = asap;
+
+/*global self*/
+function polyfill() {
+  var local = void 0;
+
+  if (typeof global !== 'undefined') {
+    local = global;
+  } else if (typeof self !== 'undefined') {
+    local = self;
+  } else {
+    try {
+      local = Function('return this')();
+    } catch (e) {
+      throw new Error('polyfill failed because global object is unavailable in this environment');
+    }
+  }
+
+  var P = local.Promise;
+
+  if (P) {
+    var promiseToString = null;
+    try {
+      promiseToString = Object.prototype.toString.call(P.resolve());
+    } catch (e) {
+      // silently ignored
     }
 
-    local.Promise = Promise;
+    if (promiseToString === '[object Promise]' && !P.cast) {
+      return;
+    }
+  }
+
+  local.Promise = Promise$1;
 }
 
-polyfill();
 // Strange compat..
-Promise.polyfill = polyfill;
-Promise.Promise = Promise;
+Promise$1.polyfill = polyfill;
+Promise$1.Promise = Promise$1;
 
-return Promise;
+return Promise$1;
 
 })));
+
+
+
 //# sourceMappingURL=es6-promise.map
+
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("f28c"), __webpack_require__("c8ba")))
 
 /***/ }),
@@ -8790,12 +8804,12 @@ if (typeof window !== 'undefined') {
 // Indicate to webpack that this file can be concatenated
 /* harmony default export */ var setPublicPath = (null);
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"76e0b29a-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/GrotTable.vue?vue&type=template&id=4484fe30&
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('div',{staticClass:"row"},[_c('div',{staticClass:"col-6"},[(_vm.showFilter)?_c('div',{staticClass:"mb-3 mt-3"},[_c('search-input',{model:{value:(_vm.filterKey),callback:function ($$v) {_vm.filterKey=$$v},expression:"filterKey"}})],1):_vm._e()]),_c('div',{staticClass:"col-6"},[(_vm.showColumnPicker)?_c('div',{staticClass:"mb-3 mt-3 d-flex justify-content-end"},[_c('column-picker',{attrs:{"options":_vm.displayCols},on:{"selected":_vm.toggleColumn}})],1):_vm._e()])]),_c('div',{staticClass:"row"},[_c('div',{staticClass:"col-sm-12"},[_c('div',{class:{ 'table-responsive': true, 'table-expanded': _vm.currentlyEditedRow === (_vm.filteredValuesSorted.length - 1)}},[_c('table',{staticClass:"table table-bordered table-hover table-condensed table-striped"},[_c('thead',[_c('table-header',{attrs:{"columns":_vm.displayColsVisible,"sortable":_vm.sortable,"sort-key":_vm.sortKey,"sort-orders":_vm.sortOrders},on:{"selected":_vm.sortBy}},[(_vm.selectable)?_c('th',[_c('check-box',{attrs:{"checked":_vm.allSelected},on:{"selected":_vm.selectAll}})],1):_vm._e()])],1),_c('tbody',_vm._l((_vm.filteredValuesSorted),function(entry,index){return _c('table-row',{key:index,class:{ 'tr-row-overlay': _vm.currentlyEditedRow < 0 ? false : index !== _vm.currentlyEditedRow },attrs:{"entry":entry,"columns":_vm.displayColsVisible,"track-by":"entry"},on:{"edit-row":function (obj) { return _vm.setCurrentlyEditedRow(index, obj); },"save-fields":_vm.saveFields}},[(_vm.selectable)?_c('td',{attrs:{"track-by":"entry"}},[_c('check-box',{attrs:{"checked":entry.selected},on:{"selected":function (value) { return _vm.highlightRow(index, value); }}})],1):_vm._e()])}),1)])])]),(_vm.paginated)?_c('div',{staticClass:"col-sm-12 d-flex justify-content-center"},[_c('pagination',{attrs:{"max-page":_vm.maxPage,"current-page":_vm.page},on:{"selected":_vm.selectPage}})],1):_vm._e()])])}
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"dc0668cc-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/GrotTable.vue?vue&type=template&id=41ae4b4b&
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('div',{staticClass:"row"},[_c('div',{staticClass:"col-6"},[(_vm.showFilter)?_c('div',{staticClass:"mb-3 mt-3"},[_c('search-input',{model:{value:(_vm.filterKey),callback:function ($$v) {_vm.filterKey=$$v},expression:"filterKey"}})],1):_vm._e()]),_c('div',{staticClass:"col-6"},[(_vm.showColumnPicker)?_c('div',{staticClass:"mb-3 mt-3 d-flex justify-content-end"},[_c('column-picker',{attrs:{"options":_vm.displayCols},on:{"selected":_vm.toggleColumn}})],1):_vm._e()])]),_c('div',{staticClass:"row"},[_c('div',{staticClass:"col-sm-12"},[_c('div',{class:{ 'table-responsive': true, 'table-expanded': _vm.currentlyEditedRow === (_vm.filteredValuesSorted.length - 1)}},[_c('table',{staticClass:"table table-bordered table-hover table-condensed table-striped"},[_c('thead',[_c('table-header',{attrs:{"columns":_vm.displayColsVisible,"sortable":_vm.sortable,"sort-key":_vm.sortKey,"sort-orders":_vm.sortOrders},on:{"selected":_vm.sortBy}},[(_vm.selectable)?_c('th',[_c('check-box',{attrs:{"checked":_vm.allSelected},on:{"selected":_vm.selectAll}})],1):_vm._e()])],1),_c('tbody',_vm._l((_vm.filteredValuesSorted),function(entry,index){return _c('table-row',{key:index,class:{ 'tr-row-overlay': _vm.currentlyEditedRow < 0 ? false : index !== _vm.currentlyEditedRow },attrs:{"entry":entry,"columns":_vm.displayColsVisible,"track-by":"entry"},on:{"edit-row":function (obj) { return _vm.setCurrentlyEditedRow(index, obj); },"update-model":_vm.saveFields}},[(_vm.selectable)?_c('td',{attrs:{"track-by":"entry"}},[_c('check-box',{attrs:{"checked":entry.selected},on:{"selected":function (value) { return _vm.highlightRow(index, value); }}})],1):_vm._e()])}),1)])])]),(_vm.paginated)?_c('div',{staticClass:"col-sm-12 d-flex justify-content-center"},[_c('pagination',{attrs:{"max-page":_vm.maxPage,"current-page":_vm.page},on:{"selected":_vm.selectPage}})],1):_vm._e()])])}
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/GrotTable.vue?vue&type=template&id=4484fe30&
+// CONCATENATED MODULE: ./src/components/GrotTable.vue?vue&type=template&id=41ae4b4b&
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es6.function.name.js
 var es6_function_name = __webpack_require__("7f7f");
@@ -8805,9 +8819,6 @@ var es6_array_iterator = __webpack_require__("cadf");
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/web.dom.iterable.js
 var web_dom_iterable = __webpack_require__("ac6a");
-
-// EXTERNAL MODULE: ./node_modules/core-js/modules/es6.number.constructor.js
-var es6_number_constructor = __webpack_require__("c5f6");
 
 // EXTERNAL MODULE: ./node_modules/es6-promise/dist/es6-promise.js
 var es6_promise = __webpack_require__("1368");
@@ -8820,9 +8831,96 @@ var lodash_orderby_default = /*#__PURE__*/__webpack_require__.n(lodash_orderby);
 var lodash_includes = __webpack_require__("9cfb");
 var lodash_includes_default = /*#__PURE__*/__webpack_require__.n(lodash_includes);
 
-// EXTERNAL MODULE: ./node_modules/lodash.findindex/index.js
-var lodash_findindex = __webpack_require__("07a7");
-var lodash_findindex_default = /*#__PURE__*/__webpack_require__.n(lodash_findindex);
+// CONCATENATED MODULE: ./src/components/mixin/TableState.js
+
+
+
+/**
+ * Mixin GrotTableState
+ *
+ * This mixin is intended as a drop-in mixin to enable the default functionality of the GrotTable.
+ *
+ * The default supported use cases are:
+ *
+ *  * Select all item -> This is implemented by calling the function selectAll, which sets the allSelected to either
+ *    true/false. Which if true will set select=true on all items.
+ *
+ */
+/* harmony default export */ var TableState = ({
+  data: function data() {
+    return {
+      filteredSize: 0,
+      filterKey: "",
+      filteredValues: [],
+      sortKey: [],
+      sortOrders: {},
+      displayCols: [],
+      rawValues: [],
+      page: 1,
+      definedPageSize: 10,
+      allSelected: false,
+      currentlyEditedRow: -1
+    };
+  },
+  watch: {
+    allSelected: function allSelected() {
+      var val = this.allSelected;
+      this.values.forEach(function (value) {
+        value.selected = false;
+      });
+      this.filteredValuesSorted.forEach(function (value) {
+        value.selected = val;
+      });
+    }
+  },
+  methods: {
+    /**
+     * Function SelectAll
+     *
+     * This function is used to select all the items in the table
+     *
+     */
+    selectAll: function selectAll(value) {
+      this.allSelected = value;
+    }
+  }
+});
+// CONCATENATED MODULE: ./src/components/mixin/VisualProps.js
+
+/* harmony default export */ var VisualProps = ({
+  props: {
+    /**
+     * Enable/disable input filter, optional, default false
+     */
+    showFilter: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+
+    /**
+     * Enable/disable column picker to show/hide table columns, optional, default false
+     */
+    showColumnPicker: {
+      type: Boolean,
+      required: false,
+      default: false
+    }
+  },
+  watch: {
+    showColumnPicker: function showColumnPicker() {
+      this.displayCols.forEach(function (column) {
+        column.visible = true;
+      });
+    },
+    showFilter: function showFilter() {
+      // Reset filter key on toggle showFilter
+      this.filterKey = "";
+    }
+  }
+});
+// EXTERNAL MODULE: ./node_modules/core-js/modules/es6.number.constructor.js
+var es6_number_constructor = __webpack_require__("c5f6");
 
 // CONCATENATED MODULE: ./node_modules/@babel/runtime-corejs2/helpers/esm/classCallCheck.js
 function _classCallCheck(instance, Constructor) {
@@ -8859,7 +8957,212 @@ var Column_Column = function Column(_ref) {
 };
 
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"76e0b29a-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/SearchInput.vue?vue&type=template&id=7b1a0172&
+// EXTERNAL MODULE: ./node_modules/lodash.findindex/index.js
+var lodash_findindex = __webpack_require__("07a7");
+var lodash_findindex_default = /*#__PURE__*/__webpack_require__.n(lodash_findindex);
+
+// CONCATENATED MODULE: ./src/components/mixin/DefaultProps.js
+
+
+
+
+
+
+/**
+ * Mixin DefaultProps
+ *
+ * This mixin is intended to be used together with the mixin TableState as it operates on the default data structure.
+ *
+ * On property Columns : the data variables displayCols and sortOrders are calculated and populated.
+ */
+
+/* harmony default export */ var DefaultProps = ({
+  props: {
+    /**
+     * The column titles, required
+     */
+    columns: {
+      type: Array,
+      required: true
+    },
+
+    /**
+     * The rows, an Array of objects
+     */
+    values: {
+      type: Array,
+      required: false
+    },
+
+    /**
+     * Enable/disable table row selection, optional, default false.
+     * When true, it will add a checkbox column on the left side and use the value.selected field
+     */
+    selectable: {
+      type: Boolean,
+      required: false,
+      default: true
+    },
+
+    /**
+     * Enable/disable table sorting, optional, default true
+     */
+    sortable: {
+      type: Boolean,
+      required: false,
+      default: true
+    },
+
+    /**
+     * Enable/disable table multicolumn sorting, optional, default false.
+     * Also sortable must be enabled for this function to work.
+     */
+    multiColumnSortable: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+
+    /**
+     * Enable/disable pagination for the table, optional, default false
+     */
+    paginated: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+
+    /**
+     * If pagination is enabled defining the page size, optional, default 10
+     */
+    pageSize: {
+      type: Number,
+      required: false,
+      default: 10
+    },
+
+    /**
+     * Setting default order column. Expected name of the column
+     */
+    defaultOrderColumn: {
+      type: String,
+      required: false,
+      default: null
+    },
+
+    /**
+     * Setting default order direction. Boolean: true = ASC , false = DESC
+     */
+    defaultOrderDirection: {
+      type: Boolean,
+      required: false,
+      default: true
+    },
+
+    /**
+     * Function that is called every time the model is changed
+     */
+    onModelChange: {
+      type: Function,
+      required: false
+    },
+
+    /**
+     * Define if Filter search field is to work in a case Sensitive way. Default: true
+     */
+    filterCaseSensitive: {
+      type: Boolean,
+      required: false,
+      default: true
+    }
+  },
+  watch: {
+    /**
+     * The rawValues data property is set equal to the values property
+     */
+    values: function values() {
+      this.rawValues = this.values;
+    },
+
+    /**
+     * The displayCols data property is calculated based on the property: columns
+     */
+    columns: function columns() {
+      // Reset displayCols
+      this.displayCols = [];
+      var self = this;
+      this.columns.forEach(function (column) {
+        var obj = new Column_Column(column); // Update the displayCols array
+
+        self.displayCols.push(obj);
+      }); // Update the setSortOrders
+
+      this.setSortOrders();
+    },
+
+    /**
+     * The sortOrders data property is populated based on the property: columns
+     */
+    setSortOrders: function setSortOrders() {
+      // Reset sortKey
+      this.sortKey = [];
+      var sortOrders = {};
+      this.columns.forEach(function (column) {
+        sortOrders[column.name] = "";
+      });
+      this.sortOrders = sortOrders;
+    }
+  },
+  methods: {
+    /**
+     * Function SortBy
+     *
+     * This function is used to sort the collection
+     *
+     * @param event
+     * @param name
+     * @param sortable
+     */
+    sortBy: function sortBy(_ref) {
+      var event = _ref.event,
+          _ref$column = _ref.column,
+          name = _ref$column.name,
+          sortable = _ref$column.sortable;
+      var key = name; // If Sortable is not true
+
+      if (!sortable) return; // Sort
+
+      var self = this; // Sort single column
+
+      if (!this.multiColumnSortable || this.multiColumnSortable && !event.shiftKey) {
+        // Clear all keys except <key>
+        this.sortKey = [key];
+        this.columns.forEach(function (column) {
+          if (column.name !== key) {
+            self.sortOrders[column.name] = "";
+          }
+        });
+      } else {
+        // TODO: What is this?
+        if (lodash_findindex_default()(this.sortKey, function (o) {
+          return o === key;
+        }) === -1) {
+          this.sortKey.push(key);
+        }
+      } // The section is only for the selected key
+
+
+      if (this.sortOrders[key] === "") {
+        this.sortOrders[key] = "ASC";
+      } else if (this.sortOrders[key] === "ASC") {
+        this.sortOrders[key] = "DESC";
+      } else {
+        this.sortOrders[key] = "ASC";
+      }
+    }
+  }
+});
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"dc0668cc-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/SearchInput.vue?vue&type=template&id=7b1a0172&
 var SearchInputvue_type_template_id_7b1a0172_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"input-group"},[_c('input',{staticClass:"form-control",attrs:{"type":"text","placeholder":"Filter","aria-label":"","aria-describedby":"FilterItems"},domProps:{"value":_vm.value},on:{"input":_vm.uppdate}}),_vm._m(0)])}
 var SearchInputvue_type_template_id_7b1a0172_staticRenderFns = [function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"input-group-append"},[_c('span',{staticClass:"input-group-text fa fa-search",attrs:{"id":"FilterItems"}})])}]
 
@@ -9007,7 +9310,7 @@ var component = normalizeComponent(
 )
 
 /* harmony default export */ var SearchInput = (component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"76e0b29a-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/ColumnPicker.vue?vue&type=template&id=137ca13e&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"dc0668cc-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/ColumnPicker.vue?vue&type=template&id=137ca13e&
 var ColumnPickervue_type_template_id_137ca13e_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"btn-group"},[_vm._m(0),_c('div',{staticClass:"dropdown-menu dropdown-menu-right",attrs:{"aria-labelledby":"dropdownMenuButton"}},_vm._l((_vm.options),function(column,i){return _c('button',{key:i,staticClass:"dropdown-item",on:{"click":function($event){$event.preventDefault();return (function () { return _vm.selectColumn(column); })($event)}}},[(column.visible)?_c('i',{staticClass:"fa fa-check"}):_vm._e(),_vm._v(" "+_vm._s(column.title)+"\n        ")])}),0)])}
 var ColumnPickervue_type_template_id_137ca13e_staticRenderFns = [function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('button',{staticClass:"btn btn-outline-primary dropdown-toggle",attrs:{"type":"button","id":"dropdownMenuButton","data-toggle":"dropdown","aria-haspopup":"true","aria-expanded":"false"}},[_vm._v("\n        Columns "),_c('span',{staticClass:"caret"})])}]
 
@@ -9072,7 +9375,7 @@ var ColumnPicker_component = normalizeComponent(
 )
 
 /* harmony default export */ var ColumnPicker = (ColumnPicker_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"76e0b29a-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/TableHeader.vue?vue&type=template&id=12d86304&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"dc0668cc-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/TableHeader.vue?vue&type=template&id=12d86304&
 var TableHeadervue_type_template_id_12d86304_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('tr',[_vm._t("default"),_vm._l((_vm.columns),function(column,i){return _c('th',{key:i,staticClass:"icon",class:_vm.getClasses(column),attrs:{"track-by":"column"},on:{"click":function ($event) { return _vm.select($event, column); }}},[_vm._v("\n        "+_vm._s(column.title)+"\n    ")])})],2)}
 var TableHeadervue_type_template_id_12d86304_staticRenderFns = []
 
@@ -9169,7 +9472,7 @@ var TableHeader_component = normalizeComponent(
 )
 
 /* harmony default export */ var TableHeader = (TableHeader_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"76e0b29a-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/CheckBox.vue?vue&type=template&id=2fd4917d&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"dc0668cc-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/CheckBox.vue?vue&type=template&id=2fd4917d&
 var CheckBoxvue_type_template_id_2fd4917d_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"custom-control custom-checkbox"},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.checkedLocal),expression:"checkedLocal"}],staticClass:"custom-control-input",attrs:{"type":"checkbox","id":_vm.id,"aria-label":"Select All"},domProps:{"checked":Array.isArray(_vm.checkedLocal)?_vm._i(_vm.checkedLocal,null)>-1:(_vm.checkedLocal)},on:{"change":function($event){var $$a=_vm.checkedLocal,$$el=$event.target,$$c=$$el.checked?(true):(false);if(Array.isArray($$a)){var $$v=null,$$i=_vm._i($$a,$$v);if($$el.checked){$$i<0&&(_vm.checkedLocal=$$a.concat([$$v]))}else{$$i>-1&&(_vm.checkedLocal=$$a.slice(0,$$i).concat($$a.slice($$i+1)))}}else{_vm.checkedLocal=$$c}}}}),_c('label',{staticClass:"custom-control-label",attrs:{"for":_vm.id}})])}
 var CheckBoxvue_type_template_id_2fd4917d_staticRenderFns = []
 
@@ -9231,19 +9534,19 @@ var CheckBox_component = normalizeComponent(
 )
 
 /* harmony default export */ var CheckBox = (CheckBox_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"76e0b29a-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/TableRow.vue?vue&type=template&id=28df9869&
-var TableRowvue_type_template_id_28df9869_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('tr',{staticClass:"custom-row"},[_vm._t("default"),_vm._l((_vm.columns),function(column,index){return _c('td',{directives:[{name:"show",rawName:"v-show",value:(column.visible),expression:"column.visible"}],key:index,class:column.cellstyle,attrs:{"track-by":"column"}},[(column.renderfunction!==false)?_c('span',{domProps:{"innerHTML":_vm._s(column.renderfunction( column.name, _vm.entry ))}}):(!column.editable)?_c('span',[_vm._v("\n            "+_vm._s(_vm.entry[column.name])+"\n        ")]):_c('value-field-section',{attrs:{"entry":_vm.entry,"columnname":column.name,"should-save":_vm.editFields},on:{"toggle-edit":_vm.toggleEdit,"save-entry":_vm.saveFields}}),(_vm.editFields && index === 0)?_c('span',{staticClass:"options-button-grp"},[_c('div',{staticClass:"btn-group",attrs:{"role":"group","aria-label":"Basic example"}},[_c('button',{staticClass:"btn btn-outline-primary",attrs:{"type":"button"},on:{"click":_vm.saveFields}},[_c('span',{staticClass:"fa fa-check",attrs:{"aria-hidden":"true"}})]),_c('button',{staticClass:"btn btn-outline-danger",attrs:{"type":"button"},on:{"click":_vm.cancelSave}},[_c('span',{staticClass:"fa fa-times",attrs:{"aria-hidden":"true"}})])])]):_vm._e()],1)})],2)}
-var TableRowvue_type_template_id_28df9869_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"dc0668cc-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/TableRow.vue?vue&type=template&id=f0d207aa&
+var TableRowvue_type_template_id_f0d207aa_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('tr',{staticClass:"custom-row"},[_vm._t("default"),_vm._l((_vm.columns),function(column,index){return _c('td',{directives:[{name:"show",rawName:"v-show",value:(column.visible),expression:"column.visible"}],key:index,class:column.cellstyle,attrs:{"track-by":"column"}},[(column.renderfunction!==false)?_c('span',{domProps:{"innerHTML":_vm._s(column.renderfunction( column.name, _vm.entry ))}}):(!column.editable)?_c('span',[_vm._v("\n            "+_vm._s(_vm.entry[column.name])+"\n        ")]):_c('value-field-section',{attrs:{"entry":_vm.entry,"columnname":column.name,"should-save":_vm.editFields},on:{"toggle-edit":_vm.toggleEditFields,"save-entry":_vm.saveFields}}),(_vm.editFields && index === 0)?_c('span',{staticClass:"options-button-grp"},[_c('div',{staticClass:"btn-group",attrs:{"role":"group","aria-label":"Basic example"}},[_c('button',{staticClass:"btn btn-outline-primary",attrs:{"type":"button"},on:{"click":_vm.initiateSave}},[_c('span',{staticClass:"fa fa-check",attrs:{"aria-hidden":"true"}})]),_c('button',{staticClass:"btn btn-outline-danger",attrs:{"type":"button"},on:{"click":_vm.cancelSave}},[_c('span',{staticClass:"fa fa-times",attrs:{"aria-hidden":"true"}})])])]):_vm._e()],1)})],2)}
+var TableRowvue_type_template_id_f0d207aa_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/TableRow.vue?vue&type=template&id=28df9869&
+// CONCATENATED MODULE: ./src/components/TableRow.vue?vue&type=template&id=f0d207aa&
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"76e0b29a-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/ValueFieldSection.vue?vue&type=template&id=7aa3ec7e&
-var ValueFieldSectionvue_type_template_id_7aa3ec7e_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return (!_vm.enabled)?_c('span',{staticClass:"editableField",on:{"dblclick":_vm.toggleInput}},[_vm._v("\n    "+_vm._s(this.entry[this.columnname])+"\n")]):(_vm.enabled)?_c('div',{staticClass:"input-group"},[_c('textarea',{directives:[{name:"model",rawName:"v-model",value:(_vm.dataValue),expression:"dataValue"}],staticClass:"form-control",attrs:{"type":"text"},domProps:{"value":(_vm.dataValue)},on:{"input":function($event){if($event.target.composing){ return; }_vm.dataValue=$event.target.value}}})]):_vm._e()}
-var ValueFieldSectionvue_type_template_id_7aa3ec7e_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"dc0668cc-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/ValueFieldSection.vue?vue&type=template&id=ecfeeb5c&
+var ValueFieldSectionvue_type_template_id_ecfeeb5c_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return (!_vm.enabled)?_c('span',{staticClass:"editableField",on:{"dblclick":_vm.toggleInput}},[_vm._v("\n    "+_vm._s(this.entry[this.columnname])+"\n")]):(_vm.enabled)?_c('div',{staticClass:"input-group"},[_c('textarea',{directives:[{name:"model",rawName:"v-model",value:(_vm.dataValue),expression:"dataValue"}],staticClass:"form-control",attrs:{"type":"text"},domProps:{"value":(_vm.dataValue)},on:{"input":function($event){if($event.target.composing){ return; }_vm.dataValue=$event.target.value}}})]):_vm._e()}
+var ValueFieldSectionvue_type_template_id_ecfeeb5c_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/ValueFieldSection.vue?vue&type=template&id=7aa3ec7e&
+// CONCATENATED MODULE: ./src/components/ValueFieldSection.vue?vue&type=template&id=ecfeeb5c&
 
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/ValueFieldSection.vue?vue&type=script&lang=js&
 //
@@ -9276,6 +9579,7 @@ var ValueFieldSectionvue_type_template_id_7aa3ec7e_staticRenderFns = []
     };
   },
   created: function created() {
+    // Listen for the
     this.$parent.$on('save-fields', this.handleParent);
   },
   methods: {
@@ -9285,8 +9589,14 @@ var ValueFieldSectionvue_type_template_id_7aa3ec7e_staticRenderFns = []
       }
 
       this.enabled = false;
+      this.$emit('save-entry', {
+        field: this.columnname,
+        value: this.dataValue
+      });
     },
-    handleParent: function handleParent(save) {
+    handleParent: function handleParent(_ref) {
+      var save = _ref.save;
+
       if (save) {
         this.saveThis();
       } else {
@@ -9316,8 +9626,8 @@ var ValueFieldSectionvue_type_template_id_7aa3ec7e_staticRenderFns = []
 
 var ValueFieldSection_component = normalizeComponent(
   components_ValueFieldSectionvue_type_script_lang_js_,
-  ValueFieldSectionvue_type_template_id_7aa3ec7e_render,
-  ValueFieldSectionvue_type_template_id_7aa3ec7e_staticRenderFns,
+  ValueFieldSectionvue_type_template_id_ecfeeb5c_render,
+  ValueFieldSectionvue_type_template_id_ecfeeb5c_staticRenderFns,
   false,
   null,
   null,
@@ -9378,7 +9688,8 @@ var ValueFieldSection_component = normalizeComponent(
   },
   data: function data() {
     return {
-      editFields: false
+      editFields: false,
+      row: this.entry
     };
   },
   props: {
@@ -9392,24 +9703,38 @@ var ValueFieldSection_component = normalizeComponent(
     }
   },
   methods: {
-    saveFields: function saveFields() {
-      // Used in ValueFieldSection and VueBootstrapTable
+    initiateSave: function initiateSave() {
       this.$emit('save-fields', {
-        save: true,
-        entry: this.entry
+        save: true
       });
-      this.toggleEdit(false);
+      this.toggleEditFields(false);
+    },
+    saveFields: function saveFields(_ref) {
+      var field = _ref.field,
+          value = _ref.value;
+
+      if (value) {
+        this.row[field] = value; // Used in ValueFieldSection and VueBootstrapTable
+
+        this.$emit('update-model', {
+          save: true,
+          entry: this.entry
+        });
+      }
     },
     cancelSave: function cancelSave() {
       // Used in ValueFieldSection and VueBootstrapTable
       this.$emit('save-fields', {
         save: false
       });
-      this.toggleEdit(false);
+      this.$emit('update-model', {
+        save: false
+      });
+      this.toggleEditFields(false);
     },
-    toggleEdit: function toggleEdit(toggle) {
+    toggleEditFields: function toggleEditFields(toggle) {
       this.$emit('edit-row', {
-        entry: this.entry
+        toggle: toggle
       });
       this.editFields = toggle;
     }
@@ -9431,8 +9756,8 @@ var TableRowvue_type_style_index_0_lang_scss_ = __webpack_require__("0bbc");
 
 var TableRow_component = normalizeComponent(
   components_TableRowvue_type_script_lang_js_,
-  TableRowvue_type_template_id_28df9869_render,
-  TableRowvue_type_template_id_28df9869_staticRenderFns,
+  TableRowvue_type_template_id_f0d207aa_render,
+  TableRowvue_type_template_id_f0d207aa_staticRenderFns,
   false,
   null,
   null,
@@ -9441,7 +9766,7 @@ var TableRow_component = normalizeComponent(
 )
 
 /* harmony default export */ var TableRow = (TableRow_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"76e0b29a-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/Pagination.vue?vue&type=template&id=f4d7cd00&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"dc0668cc-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/Pagination.vue?vue&type=template&id=f4d7cd00&
 var Paginationvue_type_template_id_f4d7cd00_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"btn-toolbar",attrs:{"role":"toolbar","aria-label":"pagination bar"}},[_c('div',{staticClass:"btn-group mr-2",attrs:{"role":"group","aria-label":"first page"}},[_c('button',{staticClass:"btn btn-outline-primary",attrs:{"type":"button"},on:{"click":function($event){return _vm.click(1)}}},[_vm._v("«")])]),_c('div',{staticClass:"btn-group mr-2",attrs:{"role":"group","aria-label":"pages"}},_vm._l((_vm.currentPages),function(index){return _c('button',{key:index,staticClass:"btn btn-outline-primary",class:{ active: _vm.currentPage===index },attrs:{"type":"button"},on:{"click":function($event){return _vm.click(index)}}},[_vm._v("\n            "+_vm._s(index)+"\n        ")])}),0),(_vm.showPaginationEtc)?_c('div',{staticClass:"btn-group mr-2"},[_vm._v("\n        ...\n    ")]):_vm._e(),_c('div',{staticClass:"btn-group",attrs:{"role":"group","aria-label":"last page"}},[_c('button',{staticClass:"btn btn-outline-primary",attrs:{"type":"button"},on:{"click":function($event){return _vm.click(_vm.maxPage)}}},[_vm._v("»")])])])}
 var Paginationvue_type_template_id_f4d7cd00_staticRenderFns = []
 
@@ -9542,7 +9867,6 @@ var Pagination_component = normalizeComponent(
 
 
 
-
 //
 //
 //
@@ -9618,8 +9942,19 @@ Object(es6_promise["polyfill"])();
 
 
 
+
+
 /* harmony default export */ var GrotTablevue_type_script_lang_js_ = ({
   name: "GrotTable",
+
+  /**
+   *
+   */
+  mixins: [VisualProps, DefaultProps, TableState],
+
+  /**
+   *
+   */
   components: {
     Pagination: Pagination,
     TableRow: TableRow,
@@ -9628,146 +9963,13 @@ Object(es6_promise["polyfill"])();
     ColumnPicker: ColumnPicker,
     SearchInput: SearchInput
   },
-  props: {
-    /**
-     * The column titles, required
-     */
-    columns: {
-      type: Array,
-      required: true
-    },
-
-    /**
-     * The rows, an Array of objects
-     */
-    values: {
-      type: Array,
-      required: false
-    },
-
-    /**
-     * Enable/disable table row selection, optional, default false.
-     * When true, it will add a checkbox column on the left side and use the value.selected field
-     */
-    selectable: {
-      type: Boolean,
-      required: false,
-      default: true
-    },
-
-    /**
-     * Enable/disable table sorting, optional, default true
-     */
-    sortable: {
-      type: Boolean,
-      required: false,
-      default: true
-    },
-
-    /**
-     * Enable/disable table multicolumn sorting, optional, default false.
-     * Also sortable must be enabled for this function to work.
-     */
-    multiColumnSortable: {
-      type: Boolean,
-      required: false,
-      default: false
-    },
-
-    /**
-     * Enable/disable column picker to show/hide table columns, optional, default false
-     */
-    showColumnPicker: {
-      type: Boolean,
-      required: false,
-      default: false
-    },
-
-    /**
-     * Enable/disable pagination for the table, optional, default false
-     */
-    paginated: {
-      type: Boolean,
-      required: false,
-      default: false
-    },
-
-    /**
-     * If pagination is enabled defining the page size, optional, default 10
-     */
-    pageSize: {
-      type: Number,
-      required: false,
-      default: 10
-    },
-
-    /**
-     * Setting default order column. Expected name of the column
-     */
-    defaultOrderColumn: {
-      type: String,
-      required: false,
-      default: null
-    },
-
-    /**
-     * Setting default order direction. Boolean: true = ASC , false = DESC
-     */
-    defaultOrderDirection: {
-      type: Boolean,
-      required: false,
-      default: true
-    },
-
-    /**
-     * Function that is called every time the model is changed
-     */
-    onModelChange: {
-      type: Function,
-      required: false
-    },
-
-    /**
-     * Enable/disable input filter, optional, default false
-     */
-    showFilter: {
-      type: Boolean,
-      required: false,
-      default: false
-    },
-
-    /**
-     * Define if Filter search field is to work in a case Sensitive way. Default: true
-     */
-    filterCaseSensitive: {
-      type: Boolean,
-      required: false,
-      default: true
-    }
-  },
-  data: function data() {
-    return {
-      filteredSize: 0,
-      filterKey: "",
-      filteredValues: [],
-      sortKey: [],
-      sortOrders: {},
-      sortChanged: 1,
-      displayCols: [],
-      rawValues: [],
-      page: 1,
-      definedPageSize: 10,
-      allSelected: false,
-      currentlyEditedRow: -1
-    };
-  },
 
   /**
    * Once mounted and ready to start
    */
   mounted: function mounted() {
     this.$nextTick(function () {
-      this.setSortOrders();
+      //this.setSortOrders();
       this.definedPageSize = this.pageSize;
       var self = this; //
 
@@ -9785,29 +9987,8 @@ Object(es6_promise["polyfill"])();
     });
   },
   watch: {
-    values: function values() {
-      this.rawValues = this.values;
-    },
     rawValues: function rawValues() {
       this.processFilter();
-    },
-    columns: function columns() {
-      this.displayCols = [];
-      var self = this;
-      this.columns.forEach(function (column) {
-        var obj = new Column_Column(column);
-        self.displayCols.push(obj);
-      });
-      this.setSortOrders();
-    },
-    showColumnPicker: function showColumnPicker() {
-      this.displayCols.forEach(function (column) {
-        column.visible = true;
-      });
-    },
-    showFilter: function showFilter() {
-      // Reset filter key on toggle showFilter
-      this.filterKey = "";
     },
     filterKey: function filterKey() {
       // filter was updated, so resetting to page 1
@@ -9817,23 +9998,11 @@ Object(es6_promise["polyfill"])();
     sortKey: function sortKey() {
       this.processFilter();
     },
-    sortChanged: function sortChanged() {
-      this.processFilter();
-    },
     page: function page() {
       this.processFilter();
     },
     paginated: function paginated() {
       this.processFilter();
-    },
-    allSelected: function allSelected() {
-      var val = this.allSelected;
-      this.values.forEach(function (value) {
-        value.selected = false;
-      });
-      this.filteredValuesSorted.forEach(function (value) {
-        value.selected = val;
-      });
     }
   },
   computed: {
@@ -9867,9 +10036,6 @@ Object(es6_promise["polyfill"])();
      *
      */
     highlightRow: function highlightRow(index, value) {
-      var row = this.values[index];
-      row.selected = false;
-      this.values[index] = row;
       var rowf = this.filteredValuesSorted[index];
       rowf.selected = value;
       this.filteredValuesSorted[index] = rowf;
@@ -9885,11 +10051,13 @@ Object(es6_promise["polyfill"])();
      * Indicate which row is currently being edited.
      *
      */
-    setCurrentlyEditedRow: function setCurrentlyEditedRow(index) {
-      if (this.currentlyEditedRow >= 0) {
-        this.currentlyEditedRow = -1;
-      } else {
+    setCurrentlyEditedRow: function setCurrentlyEditedRow(index, _ref) {
+      var toggle = _ref.toggle;
+
+      if (toggle) {
         this.currentlyEditedRow = index;
+      } else {
+        this.currentlyEditedRow = -1;
       }
     },
 
@@ -9899,11 +10067,11 @@ Object(es6_promise["polyfill"])();
      * This function calls the onModelChange function if the field should be saved.
      *
      */
-    saveFields: function saveFields(_ref) {
-      var save = _ref.save,
-          entry = _ref.entry;
+    saveFields: function saveFields(_ref2) {
+      var save = _ref2.save,
+          entry = _ref2.entry;
 
-      if (save) {
+      if (save && entry) {
         this.onModelChange({
           type: "SAVE",
           entry: entry
@@ -9912,61 +10080,6 @@ Object(es6_promise["polyfill"])();
     },
     selectPage: function selectPage(index) {
       this.page = index;
-    },
-    selectAll: function selectAll(value) {
-      this.allSelected = value;
-    },
-    setPageSize: function setPageSize(newPageSize) {
-      this.definedPageSize = newPageSize;
-      this.processFilter();
-    },
-    setSortOrders: function setSortOrders() {
-      this.sortKey = [];
-      var sortOrders = {};
-      this.columns.forEach(function (column) {
-        sortOrders[column.name] = "";
-      });
-      this.sortOrders = sortOrders;
-    },
-    sortBy: function sortBy(_ref2) {
-      var event = _ref2.event,
-          _ref2$column = _ref2.column,
-          name = _ref2$column.name,
-          sortable = _ref2$column.sortable;
-      var key = name;
-      if (!sortable) return;
-
-      if (this.sortable) {
-        var self = this;
-
-        if (!this.multiColumnSortable || this.multiColumnSortable && !event.shiftKey) {
-          this.sortKey = [key];
-          this.columns.forEach(function (column) {
-            if (column.name !== key) {
-              self.sortOrders[column.name] = "";
-            }
-          });
-        } else {
-          if (lodash_findindex_default()(this.sortKey, function (o) {
-            return o === key;
-          }) === -1) {
-            this.sortKey.push(key);
-          }
-        }
-
-        if (this.sortOrders[key] === "") {
-          this.sortOrders[key] = "ASC";
-        } else if (this.sortOrders[key] === "ASC") {
-          this.sortOrders[key] = "DESC";
-        } else {
-          this.sortOrders[key] = "ASC";
-        }
-
-        this.sortChanged = this.sortChanged * -1;
-      }
-    },
-    refresh: function refresh() {
-      this.processFilter();
     },
 
     /**
@@ -10050,29 +10163,8 @@ var GrotTable_component = normalizeComponent(
 /* harmony default export */ var GrotTable = (GrotTable_component.exports);
 // CONCATENATED MODULE: ./src/components/index.js
 
-
-
-
-
-
-
-
-var components_Column = Column_Column;
-var components_SearchInput = SearchInput;
-var components_ColumnPicker = ColumnPicker;
-var components_TableHeader = TableHeader;
-var components_CheckBox = CheckBox;
-var components_TableRow = TableRow;
-var components_Pagination = Pagination;
 /* harmony default export */ var components = (GrotTable);
 // CONCATENATED MODULE: ./node_modules/@vue/cli-service/lib/commands/build/entry-lib.js
-/* concated harmony reexport Column */__webpack_require__.d(__webpack_exports__, "Column", function() { return components_Column; });
-/* concated harmony reexport SearchInput */__webpack_require__.d(__webpack_exports__, "SearchInput", function() { return components_SearchInput; });
-/* concated harmony reexport ColumnPicker */__webpack_require__.d(__webpack_exports__, "ColumnPicker", function() { return components_ColumnPicker; });
-/* concated harmony reexport TableHeader */__webpack_require__.d(__webpack_exports__, "TableHeader", function() { return components_TableHeader; });
-/* concated harmony reexport CheckBox */__webpack_require__.d(__webpack_exports__, "CheckBox", function() { return components_CheckBox; });
-/* concated harmony reexport TableRow */__webpack_require__.d(__webpack_exports__, "TableRow", function() { return components_TableRow; });
-/* concated harmony reexport Pagination */__webpack_require__.d(__webpack_exports__, "Pagination", function() { return components_Pagination; });
 
 
 /* harmony default export */ var entry_lib = __webpack_exports__["default"] = (components);
