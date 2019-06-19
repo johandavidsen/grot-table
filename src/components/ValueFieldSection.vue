@@ -40,20 +40,21 @@
     },
 
     created: function () {
-        this.$parent.$on('save-fields', this.handleParent)
+      // Listen for the
+      this.$parent.$on('save-fields', this.handleParent)
     },
 
     methods: {
 
       saveThis () {
-
         if (this.dataValue) {
           this.entry[this.columnname] = this.dataValue
         }
         this.enabled = false
+        this.$emit('save-entry', { field: this.columnname, value: this.dataValue })
       },
 
-      handleParent (save) {
+      handleParent ({ save }) {
         if (save) {
           this.saveThis()
         } else {

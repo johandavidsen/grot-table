@@ -36,7 +36,7 @@
                                        :key="index"
                                        :class="{ 'tr-row-overlay': currentlyEditedRow < 0 ? false : index !== currentlyEditedRow }"
                                        v-on:edit-row="(obj) => setCurrentlyEditedRow(index, obj)"
-                                       v-on:save-fields="saveFields"
+                                       v-on:update-model="saveFields"
                                        track-by="entry"
                                 >
                                 <td v-if="selectable" track-by="entry" >
@@ -195,11 +195,6 @@
        *
        */
       highlightRow (index, value) {
-        let row = this.values[index]
-        row.selected = false
-
-        this.values[index] = row
-
         let rowf = this.filteredValuesSorted[index]
         rowf.selected = value
 
@@ -214,13 +209,14 @@
        * Indicate which row is currently being edited.
        *
        */
-      setCurrentlyEditedRow (index) {
+      setCurrentlyEditedRow (index, { toggle }) {
 
-        if (this.currentlyEditedRow >= 0) {
-          this.currentlyEditedRow = -1
-        } else {
+        if (toggle) {
           this.currentlyEditedRow = index
+        } else {
+          this.currentlyEditedRow = -1
         }
+
       },
 
       /**
@@ -230,7 +226,7 @@
        *
        */
       saveFields ({ save, entry }) {
-        if (save) {
+        if (save && entry) {
           this.onModelChange({ type: "SAVE", entry: entry })
         }
       },

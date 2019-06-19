@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.5.1] - June 19, 2019
+
+### Fixed
+
+* Fixed onModelChange => The function was not providing the updated model.
+* Fixed multiedit on row.
+
+## [1.5] - June 18, 2019
+
+### Changed
+
+* Restructured the component to be named grot-table instead of vue2-bootstrap-table.
+* Published package to NPMJS.
+
 ## [1.4] - June 17, 2019
 
 ### Changed

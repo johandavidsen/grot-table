@@ -21,14 +21,14 @@
                                  :entry="entry"
                                  :columnname="column.name"
                                  :should-save="editFields"
-                                 v-on:toggle-edit="toggleEdit"
+                                 v-on:toggle-edit="toggleEditFields"
                                  v-on:save-entry="saveFields"
                 >
             </value-field-section>
 
             <span class="options-button-grp" v-if="editFields && index === 0">
                 <div class="btn-group" role="group" aria-label="Basic example">
-                    <button type="button" class="btn btn-outline-primary" @click="saveFields">
+                    <button type="button" class="btn btn-outline-primary" @click="initiateSave">
                         <span class="fa fa-check" aria-hidden="true"></span>
                     </button>
                     <button type="button" class="btn btn-outline-danger" @click="cancelSave">
@@ -53,7 +53,8 @@
 
     data: function () {
       return {
-        editFields: false
+        editFields: false,
+        row: this.entry
       }
     },
 
@@ -73,20 +74,28 @@
 
     methods: {
 
-      saveFields() {
-        // Used in ValueFieldSection and VueBootstrapTable
-        this.$emit('save-fields', { save: true, entry: this.entry })
-        this.toggleEdit(false)
+      initiateSave () {
+        this.$emit('save-fields', { save: true })
+        this.toggleEditFields(false)
+      },
+
+      saveFields({ field, value }) {
+        if (value) {
+          this.row[field] = value
+          // Used in ValueFieldSection and VueBootstrapTable
+          this.$emit('update-model', { save: true, entry: this.entry })
+        }
       },
 
       cancelSave() {
         // Used in ValueFieldSection and VueBootstrapTable
-        this.$emit('save-fields',{ save: false })
-        this.toggleEdit(false)
+        this.$emit('save-fields', { save: false })
+        this.$emit('update-model', { save: false })
+        this.toggleEditFields(false)
       },
 
-      toggleEdit(toggle) {
-        this.$emit('edit-row', { entry: this.entry })
+      toggleEditFields(toggle) {
+        this.$emit('edit-row', { toggle: toggle })
         this.editFields = toggle
       }
     }
