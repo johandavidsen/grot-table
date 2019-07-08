@@ -2,6 +2,7 @@
   "name": "grot-table",
   "version": "1.5.2",
   "description": "A sortable and searchable table, built on Vue and using Bootstrap and Fontawesome styling.",
+  "license": "MIT",
   "keywords": [
     "table",
     "vuejs",
@@ -26,7 +27,7 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "build-lib": "rimraf dist && vue-cli-service build --target lib ./src/components/index.js",
+    "build-lib": "rimraf dist && vue-cli-service build --target lib --name grot-table ./src/components/index.js",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
