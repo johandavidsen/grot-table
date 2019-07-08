@@ -41,26 +41,29 @@ jobs:
       - deploy:
           name: Deploy
           command: |
-                if [ $CIRCLE_BRANCH == $SOURCE_BRANCH ]; then
-                  git config --global user.email $GH_EMAIL
-                  git config --global user.name $GH_NAME
+            if [ $CIRCLE_BRANCH == $SOURCE_BRANCH ]; then
+              echo -e "Starting to deploy to Github Pages\n"
 
-                  git clone $CIRCLE_REPOSITORY_URL out
+              git config --global user.email "builds@circleci.com"
+              git config --global user.name "CircleCI"
 
-                  cd out
-                  git checkout $TARGET_BRANCH || git checkout --orphan $TARGET_BRANCH
-                  git rm -rf .
-                  cd ..
 
-                  npm run build
+              git clone --quiet https://${GH_TOKEN}@github.com/$TARGET_REPO out > /dev/null
 
-                  cp -a dist/. out/.
+              cd out
+              git checkout $TARGET_BRANCH || git checkout --orphan $TARGET_BRANCH
+              git rm -rf .
+              cd ..
 
-                  mkdir -p out/.circleci && cp -a .circleci/. out/.circleci/.
-                  cd out
+              npm run build
 
-                  git add -A
-                  git commit -m "Automated deployment to GitHub Pages: ${CIRCLE_SHA1}" --allow-empty
+              cp -a dist/. out/.
 
-                  git push origin $TARGET_BRANCH
-                fi
+              mkdir -p out/.circleci && cp -a .circleci/. out/.circleci/.
+              cd out
+
+              git add -A
+              git commit -m "Automated deployment to GitHub Pages: ${CIRCLE_SHA1}" --allow-empty
+
+              git push origin $TARGET_BRANCH
+             fi
