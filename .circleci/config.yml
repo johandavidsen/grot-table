@@ -17,6 +17,7 @@ jobs:
     working_directory: ~/repo
 
     environment:
+      - GITHUB_URL: johandavidsen/grot-table
       - SOURCE_BRANCH: master
       - TARGET_BRANCH: gh-pages
 
@@ -48,7 +49,7 @@ jobs:
               git config --global user.name "CircleCI"
 
 
-              git clone --quiet https://${GH_TOKEN}@github.com/$TARGET_REPO out > /dev/null
+              git clone --quiet https://${GH_TOKEN}@github.com/$GITHUB_URL out > /dev/null
 
               cd out
               git checkout $TARGET_BRANCH || git checkout --orphan $TARGET_BRANCH
