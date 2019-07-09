@@ -38,7 +38,15 @@ jobs:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
 
-      # Deploy to GitHub Pagesx
+      - run: npm run build
+
+      - run:
+          name: Publish to NPM
+          command: |
+            npm set //registry.npmjs.org/:_authToken=$NPM_TOKEN
+            npm publish
+
+      # Deploy to GitHub Pages
       - deploy:
           name: Deploy
           command: |
@@ -48,15 +56,12 @@ jobs:
               git config --global user.email "builds@circleci.com"
               git config --global user.name "CircleCI"
 
-
               git clone --quiet https://${GH_TOKEN}@github.com/$GITHUB_URL out > /dev/null
 
               cd out
               git checkout $TARGET_BRANCH || git checkout --orphan $TARGET_BRANCH
               git rm -rf .
               cd ..
-
-              npm run build
 
               cp -a dist/. out/.
 
