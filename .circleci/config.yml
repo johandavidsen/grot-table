@@ -46,19 +46,19 @@ jobs:
   publish_npm:
     <<: *defaults
 
-      steps:
-        - attach_workspace:
-            at: ~/repo
+    steps:
+      - attach_workspace:
+          at: ~/repo
 
-        - run:
-            name: Authenticate with registry
-            command:
-              npm set //registry.npmjs.org/:_authToken=$NPM_TOKEN > ~/repo/.npmrc
+      - run:
+          name: Authenticate with registry
+          command:
+            npm set //registry.npmjs.org/:_authToken=$NPM_TOKEN > ~/repo/.npmrc
 
-        - run:
-            name: Publish to NPM
-            command:
-              npm publish
+      - run:
+          name: Publish to NPM
+          command:
+            npm publish
 
   # Deploy to GitHub Pages
   publish_github:
