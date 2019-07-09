@@ -1,5 +1,7 @@
 module.exports = {
-    publicPath: '/grot-table/',
+    publicPath: process.env.NODE_ENV === 'production'
+      ? '/grot-table/'
+      : '/',
     configureWebpack: {
         output: {
             library: "GrotTable",
