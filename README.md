@@ -1,7 +1,9 @@
 # vue-bootstrap-table
 
 ![npm](https://img.shields.io/npm/v/grot-table.svg?style=flat-square)
-[![CircleCI](https://circleci.com/gh/johandavidsen/grot-table.svg?style=svg)](https://circleci.com/gh/johandavidsen/grot-table)
+![CircleCI](https://img.shields.io/circleci/build/github/johandavidsen/grot-table/master.svg?style=flat-square)
+![npm bundle size](https://img.shields.io/bundlephobia/minzip/grot-table.svg?style=flat-square)
+![Libraries.io SourceRank](https://img.shields.io/librariesio/sourcerank/npm/grot-table.svg?style=flat-square)
 
 This project was originally a fork of [jbaysolutions/vue-bootstrap-table](https://github.com/jbaysolutions/vue-bootstrap-table). 
 The main reason for this fork is to increase control of the table components and to reduce the project size. 

@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.5.3]
+
+### Added
+
+* Updated the build/deployment pipe to use [CircleCI](https://circleci.com).
+* Added a demo page on [johandavidsen.github.io/grot-table](https://johandavidsen.github.io/grot-table/).
+* Added different shields to indicate the state of the project.
+
 ## [1.5.1] - June 19, 2019
 
 ### Fixed
