@@ -3,23 +3,21 @@
 # Check https://circleci.com/docs/2.0/language-javascript/ for more details
 #
 version: 2
+
+defaults: &defaults
+  working_directory: ~/repo
+  docker:
+    - image: circleci/node:8.11.2
+
+  environment:
+    - GITHUB_URL: johandavidsen/grot-table
+    - SOURCE_BRANCH: master
+    - TARGET_BRANCH: gh-pages
+
 jobs:
+  # Build component
   build:
-    docker:
-      # specify the version you desire here
-      - image: circleci/node:8.11.2
-
-      # Specify service dependencies here if necessary
-      # CircleCI maintains a library of pre-built images
-      # documented at https://circleci.com/docs/2.0/circleci-images/
-      # - image: circleci/mongo:3.4.4
-
-    working_directory: ~/repo
-
-    environment:
-      - GITHUB_URL: johandavidsen/grot-table
-      - SOURCE_BRANCH: master
-      - TARGET_BRANCH: gh-pages
+    <<: *defaults
 
     steps:
       - checkout
@@ -40,36 +38,84 @@ jobs:
 
       - run: npm run build
 
-      - run:
-          name: Publish to NPM
-          command: |
-            npm set //registry.npmjs.org/:_authToken=$NPM_TOKEN
-            npm publish
+      - persist_to_workspace:
+          root: ~/repo
+          paths: .
 
-      # Deploy to GitHub Pages
+  # Publish to NPM
+  publish_npm:
+    <<: *defaults
+
+      steps:
+        - attach_workspace:
+            at: ~/repo
+
+        - run:
+            name: Authenticate with registry
+            command:
+              npm set //registry.npmjs.org/:_authToken=$NPM_TOKEN > ~/repo/.npmrc
+
+        - run:
+            name: Publish to NPM
+            command:
+              npm publish
+
+  # Deploy to GitHub Pages
+  publish_github:
+    <<: *defaults
+
+    steps:
+      - attach_workspace:
+          at: ~/repo
+
       - deploy:
-          name: Deploy
-          command: |
-            if [ $CIRCLE_BRANCH == $SOURCE_BRANCH ]; then
-              echo -e "Starting to deploy to Github Pages\n"
+        name: Deploy
+        command: |
+          if [ $CIRCLE_BRANCH == $SOURCE_BRANCH ]; then
+            echo -e "Starting to deploy to Github Pages\n"
 
-              git config --global user.email "builds@circleci.com"
-              git config --global user.name "CircleCI"
+            git config --global user.email "builds@circleci.com"
+            git config --global user.name "CircleCI"
 
-              git clone --quiet https://${GH_TOKEN}@github.com/$GITHUB_URL out > /dev/null
+            git clone --quiet https://${GH_TOKEN}@github.com/$GITHUB_URL out > /dev/null
 
-              cd out
-              git checkout $TARGET_BRANCH || git checkout --orphan $TARGET_BRANCH
-              git rm -rf .
-              cd ..
+            cd out
+            git checkout $TARGET_BRANCH || git checkout --orphan $TARGET_BRANCH
+            git rm -rf .
+            cd ..
 
-              cp -a dist/. out/.
+            cp -a dist/. out/.
 
-              mkdir -p out/.circleci && cp -a .circleci/. out/.circleci/.
-              cd out
+            mkdir -p out/.circleci && cp -a .circleci/. out/.circleci/.
+            cd out
 
-              git add -A
-              git commit -m "Automated deployment to GitHub Pages: ${CIRCLE_SHA1}" --allow-empty
+            git add -A
+            git commit -m "Automated deployment to GitHub Pages: ${CIRCLE_SHA1}" --allow-empty
 
-              git push origin $TARGET_BRANCH
-             fi
+            git push origin $TARGET_BRANCH
+           fi
+
+workflows:
+  version: 2
+  build-publish-npm-github:
+    jobs:
+      - build:
+          filters:
+            tags:
+              only: /^v.*/
+      - publish_github:
+          requires:
+            - build
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
+      - publish_npm:
+          requires:
+            - build
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
