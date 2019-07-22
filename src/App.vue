@@ -1,56 +1,41 @@
 <template>
     <div id="app" class="container">
         <div class="row">
-            <div class="col-sm-12">
-                <div class="btn-group" role="group">
-                    <button @click="addItem" class="btn btn-primary"><i class="glyphicon glyphicon-plus-sign"></i>
-                        Add an item
-                    </button>
-                    <button @click="toggleFilter" class="btn btn-outline-primary">Toggle Filter</button>
-                    <button @click="togglePicker" class="btn btn-outline-primary">Toggle Column Picker</button>
-                    <button @click="toggleSelect" class="btn btn-outline-primary">Toggle Select column</button>
-                    <button @click="togglePagination" class="btn btn-outline-primary">Toggle Pagination</button>
-                </div>
+            <div class="col-sm-12 mb-3 mb-3">
+                <h1>Original Component</h1>
+            </div>
+        </div>
+        <grot-table-orignal
+                :data-columns="columns"
+                :data-values="values"
+                class="mb-5">
+        </grot-table-orignal>
+
+        <div class="row">
+            <div class="col-sm-12 mb-3 mb-3">
+                <h1>Custom Component</h1>
             </div>
         </div>
 
-        <grot-table
+        <!--<grot-table-customize
                 :columns="columns"
                 :values="values"
-                :show-filter="showFilter"
-                :show-column-picker="showPicker"
-                :paginated="paginated"
-                :multi-column-sortable="multiColumnSortable"
-                :on-model-change="handleModelChange"
-                :filter-case-sensitive=false
-                :selectable="showSelect"
+                class="mb-5"
             >
-        </grot-table>
+        </grot-table-customize>-->
     </div>
 </template>
 
 <script>
-  import GrotTable from "./components/GrotTable";
+  import GrotTableOrignal from './examples/GrotTableOriginal'
+  //import GrotTableCustomize from './examples/GrotTableCustomize'
 
   export default {
 
     name: 'app',
 
-    components: {
-      GrotTable
-    },
-
     data () {
       return {
-
-        showFilter: true,
-        showPicker: true,
-        showSelect: true,
-
-        paginated: true,
-
-        multiColumnSortable: true,
-        columnToSortBy: "name",
 
         columns: [
           {
@@ -113,36 +98,9 @@
       }
     },
 
-    methods: {
-
-      handleModelChange ({ type, entry }) {
-        // eslint-disable-next-line
-        console.log("CLICK ROW: " + type + ' ' + JSON.stringify(entry))
-      },
-
-      addItem  () {
-        const item = {
-          "id": this.values.length + 1,
-          "name": "name " + (this.values.length + 1)
-        }
-        this.values.push(item)
-      },
-
-      toggleFilter () {
-        this.showFilter = !this.showFilter
-      },
-
-      togglePicker () {
-        this.showPicker = !this.showPicker
-      },
-
-      toggleSelect () {
-        this.showSelect = !this.showSelect
-      },
-
-      togglePagination () {
-        this.paginated = !this.paginated
-      }
+    components: {
+      GrotTableOrignal,
+      //GrotTableCustomize
     }
   }
 </script>

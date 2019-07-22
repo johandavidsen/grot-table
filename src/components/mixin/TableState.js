@@ -32,6 +32,7 @@ export default {
   },
 
   watch: {
+
     allSelected () {
       const val = this.allSelected;
 

@@ -39,13 +39,13 @@
   import orderBy from 'lodash.orderby'
   import includes from 'lodash.includes'
 
-  import TableState from './mixin/TableState'
-  import DefaultProps from './mixin/DefaultProps'
+  import TableState from '../components/mixin/TableState'
+  import DefaultProps from '../components/mixin/DefaultProps'
 
-  import Column from './models/Column'
-  import TableHeader from './TableHeader'
-  import CheckBox from "./CheckBox"
-  import TableRow from "./TableRow"
+  import Column from '../components/models/Column'
+  import TableHeader from '../components/TableHeader'
+  import CheckBox from "../components/CheckBox"
+  import TableRow from "../components/TableRow"
 
   export default {
     name: "GrotTableCustomize",

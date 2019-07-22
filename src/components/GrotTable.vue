@@ -2,12 +2,12 @@
     <div>
         <div class="row">
             <div class="col-6">
-                <div v-if="showFilter" class="mb-3 mt-3">
+                <div v-if="dataShowFilter" class="mb-3 mt-3">
                     <search-input v-model="filterKey"></search-input>
                 </div>
             </div>
             <div class="col-6">
-                <div v-if="showColumnPicker" class="mb-3 mt-3 d-flex justify-content-end">
+                <div v-if="dataShowColumnPicker" class="mb-3 mt-3 d-flex justify-content-end">
                     <column-picker :options="displayCols" v-on:selected="toggleColumn"></column-picker>
                 </div>
             </div>
@@ -18,37 +18,37 @@
                 <div :class="{ 'table-responsive': true, 'table-expanded': currentlyEditedRow === (filteredValuesSorted.length - 1)}">
                     <table class="table table-bordered table-hover table-condensed table-striped">
                         <thead>
-                        <table-header :columns="displayColsVisible"
-                                      :sortable="sortable"
-                                      :sort-key="sortKey"
-                                      :sort-orders="sortOrders"
-                                      v-on:selected="sortBy" >
-                            <th v-if="selectable">
-                                <check-box :checked="allSelected" v-on:selected="selectAll"></check-box>
-                            </th>
-                        </table-header>
+                            <table-header :columns="displayColsVisible"
+                                          :sortable="dataSortable"
+                                          :sort-key="sortKey"
+                                          :sort-orders="sortOrders"
+                                          v-on:selected="sortBy">
+                                <th v-if="dataSelectable">
+                                    <check-box :checked="allSelected" v-on:selected="selectAll"></check-box>
+                                </th>
+                            </table-header>
                         </thead>
 
                         <tbody>
-                            <table-row v-for="(entry, index) in filteredValuesSorted"
-                                       :entry="entry"
-                                       :columns="displayColsVisible"
-                                       :key="index"
-                                       :class="{ 'tr-row-overlay': currentlyEditedRow < 0 ? false : index !== currentlyEditedRow }"
-                                       v-on:edit-row="(obj) => setCurrentlyEditedRow(index, obj)"
-                                       v-on:update-model="saveFields"
-                                       track-by="entry"
-                                >
-                                <td v-if="selectable" track-by="entry" >
-                                    <check-box :checked="entry.selected" v-on:selected="(value) => highlightRow(index, value)"></check-box>
-                                </td>
-                            </table-row>
-                        </tbody>
+                              <table-row v-for="(entry, index) in filteredValuesSorted"
+                                         :entry="entry"
+                                         :columns="displayColsVisible"
+                                         :key="index"
+                                         :class="{ 'tr-row-overlay': currentlyEditedRow < 0 ? false : index !== currentlyEditedRow }"
+                                         v-on:edit-row="(obj) => setCurrentlyEditedRow(index, obj)"
+                                         v-on:update-model="saveFields"
+                                         track-by="entry"
+                                  >
+                                  <td v-if="selectable" track-by="entry" >
+                                      <check-box :checked="entry.selected" v-on:selected="(value) => highlightRow(index, value)"></check-box>
+                                  </td>
+                              </table-row>
+                          </tbody>
                     </table>
                 </div>
             </div>
 
-            <div v-if="paginated" class="col-sm-12 d-flex justify-content-center">
+            <div v-if="dataPaginated" class="col-sm-12 d-flex justify-content-center">
                 <pagination :max-page="maxPage"
                             :current-page="page"
                             v-on:selected="selectPage">
@@ -61,7 +61,8 @@
 
 <script>
   /* used for fixing IE problems*/
-  import { polyfill } from 'es6-promise'
+  import {polyfill} from 'es6-promise'
+
   polyfill()
 
   import orderBy from 'lodash.orderby'
@@ -86,7 +87,9 @@
      *
      */
     mixins: [
-      VisualProps, DefaultProps, TableState
+      TableState,
+      DefaultProps,
+      VisualProps
     ],
 
     /**
@@ -109,21 +112,21 @@
 
         //this.setSortOrders();
 
-        this.definedPageSize = this.pageSize;
+        this.definedPageSize = this.dataPageSize;
 
         var self = this;
 
         //
-        if (this.defaultOrderColumn !== null) {
-          self.sortKey[0] = this.defaultOrderColumn;
-          if (this.defaultOrderDirection)
-            self.sortOrders[this.defaultOrderColumn] = "ASC";
+        if (this.dataDefaultOrderColumn !== null) {
+          self.sortKey[0] = this.dataDefaultOrderColumn;
+          if (this.dataDefaultOrderColumn)
+            self.sortOrders[this.dataDefaultOrderColumn] = "ASC";
           else
-            self.sortOrders[this.defaultOrderColumn] = "DESC";
+            self.sortOrders[this.dataDefaultOrderColumn] = "DESC";
         }
 
         // Build columns
-        this.columns.forEach(function (column) {
+        this.dataColumns.forEach(function (column) {
           var obj = new Column(column);
           self.displayCols.push(obj);
         });
@@ -152,24 +155,24 @@
         this.processFilter()
       },
 
-      paginated: function () {
+      dataPaginated: function () {
         this.processFilter()
-      },
+      }
 
     },
 
     computed: {
 
-      displayColsVisible: function () {
-        var displayColsVisible = []
+       displayColsVisible: function () {
+          var displayColsVisible = []
 
-        for (var a in this.displayCols) {
-          if (this.displayCols[a].visible)
-            displayColsVisible.push(this.displayCols[a])
-        }
+          for (var a in this.displayCols) {
+            if (this.displayCols[a].visible)
+              displayColsVisible.push(this.displayCols[a])
+          }
 
-        return displayColsVisible
-      },
+          return displayColsVisible
+        },
 
       filteredValuesSorted: function () {
         var tColsDir = []
@@ -200,7 +203,7 @@
 
         this.filteredValuesSorted[index] = rowf
 
-        this.onModelChange({ type: "SELECTED", entry: rowf })
+        this.dataOnModelChange({ type: "SELECTED", entry: rowf })
       },
 
       /**
@@ -227,64 +230,66 @@
        */
       saveFields ({ save, entry }) {
         if (save && entry) {
-          this.onModelChange({ type: "SAVE", entry: entry })
+          this.dataOnModelChange({ type: "SAVE", entry: entry })
         }
       },
 
-      selectPage (index) {
+      selectPage(index) {
         this.page = index
       },
 
       /**
        * This function is called on filterKey change
        */
-      processFilter () {
+      processFilter() {
         // Populate and filter data
         let self = this
 
-        // Show based on columns that are visible
-        let result = this.rawValues.filter(item => {
-          for (let col in self.displayColsVisible) {
+        if (this.rawValues) {
+          // Show based on columns that are visible
+          let result = this.rawValues.filter(item => {
+            for (let col in self.displayColsVisible) {
 
-            if (self.displayColsVisible[col].filterable && self.filterCaseSensitive && includes(item[self.displayColsVisible[col].name] + "", self.filterKey + "")) {
-              return true
-            } else if (self.displayColsVisible[col].filterable && includes((item[self.displayColsVisible[col].name] + "").toLowerCase(), (self.filterKey + "").toLowerCase())) {
-              return true
+              if (self.displayColsVisible[col].filterable && self.dataFilterCaseSensitive && includes(item[self.displayColsVisible[col].name] + "", self.filterKey + "")) {
+                return true
+              } else if (self.displayColsVisible[col].filterable && includes((item[self.displayColsVisible[col].name] + "").toLowerCase(), (self.filterKey + "").toLowerCase())) {
+                return true
+              }
             }
+            return false
+          })
+
+          // Sort according to sortOrders
+          var tColsDir = []
+          for (var i = 0, len = this.sortKey.length; i < len; i++) {
+            tColsDir.push(this.sortOrders[this.sortKey[i]].toLowerCase())
           }
-          return false
-        })
+          result = orderBy(result, this.sortKey, tColsDir)
 
-        // Sort according to sortOrders
-        var tColsDir = []
-        for (var i = 0, len = this.sortKey.length; i < len; i++) {
-          tColsDir.push(this.sortOrders[this.sortKey[i]].toLowerCase())
-        }
-        result = orderBy(result, this.sortKey, tColsDir)
+          // Setup pagination
+          // Based on results filtered on filterKey set Size
+          this.filteredSize = result.length
 
-        // Setup pagination
-        // Based on results filtered on filterKey set Size
-        this.filteredSize = result.length
+          if (this.dataPaginated) {
+            var startIndex = (this.page - 1) * this.definedPageSize
+            var tIndex = 0
+            var tempResult = []
 
-        if (this.paginated) {
-          var startIndex = (this.page - 1) * this.definedPageSize
-          var tIndex = 0
-          var tempResult = []
-
-          while (tIndex < this.definedPageSize) {
-            if (typeof result[startIndex + tIndex] !== "undefined") {
-              tempResult.push(result[startIndex + tIndex])
+            while (tIndex < this.definedPageSize) {
+              if (typeof result[startIndex + tIndex] !== "undefined") {
+                tempResult.push(result[startIndex + tIndex])
+              }
+              tIndex++
             }
-            tIndex++
-          }
 
-          self.filteredValues = tempResult
-        } else {
-          self.filteredValues = result
+            self.filteredValues = tempResult
+          } else {
+            self.filteredValues = result
+          }
         }
       },
 
-      toggleColumn (column) {
+      toggleColumn(column) {
         column.visible = !column.visible
       }
     }

@@ -13,7 +13,7 @@ export default {
     /**
      * The column titles, required
      */
-    columns: {
+    dataColumns: {
       type: Array,
       required: true,
     },
@@ -21,7 +21,7 @@ export default {
      /**
       * The rows, an Array of objects
       */
-     values: {
+     dataValues: {
        type: Array,
        required: false,
      },
@@ -30,7 +30,7 @@ export default {
       * Enable/disable table row selection, optional, default false.
       * When true, it will add a checkbox column on the left side and use the value.selected field
       */
-     selectable: {
+     dataSelectable: {
        type: Boolean,
        required: false,
        default: true,
@@ -39,7 +39,7 @@ export default {
      /**
       * Enable/disable table sorting, optional, default true
       */
-     sortable: {
+     dataSortable: {
        type: Boolean,
        required: false,
        default: true,
@@ -49,7 +49,7 @@ export default {
       * Enable/disable table multicolumn sorting, optional, default false.
       * Also sortable must be enabled for this function to work.
       */
-     multiColumnSortable: {
+     dataMultiColumnSortable: {
        type: Boolean,
        required: false,
        default: false,
@@ -58,7 +58,7 @@ export default {
      /**
       * Enable/disable pagination for the table, optional, default false
       */
-     paginated: {
+     dataPaginated: {
        type: Boolean,
        required: false,
        default: false,
@@ -67,7 +67,7 @@ export default {
      /**
       * If pagination is enabled defining the page size, optional, default 10
       */
-     pageSize: {
+     dataPageSize: {
        type: Number,
        required: false,
        default: 10,
@@ -76,7 +76,7 @@ export default {
      /**
       * Setting default order column. Expected name of the column
       */
-     defaultOrderColumn: {
+     dataDefaultOrderColumn: {
        type: String,
        required: false,
        default: null,
@@ -85,7 +85,7 @@ export default {
      /**
       * Setting default order direction. Boolean: true = ASC , false = DESC
       */
-     defaultOrderDirection: {
+     dataDefaultOrderDirection: {
        type: Boolean,
        required: false,
        default: true,
@@ -94,7 +94,7 @@ export default {
      /**
       * Function that is called every time the model is changed
       */
-     onModelChange: {
+     dataOnModelChange: {
        type: Function,
        required: false,
      },
@@ -102,7 +102,7 @@ export default {
      /**
       * Define if Filter search field is to work in a case Sensitive way. Default: true
       */
-     filterCaseSensitive: {
+     dataFilterCaseSensitive: {
        type: Boolean,
        required: false,
        default: true,
@@ -114,20 +114,22 @@ export default {
     /**
      * The rawValues data property is set equal to the values property
      */
-    values () {
-      this.rawValues = this.values
+    dataValues () {
+      // eslint-disable-next-line
+      console.log(this.dataValues)
+      this.rawValues = this.dataValues
     },
 
     /**
      * The displayCols data property is calculated based on the property: columns
      */
-    columns: function () {
+    dataColumns: function () {
       // Reset displayCols
       this.displayCols = []
 
       let self = this
 
-      this.columns.forEach(function (column) {
+      this.dataColumns.forEach(function (column) {
         let obj = new Column(column)
         // Update the displayCols array
         self.displayCols.push(obj)
@@ -135,23 +137,8 @@ export default {
 
       // Update the setSortOrders
       this.setSortOrders()
-    },
+    }
 
-    /**
-     * The sortOrders data property is populated based on the property: columns
-     */
-    setSortOrders () {
-      // Reset sortKey
-      this.sortKey = []
-
-      let sortOrders = {}
-
-      this.columns.forEach(function (column) {
-        sortOrders[column.name] = ""
-      })
-
-      this.sortOrders = sortOrders
-    },
   },
 
   methods: {
@@ -175,10 +162,10 @@ export default {
       let self = this
 
       // Sort single column
-      if (!this.multiColumnSortable || (this.multiColumnSortable && !event.shiftKey)) {
+      if (!this.dataMultiColumnSortable || (this.dataMultiColumnSortable && !event.shiftKey)) {
         // Clear all keys except <key>
         this.sortKey = [key]
-        this.columns.forEach(function (column) {
+        this.dataColumns.forEach(function (column) {
           if (column.name !== key) {
             self.sortOrders[column.name] = ""
           }
@@ -200,6 +187,22 @@ export default {
       } else {
         this.sortOrders[key] = "ASC"
       }
-    }
+    },
+
+    /**
+     * The sortOrders data property is populated based on the property: columns
+     */
+    setSortOrders () {
+      // Reset sortKey
+      this.sortKey = []
+
+      let sortOrders = {}
+
+      this.columns.forEach(function (column) {
+        sortOrders[column.name] = ""
+      })
+
+      this.sortOrders = sortOrders
+    },
   }
 }

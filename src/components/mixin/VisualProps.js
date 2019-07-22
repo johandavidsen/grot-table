@@ -4,7 +4,7 @@ export default {
     /**
      * Enable/disable input filter, optional, default false
      */
-    showFilter: {
+    dataShowFilter: {
       type: Boolean,
       required: false,
       default: false,
@@ -13,7 +13,7 @@ export default {
     /**
      * Enable/disable column picker to show/hide table columns, optional, default false
      */
-    showColumnPicker: {
+    dataShowColumnPicker: {
       type: Boolean,
       required: false,
       default: false,
@@ -22,7 +22,7 @@ export default {
 
   watch: {
 
-    showColumnPicker: function () {
+    dataShowColumnPicker: function () {
       this.displayCols.forEach(function (column) {
         column.visible = true
       })
