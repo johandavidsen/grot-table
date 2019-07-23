@@ -24,7 +24,7 @@
                                       :sort-orders="sortOrders"
                                       v-on:selected="sortBy" >
                             <th v-if="selectable">
-                                <check-box :checked="allSelected" v-on:selected="selectAll"></check-box>
+                                <check-box :disabled="currentlyEditedRow > -1" :checked="allSelected" v-on:notifyHandler="selectAll"></check-box>
                             </th>
                         </table-header>
                         </thead>
@@ -35,12 +35,11 @@
                                        :columns="displayColsVisible"
                                        :key="index"
                                        :class="{ 'tr-row-overlay': currentlyEditedRow < 0 ? false : index !== currentlyEditedRow }"
-                                       v-on:edit-row="(obj) => setCurrentlyEditedRow(index, obj)"
-                                       v-on:update-model="saveFields"
+                                       v-on:notifyHandler="(obj) => handleRowChange(index, obj)"
                                        track-by="entry"
                                 >
                                 <td v-if="selectable" track-by="entry" >
-                                    <check-box :checked="entry.selected" v-on:selected="(value) => highlightRow(index, value)"></check-box>
+                                    <check-box :disabled="currentlyEditedRow > -1" :checked="entry.selected" v-on:notifyHandler="(value) => handleRowChange(index, value)"></check-box>
                                 </td>
                             </table-row>
                         </tbody>
@@ -188,46 +187,42 @@
 
     methods: {
 
-      /**
-       * Function HighlightRow
-       *
-       * This functions adds a selected variable to the entry object. This methods generates a SELECTED event.
-       *
-       */
-      highlightRow (index, value) {
-        let rowf = this.filteredValuesSorted[index]
-        rowf.selected = value
+      handleRowChange (index, { type, data }) {
 
-        this.filteredValuesSorted[index] = rowf
+        // Click Row
+        if (type === 'click-row') {
+          this.onModelChange({ type: type, entry: data.entry })
+        }
 
-        this.onModelChange({ type: "SELECTED", entry: rowf })
-      },
+        // Select Row
+        if (type === 'selected-row') {
+          let row = this.filteredValuesSorted[index]
+          row.selected = data
 
-      /**
-       * Function SetCurrentlyEditedRow
-       *
-       * Indicate which row is currently being edited.
-       *
-       */
-      setCurrentlyEditedRow (index, { toggle }) {
+          this.filteredValuesSorted[index] = row
 
-        if (toggle) {
+          this.onModelChange({ type: type, entry: row })
+        }
+
+        // Enable Edit Row
+        if (type === 'edit-row' && data.toggle) {
           this.currentlyEditedRow = index
-        } else {
+        }
+
+        // Disable Edit Row
+        if (type === 'edit-row' && !data.toggle) {
           this.currentlyEditedRow = -1
         }
 
-      },
+        // Save Row Change
+        if (type === 'save-edit-row') {
+          this.currentlyEditedRow = -1
+          this.onModelChange({ type: type, entry: data.entry })
+        }
 
-      /**
-       * Function SaveFields
-       *
-       * This function calls the onModelChange function if the field should be saved.
-       *
-       */
-      saveFields ({ save, entry }) {
-        if (save && entry) {
-          this.onModelChange({ type: "SAVE", entry: entry })
+        // Cancel Row Change
+        if (type === 'cancel-edit-row') {
+          this.currentlyEditedRow = -1
         }
       },
 
