@@ -5,17 +5,17 @@
                 <h1>Original Component</h1>
             </div>
         </div>
-        <grot-table-orignal
+        <grot-table
                 :data-columns="columns"
                 :data-values="values"
                 class="mb-5">
-        </grot-table-orignal>
+        </grot-table>
 
-        <div class="row">
+        <!--<div class="row">
             <div class="col-sm-12 mb-3 mb-3">
                 <h1>Custom Component</h1>
             </div>
-        </div>
+        </div>-->
 
     </div>
 </template>
