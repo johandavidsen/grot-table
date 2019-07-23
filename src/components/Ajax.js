@@ -18,7 +18,7 @@
   required: false,
   default: function () {
     return {
-      enabled: false,
+      editable: false,
       url: "",
       method: "GET",
       delegate: false,
@@ -36,7 +36,7 @@
  *     //this.loading = true;
  *
  *     // Work the data
- if (this.ajax.enabled) {
+ if (this.ajax.editable) {
           if (!this.ajax.delegate) {
             // If ajax but NOT delegate
             // Perform the fetch of data now and set the raw values
@@ -90,7 +90,7 @@ fireCellDataModifiedEvent: function (originalValue, newValue, columnTitle, entry
  *
  * //this.loading = true;
 
- if (this.ajax.enabled && this.ajax.delegate) {
+ if (this.ajax.editable && this.ajax.delegate) {
           this.fetchData(function (data) {
             self.filteredSize = data.filtered;
             self.filteredValues = data.data;
@@ -109,7 +109,7 @@ fireCellDataModifiedEvent: function (originalValue, newValue, columnTitle, entry
 
         this.echo++
 
-        if (this.ajax.enabled && this.ajax.delegate) {
+        if (this.ajax.editable && this.ajax.delegate) {
           var tColsDir = [];
 
           for (var i = 0, len = this.sortKey.length; i < len; i++) {
@@ -156,7 +156,7 @@ fireCellDataModifiedEvent: function (originalValue, newValue, columnTitle, entry
           }
         }
 
-        if (this.ajax.enabled && !this.ajax.delegate) {
+        if (this.ajax.editable && !this.ajax.delegate) {
           if (this.ajax.method === "GET") {
             //COPY
             if (this.ajax !== null && this.ajax.axiosConfig !== null && this.ajax.axiosConfig !== undefined) {
@@ -171,7 +171,7 @@ fireCellDataModifiedEvent: function (originalValue, newValue, columnTitle, entry
           }
         }
 
-        if (this.ajax.enabled && this.ajax.method === "GET") {
+        if (this.ajax.editable && this.ajax.method === "GET") {
           axios.get(self.ajax.url, ajaxParameters)
             .then(response => {
               if (this.ajax.delegate) {
@@ -187,7 +187,7 @@ fireCellDataModifiedEvent: function (originalValue, newValue, columnTitle, entry
             });
         }
 
-        if (this.ajax.enabled && this.ajax.method === "POST") {
+        if (this.ajax.editable && this.ajax.method === "POST") {
           var tempAxiosConf = {}
 
           if (this.ajax !== null && this.ajax.axiosConfig !== null && this.ajax.axiosConfig !== undefined) {

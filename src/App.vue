@@ -26,11 +26,13 @@
                 :selectable="showSelect"
             >
         </grot-table>
+
+
     </div>
 </template>
 
 <script>
-  import GrotTable from "./components/GrotTable";
+  import GrotTable from "./components/GrotTable"
 
   export default {
 
@@ -115,6 +117,7 @@
 
     methods: {
 
+      /* eslint-disable */
       handleModelChange ({ type, entry }) {
         // eslint-disable-next-line
         console.log("CLICK ROW: " + type + ' ' + JSON.stringify(entry))

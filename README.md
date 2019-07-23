@@ -181,7 +181,7 @@ Include the browser-ready bundle (download from [releases](https://github.com/jb
         },
         /**
          * Enable/disable table multicolumn sorting, optional, default false.
-         * Also sortable must be enabled for this function to work.
+         * Also sortable must be editable for this function to work.
          */
         multiColumnSortable: {
             type: Boolean,
@@ -221,7 +221,7 @@ Include the browser-ready bundle (download from [releases](https://github.com/jb
             default: false,
         },
         /**
-         * If pagination is enabled defining the page size, optional, default 10
+         * If pagination is editable defining the page size, optional, default 10
          */
         pageSize: {
             type: Number,

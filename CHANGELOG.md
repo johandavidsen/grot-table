@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.5.4]
+
+### Changed
+
+* Changed the onModelChange function, such that it now can listen for different state events. 
+
 ## [1.5.3]
 
 ### Added
