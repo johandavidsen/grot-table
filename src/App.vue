@@ -17,18 +17,11 @@
             </div>
         </div>
 
-        <!--<grot-table-customize
-                :columns="columns"
-                :values="values"
-                class="mb-5"
-            >
-        </grot-table-customize>-->
     </div>
 </template>
 
 <script>
-  import GrotTableOrignal from './examples/GrotTableOriginal'
-  //import GrotTableCustomize from './examples/GrotTableCustomize'
+  import GrotTable from "./components/GrotTable"
 
   export default {
 
@@ -99,8 +92,40 @@
     },
 
     components: {
-      GrotTableOrignal,
-      //GrotTableCustomize
+      GrotTable
+    },
+
+    methods: {
+
+      /* eslint-disable */
+      handleModelChange ({ type, entry }) {
+        // eslint-disable-next-line
+        console.log("CLICK ROW: " + type + ' ' + JSON.stringify(entry))
+      },
+
+      addItem  () {
+        const item = {
+          "id": this.values.length + 1,
+          "name": "name " + (this.values.length + 1)
+        }
+        this.values.push(item)
+      },
+
+      toggleFilter () {
+        this.showFilter = !this.showFilter
+      },
+
+      togglePicker () {
+        this.showPicker = !this.showPicker
+      },
+
+      toggleSelect () {
+        this.showSelect = !this.showSelect
+      },
+
+      togglePagination () {
+        this.paginated = !this.paginated
+      }
     }
   }
 </script>

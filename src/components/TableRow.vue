@@ -1,10 +1,9 @@
 <template>
-    <tr class="custom-row">
+    <tr class="custom-row" @click="clickRow">
         <slot></slot>
 
         <td :key="index"
             v-for="(column, index) in columns"
-            track-by="column"
             v-show="column.visible"
             :class="column.cellstyle"
         >
@@ -18,26 +17,22 @@
             </span>
 
             <value-field-section v-else
-                                 :entry="entry"
-                                 :columnname="column.name"
-                                 :should-save="editFields"
-                                 v-on:toggle-edit="toggleEditFields"
-                                 v-on:save-entry="saveFields"
+                                 :value="{ edit: editable(column.name), name: column.name, value: entry[column.name] }"
+                                 v-on:propertyChange="(value) => propertyChange(index, value)"
                 >
             </value-field-section>
 
-            <span class="options-button-grp" v-if="editFields && index === 0">
+            <span class="options-button-grp" v-if="editable(column.name) ">
                 <div class="btn-group" role="group" aria-label="Basic example">
-                    <button type="button" class="btn btn-outline-primary" @click="initiateSave">
+                    <button type="button" class="btn btn-outline-primary" @click.stop.prevent="saveRow">
                         <span class="fa fa-check" aria-hidden="true"></span>
                     </button>
-                    <button type="button" class="btn btn-outline-danger" @click="cancelSave">
+                    <button type="button" class="btn btn-outline-danger" @click.stop.prevent="cancelSaveRow">
                         <span class="fa fa-times" aria-hidden="true"></span>
                     </button>
                 </div>
             </span>
         </td>
-
     </tr>
 </template>
 
@@ -51,52 +46,65 @@
       'value-field-section': ValueFieldSection
     },
 
-    data: function () {
-      return {
-        editFields: false,
-        row: this.entry
-      }
-    },
-
     props: {
       columns: {
         type: Array,
         required: true
       },
 
-
       entry: {
         type: Object,
         required: false
       }
+    },
 
+
+    data: function () {
+      return {
+        editFields: [],
+        row: this.entry
+      }
     },
 
     methods: {
 
-      initiateSave () {
-        this.$emit('save-fields', { save: true })
-        this.toggleEditFields(false)
-      },
-
-      saveFields({ field, value }) {
-        if (value) {
-          this.row[field] = value
-          // Used in ValueFieldSection and VueBootstrapTable
-          this.$emit('update-model', { save: true, entry: this.entry })
+      propertyChange(index, field) {
+        let itemIndex = this.editFields.findIndex((item) => item.name === field.name)
+        // Check if local state is enabled
+        if (itemIndex === -1) {
+          this.editFields.push(field)
+          this.notifyHandler('edit-row', { toggle: true })
+        } else if (field.edit === this.editFields[itemIndex].edit) {
+          this.editFields[itemIndex] = field
+        } else {
+          this.editFields.splice(itemIndex, 1)
         }
       },
 
-      cancelSave() {
-        // Used in ValueFieldSection and VueBootstrapTable
-        this.$emit('save-fields', { save: false })
-        this.$emit('update-model', { save: false })
-        this.toggleEditFields(false)
+      editable (name) {
+        return this.editFields.find((item) => item.name === name ) !== undefined
       },
 
-      toggleEditFields(toggle) {
-        this.$emit('edit-row', { toggle: toggle })
-        this.editFields = toggle
+      clickRow () {
+        this.notifyHandler('click-row', { entry: this.row })
+      },
+
+      saveRow () {
+        let self = this
+        this.editFields.forEach((item) => {
+          self.row[item.name] = item.value
+        })
+        this.editFields = []
+        this.notifyHandler('save-edit-row', { entry: this.row })
+      },
+
+      cancelSaveRow() {
+        this.editFields = []
+        this.notifyHandler('cancel-edit-row', { entry: this.row })
+      },
+
+      notifyHandler (type, data) {
+        this.$emit('notifyHandler', { type: type, data: data })
       }
     }
   }
