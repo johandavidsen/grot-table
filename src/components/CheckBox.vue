@@ -1,6 +1,6 @@
 <template>
-    <div class="custom-control custom-checkbox">
-        <input type="checkbox" class="custom-control-input" :id="id"
+    <div class="custom-control custom-checkbox" >
+        <input type="checkbox" class="custom-control-input" :disabled="disabled" :id="id"
                aria-label="Select All" v-model="checkedLocal">
         <label class="custom-control-label" :for="id"></label>
     </div>
@@ -15,7 +15,13 @@
         type: Boolean,
         required: false,
         default: false
+      },
+
+      disabled: {
+        type: Boolean,
+        default: false
       }
+
     },
 
     watch: {
@@ -24,7 +30,7 @@
       },
 
       checkedLocal: function (newValue) {
-        this.$emit('selected', newValue)
+        this.$emit('notifyHandler', { type: 'selected-row', data: newValue } )
       }
     },
 
