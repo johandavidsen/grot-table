@@ -53,8 +53,8 @@ export default {
      * This function is used to select all the items in the table
      *
      */
-    selectAll (value) {
-      this.allSelected = value
+    selectAll ({ data }) {
+      this.allSelected = data
     }
   }
 }
