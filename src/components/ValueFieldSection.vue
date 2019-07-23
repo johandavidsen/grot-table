@@ -1,77 +1,59 @@
 <template>
-    <span v-if="!enabled"
+    <div v-if="edit"
+         class="input-group"
+        >
+        <label>
+            <textarea type="text"
+                class="form-control"
+                v-model="dataValue">
+            </textarea>
+        </label>
+    </div>
+    <span v-else
+          @click.stop.prevent
           @dblclick="toggleInput"
           class="editableField">
-        {{ this.entry[this.columnname] }}
+        {{ dataValue }}
     </span>
-    <div v-else-if="enabled"
-         class="input-group">
-      <textarea type="text"
-                class="form-control"
-                v-model="dataValue" />
-    </div>
 </template>
 
 <script>
+
   export default {
     name: "ValueFieldSection",
 
     props: {
 
-      columnname: {
-
-      },
-
-      entry: {
-
-      },
-
-      shouldSave: {
-        type: Boolean
+      value: {
+        type: Object,
+        required: true
       }
     },
-
 
     data: function () {
       return {
-        enabled: false,
-        dataValue: "",
+        edit: this.value.edit,
+        name: this.value.name,
+        dataValue: this.value.value,
       }
     },
 
-    created: function () {
-      // Listen for the
-      this.$parent.$on('save-fields', this.handleParent)
+    watch: {
+      value: function ({ edit, value }) {
+        this.edit = edit
+        this.dataValue = value
+      },
+
+      dataValue: function (value) {
+        this.$emit('propertyChange', { edit: this.edit, name: this.name, value: value })
+      }
     },
 
     methods: {
 
-      saveThis () {
-        if (this.dataValue) {
-          this.entry[this.columnname] = this.dataValue
-        }
-        this.enabled = false
-        this.$emit('save-entry', { field: this.columnname, value: this.dataValue })
-      },
-
-      handleParent ({ save }) {
-        if (save) {
-          this.saveThis()
-        } else {
-          this.cancelThis()
-        }
-      },
-
-      cancelThis () {
-        this.dataValue = this.entry[this.columnname]
-        this.enabled = false
-      },
-
-      toggleInput () {
-        this.dataValue= this.entry[this.columnname]
-        this.enabled=!this.enabled
-        this.$emit('toggle-edit', true)
-      },
+     toggleInput () {
+       this.$emit('propertyChange', { edit: !this.edit, name: this.name, value: this.dataValue })
+     }
     }
   }
 </script>
